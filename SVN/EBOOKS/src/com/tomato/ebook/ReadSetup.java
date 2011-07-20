@@ -28,12 +28,12 @@ public class ReadSetup extends Activity{
 	TextView preview;
 	ArrayList<CharSequence> data1, data2, data3;
 	Button setup;
-//	int color, bgcolor=0;
+	//	int color, bgcolor=0;
 
 	String color=null;
 	String bgcolor=null;
 	String bookKey=null;
-		
+	static int bg_Offset = 0,col_offset=0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -72,15 +72,15 @@ public class ReadSetup extends Activity{
 
 		spin1=new ArrayAdapter<CharSequence>(this, 
 
-android.R.layout.simple_spinner_item, data1);
+				android.R.layout.simple_spinner_item, data1);
 		sp1.setAdapter(spin1);
 		spin2=new ArrayAdapter<CharSequence>(this, 
 
-android.R.layout.simple_spinner_item, data2);
+				android.R.layout.simple_spinner_item, data2);
 		sp2.setAdapter(spin2);
 		spin3=new ArrayAdapter<CharSequence>(this, 
 
-android.R.layout.simple_spinner_item, data3);
+				android.R.layout.simple_spinner_item, data3);
 		sp3.setAdapter(spin3);
 
 
@@ -88,7 +88,7 @@ android.R.layout.simple_spinner_item, data3);
 		sp2.setOnItemSelectedListener(click);
 		sp3.setOnItemSelectedListener(click);
 		setup.setOnClickListener(click_btn);
-		
+
 		Intent intent=getIntent();
 		bookKey=intent.getStringExtra("bookKey");
 		color=intent.getStringExtra("color");
@@ -101,15 +101,72 @@ android.R.layout.simple_spinner_item, data3);
 		@Override
 		public void onClick(View v) {
 
-			finish();
-			Log.e("color-bg11111111111", color+"//"+bgcolor);
-			Intent intent=new Intent(ReadSetup.this, CurlActivity.class);
-			intent.putExtra("bookKey", bookKey);
-			intent.putExtra("color",color);
-			intent.putExtra("bgcolor",bgcolor);
-			Log.e("color-bg222222222222222", color+"//"+bgcolor);
-			
-			startActivity(intent);	
+			new AlertDialog.Builder(ReadSetup.this)
+			.setTitle("Notification")
+			.setMessage("今までの設定でよろしいですか？")
+			.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+				}
+			})
+			.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					if(col_offset==0&&bg_Offset==0)
+					{
+						color="#000000";
+						bgcolor="#FFFFFF";
+						finish();
+						Log.e("color-bg11111111111", color+"//"+bgcolor);
+						Intent intent=new Intent(ReadSetup.this, CurlActivity.class);
+						intent.putExtra("bookKey", bookKey);
+						intent.putExtra("color",color);
+						intent.putExtra("bgcolor",bgcolor);
+						Log.e("color-bg222222222222222", color+"//"+bgcolor);		
+						startActivity(intent);
+					}
+					else if(col_offset==1&&bg_Offset==0)
+					{
+						bgcolor="#FFFFFF";
+						finish();
+						Log.e("color-bg11111111111", color+"//"+bgcolor);
+						Intent intent=new Intent(ReadSetup.this, CurlActivity.class);
+						intent.putExtra("bookKey", bookKey);
+						intent.putExtra("color",color);
+						intent.putExtra("bgcolor",bgcolor);
+						Log.e("color-bg222222222222222", color+"//"+bgcolor);		
+						startActivity(intent);
+					}
+					else if(col_offset==0&&bg_Offset==1)
+					{
+						color="#000000";
+						finish();
+						Log.e("color-bg11111111111", color+"//"+bgcolor);
+						Intent intent=new Intent(ReadSetup.this, CurlActivity.class);
+						intent.putExtra("bookKey", bookKey);
+						intent.putExtra("color",color);
+						intent.putExtra("bgcolor",bgcolor);
+						Log.e("color-bg222222222222222", color+"//"+bgcolor);		
+						startActivity(intent);
+					}
+					else
+					{
+						finish();
+						Log.e("color-bg11111111111", color+"//"+bgcolor);
+						Intent intent=new Intent(ReadSetup.this, CurlActivity.class);
+						intent.putExtra("bookKey", bookKey);
+						intent.putExtra("color",color);
+						intent.putExtra("bgcolor",bgcolor);
+						Log.e("color-bg222222222222222", color+"//"+bgcolor);		
+						startActivity(intent);
+					}
+				}
+			})
+			.show();
 		}
 	};
 
@@ -134,13 +191,15 @@ android.R.layout.simple_spinner_item, data3);
 					color="#000000";
 					break;
 				case 1:
+					col_offset = 1;
 					preview.setTextColor(Color.BLUE);
 					color="#1800ff";
 					break;
 
 				case 2:
+					col_offset = 1;
 					preview.setTextColor(Color.parseColor("#996903"));
-//					color=Color.parseColor("#996903");
+					//					color=Color.parseColor("#996903");
 					color="#996903";
 					break;
 
@@ -148,7 +207,7 @@ android.R.layout.simple_spinner_item, data3);
 				}
 
 				break;
-				}
+			}
 
 			case R.id.spinner3:{
 				String bg=(String) data3.get(position);
@@ -156,57 +215,43 @@ android.R.layout.simple_spinner_item, data3);
 				switch (position) {
 				case 0:
 					preview.setBackgroundColor(Color.WHITE);
-					bgcolor=Color.WHITE+"";
-					
+					bgcolor="#FFFFFF";
+
 					break;
 
 				case 1:
+					bg_Offset = 1;
 					preview.setBackgroundColor(Color.parseColor("#ffe4e1"));
-//					bgcolor=Color.parseColor("#ffe4e1");
+					//					bgcolor=Color.parseColor("#ffe4e1");
 					bgcolor="#ffe4e1";
 					break;
 
 				case 2:
+					bg_Offset = 1;
 					preview.setBackgroundColor(Color.parseColor("#E1F0FD"));
-//					bgcolor=Color.parseColor("#E1F0FD");
+					//					bgcolor=Color.parseColor("#E1F0FD");
 					bgcolor="#E1F0FD";
 					break;
 
 				case 3:
+					bg_Offset = 1;
 					preview.setBackgroundColor(Color.parseColor("#BFFDBF"));
-//					bgcolor=Color.parseColor("#BFFDBF");
+					//					bgcolor=Color.parseColor("#BFFDBF");
 					bgcolor="#BFFDBF";
 					break;
 
 				case 4:
+					bg_Offset = 1;
 					preview.setBackgroundColor(Color.parseColor("#FFFFBF"));
-//					bgcolor=Color.parseColor("#FFFFBF");
+					//					bgcolor=Color.parseColor("#FFFFBF");
 					bgcolor="#FFFFBF";
 					break;
 
 				}
-			
+
 				break;
 			}
-			
-			case R.id.setup:
-			{
-				if(position<-1)
-				{
-					new AlertDialog.Builder(ReadSetup.this)
-					.setTitle("Notification")
-					.setMessage("必ず値をセットしてください。")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-						}
-					})
-					.show();
-				}
-			}
-			
 			}
 
 		}
