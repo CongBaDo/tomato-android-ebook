@@ -29,7 +29,7 @@ public class SDcard {
 	ArrayList<ArrayList<String>> book=new ArrayList<ArrayList<String>>();
 	ArrayList<String> page=new ArrayList<String>();
 	ArrayList<String> data_list=new ArrayList<String>();
-	
+	String id=null,genre=null,title=null,author=null,description=null,ebook=null,count=null,date=null;
 	HashMap<String, String> hm=new HashMap<String, String>();
 
 	//////////////////////////////
@@ -136,15 +136,15 @@ public class SDcard {
 	public void addResult() {
 
 		//		int stock = cmsutil.str2int(hm.get("stock[0]"));
-		Log.e("add1", "add1");
-		String id = hm.get("id[0]");
-		String genre = hm.get("genre[0]");
-		String title = hm.get("title[0]");
-		String author = hm.get("author[0]");
-		String description = hm.get("description[0]");
-		String ebook = hm.get("ebook[0]");
-		String count = hm.get("count[0]");
-		String date = hm.get("date[0]");		
+		
+		id = hm.get("id[0]");
+		genre = hm.get("genre[0]");
+		title = hm.get("title[0]");
+		author = hm.get("author[0]");
+		description = hm.get("description[0]");
+		ebook = hm.get("ebook[0]");
+		count = hm.get("count[0]");
+		date = hm.get("date[0]");		
 
 
 
