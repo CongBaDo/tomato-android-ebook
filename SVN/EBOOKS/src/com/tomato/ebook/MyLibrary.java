@@ -1,16 +1,10 @@
 package com.tomato.ebook;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -18,12 +12,10 @@ import android.app.AlertDialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.Browser.BookmarkColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,8 +27,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomato.adapter.MyLibraryAdapter;
-import com.tomato.communication.Util;
-import com.tomato.communication.cmsHTTP;
 import com.tomato.sdcard.SDcard;
 
 public class MyLibrary extends Activity {

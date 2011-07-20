@@ -11,7 +11,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.os.Environment;
-import android.provider.MediaStore.Images;
 import android.util.Log;
 
 import com.tomato.communication.Util;

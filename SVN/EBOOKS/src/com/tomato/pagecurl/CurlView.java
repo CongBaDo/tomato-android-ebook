@@ -1,9 +1,7 @@
 package com.tomato.pagecurl;
 
-import com.tomato.ebook.CurlActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -12,12 +10,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 
-import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 
 
 

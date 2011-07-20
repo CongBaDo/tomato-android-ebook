@@ -1,22 +1,15 @@
 package com.tomato.pagecurl;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import com.tomato.ebook.CurlActivity;
-
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.View;
 
 /**
  * Actual renderer class.
