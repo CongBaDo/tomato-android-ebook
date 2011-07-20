@@ -7,14 +7,14 @@ android:layout_height="fill_parent" android:gravity="center">
   
   
   <RelativeLayout
-   android:layout_height="wrap_content" android:layout_width="match_parent">
+   android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginBottom="5px">
   <ImageView
     android:id="@+id/cancel" 
   android:layout_width="wrap_content" 
   android:src="@drawable/mylibrary_x" 
   android:layout_height="wrap_content" 
   android:layout_alignParentLeft="true"
-  android:layout_margin="10px"/>
+  android:layout_margin="10px" android:layout_marginBottom="5px"/>
   
     <ImageView
   android:id="@+id/store" 
@@ -28,16 +28,15 @@ android:layout_height="fill_parent" android:gravity="center">
   <LinearLayout
   android:layout_width="fill_parent"
   android:layout_height="wrap_content">
-  <Gallery 
-   android:id="@+id/gallery" 
-   android:spacing="1px"
-   android:animationDuration="1000" android:layout_marginBottom="20px" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+      <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center">
+          <Gallery android:layout_marginTop="20px" android:animationDuration="1000" android:gravity="center" android:background="#FFDEAD" android:spacing="10px" android:layout_marginBottom="20px" android:id="@+id/gallery" android:layout_height="match_parent" android:layout_width="match_parent"></Gallery>
+      </LinearLayout>
  </LinearLayout> 
 
 
 <RelativeLayout
  android:layout_width="fill_parent"
-  android:layout_height="wrap_content" android:paddingTop="20px">
+  android:layout_height="wrap_content" android:layout_marginTop="15px">
  <ImageView
  android:id="@+id/list_book_detail"
   android:layout_width="wrap_content" 
