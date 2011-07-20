@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent" 
+android:layout_height="fill_parent" android:gravity="center">
+  
+  
+  <RelativeLayout
+   android:layout_height="wrap_content" android:layout_width="match_parent">
+  <ImageView
+    android:id="@+id/cancel" 
+  android:layout_width="wrap_content" 
+  android:src="@drawable/mylibrary_x" 
+  android:layout_height="wrap_content" 
+  android:layout_alignParentLeft="true"
+  android:layout_margin="10px"/>
+  
+    <ImageView
+  android:id="@+id/store" 
+  android:layout_width="wrap_content" 
+  android:src="@drawable/mylibrary_store" 
+  android:layout_height="wrap_content"
+     android:layout_alignParentRight="true" android:layout_margin="10px"/>
+  </RelativeLayout>
+  
+  
+  <LinearLayout
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content">
+  <Gallery 
+   android:id="@+id/gallery" 
+   android:spacing="1px"
+   android:animationDuration="1000" android:layout_marginBottom="20px" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+ </LinearLayout> 
+
+
+<RelativeLayout
+ android:layout_width="fill_parent"
+  android:layout_height="wrap_content" android:paddingTop="20px">
+ <ImageView
+ android:id="@+id/list_book_detail"
+  android:layout_width="wrap_content" 
+  android:src="@drawable/list_book" 
+  android:layout_height="wrap_content" 
+  android:layout_alignParentLeft="true"
+  android:padding="10px"/>
+<TextView 
+android:layout_toRightOf="@id/list_book_detail"
+ android:id="@+id/list_book_detail_text"
+ android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:text="簡単な説明のところ"
+   android:padding="15px"/>
+
+</RelativeLayout>
+  
+  <Button
+ android:id="@+id/list_book_read"
+ android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+android:text="読む"
+android:layout_gravity="center"
+android:layout_marginTop="20px"/>  
+ 
+  
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+

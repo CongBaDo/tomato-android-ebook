@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+android:orientation="vertical"
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/Login_Layout">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/Login_TitleLayout">
+        <TextView android:text="    " android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/Login_space1"></TextView>
+        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:textSize="25sp" android:textColor="#FFFFFF" android:id="@+id/Login_title" android:text="ログイン" android:layout_gravity="left" android:layout_marginLeft="20px" android:layout_marginBottom="10px"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Login_IDLayout" android:orientation="vertical">
+        <TextView android:textSize="16sp" android:layout_height="wrap_content" android:padding="10px" android:layout_width="wrap_content" android:textStyle="bold" android:textColor="#FFFFFF" android:id="@+id/Login_IDTitle" android:text="E-Mail" android:layout_marginLeft="10px"></TextView>
+        <EditText android:textColor="#ff000000" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:hint="IDを入力してください              " android:layout_marginRight="20px" android:id="@+id/Login_EditID" android:layout_marginLeft="10px" android:layout_marginBottom="10px" android:singleLine="true"></EditText>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Login_PassLayout" android:orientation="vertical">
+        <TextView android:textSize="16sp" android:text="P/W" android:layout_marginLeft="10px" android:layout_height="wrap_content" android:padding="10px" android:layout_width="wrap_content" android:textStyle="bold" android:textColor="#FFFFFF" android:id="@+id/Login_PassTitle"></TextView>
+        <EditText android:textColor="#ff000000" android:textSize="12sp" android:hint="Passwordを入力してください" android:password="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginRight="20px" android:id="@+id/Login_EditPass" android:layout_marginLeft="10px" android:singleLine="true"></EditText>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout">
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_marginRight="30px" android:text="確　認" android:layout_marginLeft="10px"></Button>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="登 録 " android:id="@+id/Login_TorokuBtn"></Button>
+    </LinearLayout>
+</LinearLayout>

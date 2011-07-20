@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<set
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:interpolator="@android:anim/accelerate_interpolator"
+	android:fillAfter="true">
+	
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="10"
+       android:fromYDelta="0"
+       android:toYDelta="-25"
+       android:startOffset="3200"
+	   android:duration="200" />
+	   
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="-3"
+       android:fromYDelta="0"
+       android:toYDelta="-10"
+       android:startOffset="3400"
+	   android:duration="200" />
+	   
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="4"
+       android:fromYDelta="0"
+       android:toYDelta="-2"
+	   android:startOffset="3600"
+	   android:duration="200" />
+	   
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="-2"
+       android:fromYDelta="0"
+       android:toYDelta="-5"
+       android:startOffset="3800"
+	   android:duration="200" />
+	   
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="4"
+       android:fromYDelta="0"
+       android:toYDelta="-2"
+	   android:startOffset="4000"
+	   android:duration="200" />
+	   
+	<translate
+       android:fromXDelta="0"
+       android:toXDelta="65"
+       android:fromYDelta="0"
+       android:toYDelta="-102"
+	   android:startOffset="4200"
+	   android:duration="300" />
+	   
+	<rotate 
+		android:fromDegrees="0"
+		android:toDegrees="360"
+		android:toYScale="100.0"
+		android:pivotX="100"
+		android:pivotY="-121"
+		android:startOffset="4500"
+		android:duration="500" />
+		
+	<translate 
+		android:fromXDelta="0"
+		android:toXDelta="-43"
+		android:fromYDelta="0"
+		android:toYDelta="124.5"
+		android:startOffset="5600"
+		android:duration="1000" />
+		
+	<translate 
+		android:fromXDelta="0"
+		android:toXDelta="17"
+		android:fromYDelta="0"
+		android:toYDelta="12"
+		android:startOffset="6900"
+		android:duration="600" />
+		
+	<alpha
+		android:fromAlpha="1.0"
+		android:toAlpha="0.0"
+		android:startOffset="6900"
+		android:duration="1200">
+	</alpha>
+		
+</set>
