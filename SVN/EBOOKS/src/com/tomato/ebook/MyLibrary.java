@@ -34,7 +34,7 @@ public class MyLibrary extends Activity {
 	Button btn;
 	ImageView cancel, store,list_book_detail;
 
-//	HashMap<String, String> hm;
+	//	HashMap<String, String> hm;
 
 	ArrayList<String> data_list=new ArrayList<String>();
 	ArrayList<String> datadata=new ArrayList<String>();
@@ -48,10 +48,10 @@ public class MyLibrary extends Activity {
 	String image_url=null;
 	String date=null;
 	int book_key=1;	
-//	String allSiori=null;
-//	String siori=null;
-	
-	
+	//	String allSiori=null;
+	//	String siori=null;
+
+
 	String ext=Environment.getExternalStorageState();
 	String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
 	File bookText;
@@ -60,7 +60,7 @@ public class MyLibrary extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mylibrary);
-
+		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
 		cancel=(ImageView)findViewById(R.id.cancel);
@@ -69,7 +69,7 @@ public class MyLibrary extends Activity {
 
 		sd=new SDcard();
 		datadata=sd.tryToMyLibrary();//read login.txt
-		
+
 		//Gallery view
 		Gallery mylibrarylist=(Gallery) findViewById(R.id.gallery);
 		Log.e("g", "1");
@@ -83,85 +83,85 @@ public class MyLibrary extends Activity {
 		store.setOnClickListener(button_listener);
 
 		Log.e("main", "main");
-	
-		
-	
+
+
+
 
 
 	}
-	
+
 	String[] redata=null;
-	
+
 	public String[] datafor(String data){
-		
+
 		redata=data.split(",");
-		
+
 		return redata;
 	}
 
-	
-
-		
-		
-
-//		String theUrl = "http://ebookssongs3.appspot.com/ebookSelectList.jsp";
-//		Log.i(this.getLocalClassName(), theUrl);
-//		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-//		httpParams.add(new BasicNameValuePair("key","6002"));
-//
-//		cmsHTTP cmsHttp = new cmsHTTP();
-//		//cmsHttp.encoding = encoding;
-//		cmsHttp.act = MyLibrary.this;
-//		String tmpData = cmsHttp.sendPost(theUrl, httpParams);
-//		if (tmpData == null)
-//		{
-//			return;
-//		}
-//		else
-//		{
-//			hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
-//			Log.v("nakami", tmpData);
-//			addResult(hm);
-//		}
 
 
-//	public void addResult(HashMap<String, String> hm) {
-//
-//		Log.e("in","in:");
-//		//		String msg = hm.get("msg[0]");
-////		for (int i = 0; i < hm.size(); i++) {
-////			id=hm.get("id["+i+"]");
-////			Log.e("hm", id);
-////			genre=hm.get("genre["+i+"]");
-////			title=hm.get("title["+i+"]");
-////			author=hm.get("author["+i+"]");
-////			decriptions=hm.get("decriptions["+i+"]");
-////			ebook=hm.get("ebook["+i+"]");
-////			count=hm.get("count["+i+"]");
-////			date=hm.get("date["+i+"]");
-////
-////			HashMap<String, String> data=new HashMap<String, String>();
-////			data.put("id", id);
-////			data.put("genre", genre);
-////			data.put("title", title);
-////			data.put("author", author);
-////			data.put("decriptions", decriptions);
-////			data.put("ebook", ebook);
-////			data.put("count", count);
-////			data.put("date", date);
-////			
-////			data_list.add(data);
-////
-////			
-////		}
-//
-//		tv.setText(hm.get("ebook[0]"));
-//		
-////		Toast.makeText(MyLibrary.this, hm.get("id[0]"), Toast.LENGTH_LONG).show();
-////
-////		Log.e("ebook", hm.get("book[0]"));
-//
-//	}
+
+
+
+	//		String theUrl = "http://ebookssongs3.appspot.com/ebookSelectList.jsp";
+	//		Log.i(this.getLocalClassName(), theUrl);
+	//		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+	//		httpParams.add(new BasicNameValuePair("key","6002"));
+	//
+	//		cmsHTTP cmsHttp = new cmsHTTP();
+	//		//cmsHttp.encoding = encoding;
+	//		cmsHttp.act = MyLibrary.this;
+	//		String tmpData = cmsHttp.sendPost(theUrl, httpParams);
+	//		if (tmpData == null)
+	//		{
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
+	//			Log.v("nakami", tmpData);
+	//			addResult(hm);
+	//		}
+
+
+	//	public void addResult(HashMap<String, String> hm) {
+	//
+	//		Log.e("in","in:");
+	//		//		String msg = hm.get("msg[0]");
+	////		for (int i = 0; i < hm.size(); i++) {
+	////			id=hm.get("id["+i+"]");
+	////			Log.e("hm", id);
+	////			genre=hm.get("genre["+i+"]");
+	////			title=hm.get("title["+i+"]");
+	////			author=hm.get("author["+i+"]");
+	////			decriptions=hm.get("decriptions["+i+"]");
+	////			ebook=hm.get("ebook["+i+"]");
+	////			count=hm.get("count["+i+"]");
+	////			date=hm.get("date["+i+"]");
+	////
+	////			HashMap<String, String> data=new HashMap<String, String>();
+	////			data.put("id", id);
+	////			data.put("genre", genre);
+	////			data.put("title", title);
+	////			data.put("author", author);
+	////			data.put("decriptions", decriptions);
+	////			data.put("ebook", ebook);
+	////			data.put("count", count);
+	////			data.put("date", date);
+	////			
+	////			data_list.add(data);
+	////
+	////			
+	////		}
+	//
+	//		tv.setText(hm.get("ebook[0]"));
+	//		
+	////		Toast.makeText(MyLibrary.this, hm.get("id[0]"), Toast.LENGTH_LONG).show();
+	////
+	////		Log.e("ebook", hm.get("book[0]"));
+	//
+	//	}
 
 	private OnClickListener button_listener=new OnClickListener() {
 
@@ -176,22 +176,25 @@ public class MyLibrary extends Activity {
 				.setTitle("Notification")
 				.setMessage("Log-outします。")
 				.setNeutralButton("戻る", new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						
+
+
 					}
 				})
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton("OK", new DialogInterface.OnClickListener()
+				{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
 						bookText = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
 						bookText.delete();
-						close();
-						Intent intent=new Intent(MyLibrary.this, Login.class);
-						startActivity(intent);
+						for(int i = 0;i<JptomatoLogoActivity.actList.size();i++)
+						{
+							JptomatoLogoActivity.actList.get(i).finish();
+						}
 					}
 				})
 				.show();
@@ -216,36 +219,36 @@ public class MyLibrary extends Activity {
 		@Override
 		public void onClick(View v) {
 
-//			allSiori=datadata.get(8);
-//			String[] siori_data=datafor(allSiori);
-//			
-//			for (int i = 0; i < siori_data.length; i++) {
-//
-//				String[] data=siori_data[i].split(" ");
-//								
-//				if (data[0].equals(book_key+"")) {
-//					siori=data[1];
-//				}
-//			
-//				Log.e("MYbookcode", data[0]);
-//				Log.e("MYpagecode", data[1]);
-//			
-//			}
-			
+			//			allSiori=datadata.get(8);
+			//			String[] siori_data=datafor(allSiori);
+			//			
+			//			for (int i = 0; i < siori_data.length; i++) {
+			//
+			//				String[] data=siori_data[i].split(" ");
+			//								
+			//				if (data[0].equals(book_key+"")) {
+			//					siori=data[1];
+			//				}
+			//			
+			//				Log.e("MYbookcode", data[0]);
+			//				Log.e("MYpagecode", data[1]);
+			//			
+			//			}
+
 			Log.e("bookKey", book_key+"");
-//			Log.e("bookKey--siori", siori);
-			
-			
-			
+			//			Log.e("bookKey--siori", siori);
+
+
+
 			Intent intent=new Intent(MyLibrary.this, CurlActivity.class);
-//			intent.putExtra("bookKey", bookey[book_key]);
+			//			intent.putExtra("bookKey", bookey[book_key]);
 			intent.putExtra("bookKey", book_key+"");
 			intent.putExtra("color", "#000000");
 			intent.putExtra("bgcolor", "#FFFFFF");
-//			intent.putExtra("siori", siori);
-			
+			//			intent.putExtra("siori", siori);
+
 			startActivity(intent);
-		
+
 		}
 	};
 
@@ -268,12 +271,12 @@ public class MyLibrary extends Activity {
 			image_url=datadata.get(6);
 			date=datadata.get(7);
 
-		
+
 			for (int i = 0; i < datadata.size(); i++) {
 				Log.e("datadata", datadata.get(i));
 			}
-			
-			
+
+
 			String[] booktitle=datafor(title);
 			String[] bookwriter=datafor(writer);
 			String[] bookdes=datafor(des);
@@ -283,15 +286,15 @@ public class MyLibrary extends Activity {
 			list_book_detail.setImageDrawable(draw);
 
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
-			
+
 			book_key=position+1;
-			
-			
-		
+
+
+
 
 		}
 	};
-	
+
 	public Drawable loadDrawable(String urlStr)
 	{
 		Drawable drawable = null;
@@ -303,80 +306,79 @@ public class MyLibrary extends Activity {
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
 			drawable = Drawable.createFromStream(is, "none");
-	
-			
+
+
 		}
 		catch(Exception e)
 		{
 			Log.e("URL","error,in load Drawable\n"+e.toString());
 		}
 		return drawable;
-		
+
 	}
 	public void close()  
-
 	{  
 
-	    finish();  
+		finish();  
 
-	    int nSDKVersion = Integer.parseInt(Build.VERSION.SDK);  
+		int nSDKVersion = Integer.parseInt(Build.VERSION.SDK);  
 
-	    if(nSDKVersion < 8)    //2.1이하  
+		if(nSDKVersion < 8)    //2.1이하  
 
-	    {  
+		{  
 
-	          ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
+			ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
 
-	          actMng.restartPackage(getPackageName());  
+			actMng.restartPackage(getPackageName());  
 
-	    }  
+		}  
 
-	    else  
+		else  
 
-	    {  
+		{  
 
-	           new Thread(new Runnable() {  
+			new Thread(new Runnable() {  
 
-	                public void run() {  
+				public void run() {  
 
-	                     ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
+					ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
 
-	                     String strProcessName = getApplicationInfo().processName;  
+					String strProcessName = getApplicationInfo().processName;  
 
-	                     while(true)  
+					while(true)  
 
-	                     {  
+					{  
 
-	                          List<RunningAppProcessInfo> list = actMng.getRunningAppProcesses();  
+						List<RunningAppProcessInfo> list = actMng.getRunningAppProcesses();  
 
-	                          for(RunningAppProcessInfo rap : list)  
+						for(RunningAppProcessInfo rap : list)  
 
-	                          {  
+						{  
 
-	                               if(rap.processName.equals(strProcessName))  
+							if(rap.processName.equals(strProcessName))  
 
-	                             {  
+							{  
 
-	                                  if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
+								if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
 
-	                                       actMng.restartPackage(getPackageName());  
+									actMng.restartPackage(getPackageName());  
 
-	                                  Thread.yield();  
+								Thread.yield();  
 
-	                                  break;  
+								break;  
 
-	                             }  
+							}  
 
-	                        }  
+						}  
 
-	                   }  
+					}  
 
-	              }  
+				}  
 
-	         }, "Process Killer").start();  
+			}, "Process Killer").start();  
 
-	    }  
-
+		}  
+		System.exit(0);
 	}  
 
 

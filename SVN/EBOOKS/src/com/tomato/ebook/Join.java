@@ -35,6 +35,7 @@ public class Join extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.join);
+		JptomatoLogoActivity.actList.add(this);
 		EditID = (EditText)findViewById(R.id.Join_EditID);
 		EditPass = (EditText)findViewById(R.id.Join_EditPass);
 		EditCheckPass = (EditText)findViewById(R.id.Join_EditCheckPass);

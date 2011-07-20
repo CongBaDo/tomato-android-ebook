@@ -1,5 +1,7 @@
 package com.tomato.ebook;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 public class JptomatoLogoActivity extends Activity {
+	public static ArrayList<Activity> actList = new ArrayList<Activity>();
 	private final Class<?> nextActivity = EbookMain.class;
 	private boolean isSkip;
 	private boolean isCancled;

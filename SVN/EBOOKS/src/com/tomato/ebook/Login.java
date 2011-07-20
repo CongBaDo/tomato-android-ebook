@@ -40,7 +40,7 @@ public class Login extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
+		JptomatoLogoActivity.actList.add(this);
 		EditID = (EditText)findViewById(R.id.Login_EditID);
 		EditPass = (EditText)findViewById(R.id.Login_EditPass);
 		LogBtn = (Button)findViewById(R.id.Login_LogBtn);
