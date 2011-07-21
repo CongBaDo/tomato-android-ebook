@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/andpdfviewer.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/apache-mime4j-0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/gson-1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/iText_PDF_For_Android_0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/TOMATO215/デスクトップ/KimDoA/android pdf/pdf lib/Micro_PJAWT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
