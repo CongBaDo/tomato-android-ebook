@@ -7,8 +7,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +21,9 @@ import android.view.MotionEvent;
 public class EbookMain extends Activity {
 	/** Called when the activity is first created. */
 	File userData;
+	ConnectivityManager cManager;    
+	NetworkInfo mobile;    
+	NetworkInfo wifi; 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,17 +34,14 @@ public class EbookMain extends Activity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
-		if(!userData.exists()||userData.length()==0||!userData.canRead())
-		{
-			Intent intent=new Intent(this, Login.class);
-			startActivity(intent);
-		}
-		else
+		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
+		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
+		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
+		if(!mobile.isConnected()&&!wifi.isConnected())
 		{
 			new AlertDialog.Builder(EbookMain.this)
 			.setTitle("Notification")
-			.setMessage("書斎に移動します。")
+			.setMessage("ネットがオフーラインです。\n書斎に移動します。")
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 				@Override
@@ -49,7 +52,32 @@ public class EbookMain extends Activity {
 				}
 			})
 			.show();
+		}
+		else
+		{
+			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+			if(!userData.exists()||userData.length()==0||!userData.canRead())
+			{
+				Intent intent=new Intent(this, Login.class);
+				startActivity(intent);
+			}
 
+			else
+			{
+				new AlertDialog.Builder(EbookMain.this)
+				.setTitle("Notification")
+				.setMessage("書斎に移動します。")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
+						startActivity(dirIntent);
+					}
+				})
+				.show();
+			}
 		}
 		return super.onTouchEvent(event);
 	}
@@ -79,64 +107,62 @@ public class EbookMain extends Activity {
 				}
 			})
 			.show();
-			
+
 
 		}
 		return false;
-		
+
 	}
-		public void close()  
+	public void close()  
+	{  
+
+		finish();  
+
+		int nSDKVersion = Integer.parseInt(Build.VERSION.SDK);  
+
+		if(nSDKVersion < 8)    //2.1이하  
+
 		{  
 
-			finish();  
+			ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
 
-			int nSDKVersion = Integer.parseInt(Build.VERSION.SDK);  
+			actMng.restartPackage(getPackageName());  
 
-			if(nSDKVersion < 8)    //2.1이하  
+		}  
 
-			{  
+		else  
 
-				ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
+		{  
 
-				actMng.restartPackage(getPackageName());  
+			new Thread(new Runnable() {  
 
-			}  
+				public void run() {  
 
-			else  
+					ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
 
-			{  
+					String strProcessName = getApplicationInfo().processName;  
 
-				new Thread(new Runnable() {  
+					while(true)  
 
-					public void run() {  
+					{  
 
-						ActivityManager actMng = (ActivityManager)getSystemService(ACTIVITY_SERVICE);  
+						List<RunningAppProcessInfo> list = actMng.getRunningAppProcesses();  
 
-						String strProcessName = getApplicationInfo().processName;  
-
-						while(true)  
+						for(RunningAppProcessInfo rap : list)  
 
 						{  
 
-							List<RunningAppProcessInfo> list = actMng.getRunningAppProcesses();  
-
-							for(RunningAppProcessInfo rap : list)  
+							if(rap.processName.equals(strProcessName))  
 
 							{  
 
-								if(rap.processName.equals(strProcessName))  
+								if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
 
-								{  
+									actMng.restartPackage(getPackageName());  
 
-									if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
+								Thread.yield();  
 
-										actMng.restartPackage(getPackageName());  
-
-									Thread.yield();  
-
-									break;  
-
-								}  
+								break;  
 
 							}  
 
@@ -144,10 +170,11 @@ public class EbookMain extends Activity {
 
 					}  
 
-				}, "Process Killer").start();  
+				}  
 
-			}  
-			System.exit(0);
+			}, "Process Killer").start();  
+
 		}  
+		System.exit(0);
+	}  
 }
-	

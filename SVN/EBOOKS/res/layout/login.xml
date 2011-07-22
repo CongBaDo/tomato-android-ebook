@@ -15,9 +15,9 @@ android:layout_height="fill_parent" android:layout_width="fill_parent" android:i
         <TextView android:textSize="16sp" android:text="P/W" android:layout_marginLeft="10px" android:layout_height="wrap_content" android:padding="10px" android:layout_width="wrap_content" android:textStyle="bold" android:textColor="#FFFFFF" android:id="@+id/Login_PassTitle"></TextView>
         <EditText android:textColor="#ff000000" android:textSize="12sp" android:hint="Passwordを入力してください" android:password="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginRight="20px" android:id="@+id/Login_EditPass" android:layout_marginLeft="10px" android:singleLine="true"></EditText>
     </LinearLayout>
-    <CheckBox android:id="@+id/checkBox1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="10px" android:layout_marginLeft="10px" android:text="オフーラインで接続"></CheckBox>
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout">
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_marginRight="30px" android:text="接　続"></Button>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="登 録 " android:id="@+id/Login_TorokuBtn"></Button>
+    <CheckBox android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="10px" android:layout_marginLeft="10px" android:text="オフーラインで接続" android:id="@+id/Login_CheckMode"></CheckBox>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout" android:weightSum="1">
+        <Button android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_marginRight="30px" android:text="接　続" android:layout_width="wrap_content"></Button>
+        <Button android:text="登 録 " android:id="@+id/Login_TorokuBtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"></Button>
     </LinearLayout>
 </LinearLayout>
