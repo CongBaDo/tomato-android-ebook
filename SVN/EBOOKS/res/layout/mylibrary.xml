@@ -8,20 +8,21 @@ android:layout_height="fill_parent" android:gravity="center">
   
   <RelativeLayout
    android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginBottom="5px">
-  <ImageView
-    android:id="@+id/cancel" 
-  android:layout_width="wrap_content" 
-  android:src="@drawable/mylibrary_x" 
-  android:layout_height="wrap_content" 
-  android:layout_alignParentLeft="true"
-  android:layout_margin="10px" android:layout_marginBottom="5px"/>
-  
-    <ImageView
-  android:id="@+id/store" 
-  android:layout_width="wrap_content" 
-  android:src="@drawable/mylibrary_store" 
-  android:layout_height="wrap_content"
-     android:layout_alignParentRight="true" android:layout_margin="10px"/>
+  <ImageView android:id="@+id/cancel" 
+  			 android:layout_width="wrap_content" 
+  			 android:src="@drawable/huge" 
+ 			 android:layout_height="wrap_content" 
+ 			 android:layout_marginBottom="5px" android:layout_centerHorizontal="true"/>
+  <ImageView android:id="@+id/store" 
+	    	 android:layout_width="wrap_content" 
+		  	 android:src="@drawable/mylibrary_store" 
+		  	 android:layout_height="wrap_content"
+		     android:layout_alignParentRight="true" android:layout_margin="10px"/>
+  <ImageView android:id="@+id/exit" 
+    		 android:layout_height="wrap_content" 
+    		 android:src="@drawable/mylibrary_x" 
+    		 android:layout_width="wrap_content" 
+    		 android:layout_alignParentLeft="true" android:layout_centerHorizontal="true"/>
   </RelativeLayout>
   
   
