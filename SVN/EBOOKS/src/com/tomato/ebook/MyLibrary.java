@@ -1,6 +1,11 @@
 package com.tomato.ebook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,15 +37,17 @@ import com.tomato.sdcard.SDcard;
 public class MyLibrary extends Activity {
 	TextView tv;
 	Button btn;
-	ImageView cancel, store,list_book_detail;
+	ImageView cancel, store,list_book_detail,exit;
 
 	//	HashMap<String, String> hm;
 
 	ArrayList<String> data_list=new ArrayList<String>();
 	ArrayList<String> datadata=new ArrayList<String>();
+	String[] bunri = null;
 	SDcard sd=null;
 
 	String userid=null;
+	String userId = null;
 	String book=null;
 	String title=null;
 	String writer=null;;
@@ -63,6 +70,7 @@ public class MyLibrary extends Activity {
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
+		exit=(ImageView)findViewById(R.id.exit);
 		cancel=(ImageView)findViewById(R.id.cancel);
 		store=(ImageView)findViewById(R.id.store);
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
@@ -81,6 +89,7 @@ public class MyLibrary extends Activity {
 		btn.setOnClickListener(read_listener);
 		cancel.setOnClickListener(button_listener);
 		store.setOnClickListener(button_listener);
+		exit.setOnClickListener(button_listener);
 
 		Log.e("main", "main");
 
@@ -174,7 +183,7 @@ public class MyLibrary extends Activity {
 				//プログラム終了イベント。
 				new AlertDialog.Builder(MyLibrary.this)
 				.setTitle("Notification")
-				.setMessage("Log-outします。")
+				.setMessage("すべての情報を削除しますか？")
 				.setNeutralButton("戻る", new DialogInterface.OnClickListener() {
 
 					@Override
@@ -191,6 +200,35 @@ public class MyLibrary extends Activity {
 						// TODO Auto-generated method stub
 						bookText = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
 						bookText.delete();
+						try {
+							FileReader bookCheck = new FileReader(bookText);
+							BufferedReader Br = new BufferedReader(bookCheck);
+							FilenameFilter filter = new FilenameFilter() {
+
+					            public boolean accept(File dir, String name) {
+
+					                return name.endsWith(".mp3");
+
+					            }
+
+					        };
+							for(int i=0;i<2;i++)
+							{
+								userId = Br.readLine();
+							}
+							Br.close();
+							bookCheck.close();
+							bunri = userId.split(",");
+							
+							
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						for(int i = 0;i<JptomatoLogoActivity.actList.size();i++)
 						{
 							JptomatoLogoActivity.actList.get(i).finish();
@@ -206,9 +244,29 @@ public class MyLibrary extends Activity {
 
 				break;
 
+			
+			case R.id.exit:
+				new AlertDialog.Builder(MyLibrary.this)
+				.setTitle("Notification")
+				.setMessage("終了しますか？")
+				.setNeutralButton("戻る", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+					}
+				})
+				.setPositiveButton("OK", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						close();
+					}
+				})
+				.show();
+				
+				break;
 			}
-
-
 		}
 	};
 
