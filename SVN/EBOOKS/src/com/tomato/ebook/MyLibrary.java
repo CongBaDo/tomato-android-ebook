@@ -197,6 +197,7 @@ public class MyLibrary extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
 						close();
+						System.exit(1);
 					}
 				})
 				.show();
