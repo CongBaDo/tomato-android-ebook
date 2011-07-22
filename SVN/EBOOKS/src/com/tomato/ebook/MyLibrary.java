@@ -37,7 +37,7 @@ import com.tomato.sdcard.SDcard;
 public class MyLibrary extends Activity {
 	TextView tv;
 	Button btn;
-	ImageView cancel, store,list_book_detail,exit;
+	ImageView  store,list_book_detail,exit;
 
 	//	HashMap<String, String> hm;
 
@@ -71,7 +71,7 @@ public class MyLibrary extends Activity {
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
 		exit=(ImageView)findViewById(R.id.exit);
-		cancel=(ImageView)findViewById(R.id.cancel);
+		
 		store=(ImageView)findViewById(R.id.store);
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
 
@@ -87,7 +87,6 @@ public class MyLibrary extends Activity {
 		Log.e("g", "3");
 
 		btn.setOnClickListener(read_listener);
-		cancel.setOnClickListener(button_listener);
 		store.setOnClickListener(button_listener);
 		exit.setOnClickListener(button_listener);
 
@@ -179,65 +178,7 @@ public class MyLibrary extends Activity {
 
 
 			switch (v.getId()) {
-			case R.id.cancel:
-				//プログラム終了イベント。
-				new AlertDialog.Builder(MyLibrary.this)
-				.setTitle("Notification")
-				.setMessage("すべての情報を削除しますか？")
-				.setNeutralButton("戻る", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-
-
-					}
-				})
-				.setPositiveButton("OK", new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						bookText = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
-						bookText.delete();
-						try {
-							FileReader bookCheck = new FileReader(bookText);
-							BufferedReader Br = new BufferedReader(bookCheck);
-							FilenameFilter filter = new FilenameFilter() {
-
-					            public boolean accept(File dir, String name) {
-
-					                return name.endsWith(".mp3");
-
-					            }
-
-					        };
-							for(int i=0;i<2;i++)
-							{
-								userId = Br.readLine();
-							}
-							Br.close();
-							bookCheck.close();
-							bunri = userId.split(",");
-							
-							
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						for(int i = 0;i<JptomatoLogoActivity.actList.size();i++)
-						{
-							JptomatoLogoActivity.actList.get(i).finish();
-						}
-					}
-				})
-				.show();
-				break;
-
+			
 			case R.id.store:
 				Intent intent=new Intent(MyLibrary.this, Genre_TabActivity.class);
 				startActivity(intent);

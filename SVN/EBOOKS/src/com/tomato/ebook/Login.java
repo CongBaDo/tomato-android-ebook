@@ -38,7 +38,6 @@ public class Login extends Activity {
 	static int bookCounter=1;
 	EditText EditID,EditPass;
 	Button LogBtn,TorokuBtn;
-	CheckBox ckMode;
 	CheckUtil logTest;
 	HashMap<String, String> hm;
 	Util cmsutil = new Util();
@@ -57,7 +56,6 @@ public class Login extends Activity {
 		JptomatoLogoActivity.actList.add(this);
 		EditID = (EditText)findViewById(R.id.Login_EditID);
 		EditPass = (EditText)findViewById(R.id.Login_EditPass);
-		ckMode = (CheckBox)findViewById(R.id.Login_CheckMode);
 		LogBtn = (Button)findViewById(R.id.Login_LogBtn);
 		TorokuBtn = (Button)findViewById(R.id.Login_TorokuBtn);
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
@@ -66,88 +64,25 @@ public class Login extends Activity {
 
 		if(!mobile.isConnected() && !wifi.isConnected())
 		{
-			ckMode.setChecked(true);
-			EditPass.setEnabled(false);
+			new AlertDialog.Builder(Login.this)
+			.setTitle("Notification")
+			.setMessage("ログインの際、必ずWIFIが３Gに接続して下さい。")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.show();
 		}
 
-		ckMode.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(ckMode.isChecked())
-				{
-					EditPass.setEnabled(false);
-				}
-				else
-				{
-					EditPass.setEnabled(true);
-				}
-			}
-		});
-
 		LogBtn.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(ckMode.isChecked())
-				{
-					email = EditID.getText().toString();
-					String userId=null;
-					userText = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
-					try {
-						idCheck = new FileReader(userText);
-						BufferedReader Br = new BufferedReader(idCheck);
-						for(int i=0;i<2;i++)
-						{
-							userId = Br.readLine();
-						}
-						Br.close();
-						idCheck.close();
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if(email==userId)
-					{
-						new AlertDialog.Builder(Login.this)
-						.setTitle("Notification")
-						.setMessage("書斎に移動します。")
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// TODO Auto-generated method stub
-								Intent dirIntent = new Intent(Login.this,MyLibrary.class);
-								startActivity(dirIntent);
-							}
-						})
-						.show();
-					}
-					else
-					{
-						new AlertDialog.Builder(Login.this)
-						.setTitle("Notification")
-						.setMessage("IDが違います。もう一度入れてください。")
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// TODO Auto-generated method stub
-															}
-						})
-						.show();
-					}
-						
-				}
-				else
-				{
-				tryToLogin();
-				}
+							tryToLogin();
 			}
 		});
 

@@ -39,19 +39,37 @@ public class EbookMain extends Activity {
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
 		if(!mobile.isConnected()&&!wifi.isConnected())
 		{
-			new AlertDialog.Builder(EbookMain.this)
-			.setTitle("Notification")
-			.setMessage("ネットがオフーラインです。\n書斎に移動します。")
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+			if(!userData.exists()||userData.length()==0||!userData.canRead())
+			{
+				new AlertDialog.Builder(EbookMain.this)
+				.setTitle("Notification")
+				.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
-					startActivity(dirIntent);
-				}
-			})
-			.show();
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub			
+					}
+				})
+				.show();
+			}
+			else
+			{
+				new AlertDialog.Builder(EbookMain.this)
+				.setTitle("Notification")
+				.setMessage("ネットがオフーラインです。\n書斎に移動します。")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
+						startActivity(dirIntent);
+					}
+				})
+				.show();
+			}
 		}
 		else
 		{
