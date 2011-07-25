@@ -10,9 +10,12 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +53,9 @@ public class MyLibrary extends Activity {
 	String image_url=null;
 	String date=null;
 	int book_key=1;	
+	ConnectivityManager cManager;    
+	NetworkInfo mobile;    
+	NetworkInfo wifi;   
 	//	String allSiori=null;
 	//	String siori=null;
 
@@ -66,7 +72,10 @@ public class MyLibrary extends Activity {
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
 		exit=(ImageView)findViewById(R.id.exit);
-		
+		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
+		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
+		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
+
 		store=(ImageView)findViewById(R.id.store);
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
 
@@ -175,16 +184,33 @@ public class MyLibrary extends Activity {
 			switch (v.getId()) {
 			
 			case R.id.store:
+				if(!mobile.isConnected() && !wifi.isConnected())
+				{
+					new AlertDialog.Builder(MyLibrary.this)
+					.setTitle("Notification")
+					.setMessage("今、ネットの問題が有って、利用ができません。\n後で利用して下さい。")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							
+						}
+					})
+					.show();
+				}
+				else
+				{
 				Intent intent=new Intent(MyLibrary.this, Genre_TabActivity.class);
 				startActivity(intent);
-
+				}
 				break;
 
 			
 			case R.id.exit:
 				new AlertDialog.Builder(MyLibrary.this)
 				.setTitle("Notification")
-				.setMessage("終了しますか？")
+				.setMessage("最初画面に戻ります。")
 				.setNeutralButton("戻る", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -301,7 +327,8 @@ public class MyLibrary extends Activity {
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
 			drawable = Drawable.createFromStream(is, "none");
-
+			
+			
 
 		}
 		catch(Exception e)
