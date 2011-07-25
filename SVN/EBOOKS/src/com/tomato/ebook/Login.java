@@ -1,9 +1,13 @@
 package com.tomato.ebook;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +21,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+//import android.graphics.Canvas;
+//import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -179,7 +188,10 @@ public class Login extends Activity {
 				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
 				for(int i = 0;i<count;i++)
 				{
-					saveBook(resEbook,i+1);
+					saveBook(resEbook,i);
+					Log.e("login_Imagesave","go!"); 
+					SaveImg(resImage,i);
+					 
 				}
 				bookCounter = 1;
 			} catch (IOException e) {
@@ -271,15 +283,18 @@ public class Login extends Activity {
 			{
 
 				if(i==count)
-					save[0].write("\n");
+						save[0].write("\n");
 				else
 				{
 					if(i==(count-1))
+				{
 						save[0].write(image[i]);
-					else
+				}
+					    else
 					{
 						save[0].write(image[i]);
 						save[0].write(",");
+						
 					}
 
 				}
@@ -310,11 +325,39 @@ public class Login extends Activity {
 			}
 	public void saveBook(String[] ebook,int i) throws IOException
 	{
-		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".ebf");	
-		FileWriter tempSave = save[i]; 
+		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
+		FileWriter tempSave = save[i+1]; 
 		tempSave = new FileWriter(userData);
-		tempSave.write(ebook[bookCounter-1]);
-		tempSave.close();	
+		tempSave.write(ebook[i]);
+		tempSave.close();
 	}
+	void  SaveImg(String[] ImgUrl,int i)throws IOException
+	{
+	
+		try
+		{	
+			String tmpurlStr = "http://www."+ImgUrl[i];
+			Log.e("login_Imagesave","URL change");
+			String imageUrl=tmpurlStr.replace("@amp;", "&");
+			Log.e("imgURL",imageUrl);
+			Log.e("chURLINlogin_Imagesave",imageUrl);
+			URL url = new URL(imageUrl);
+			InputStream is = url.openStream();
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
+			Bitmap bitmap = BitmapFactory.decodeStream(is);
+			OutputStream filestream = null;
+			Log.e("fileSaveINlogin_Imagesave","savefile");
+			filestream = new FileOutputStream(file);
+			bitmap.compress(CompressFormat.JPEG, 100, filestream);
+			Log.e("fileSaveINlogin_Imagesave",String.valueOf(bitmap));
+			filestream.flush();
+			filestream.close();
+		}
+		catch(Exception e)
+		{
+			Log.e("URL","error,in load Drawable\n"+e.toString());
+		}
 
+
+	}
 }

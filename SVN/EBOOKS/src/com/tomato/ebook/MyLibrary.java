@@ -1,6 +1,8 @@
 package com.tomato.ebook;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class MyLibrary extends Activity {
 	TextView tv;
 	Button btn;
 	ImageView  store,list_book_detail,exit;
-
+	final static int MAX = 100; 
 	//	HashMap<String, String> hm;
 
 	ArrayList<String> data_list=new ArrayList<String>();
@@ -56,6 +58,10 @@ public class MyLibrary extends Activity {
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
 	NetworkInfo wifi;   
+	File userData,userText;
+	FileWriter[] save = new FileWriter[MAX];
+	FileReader idCheck;
+	
 	//	String allSiori=null;
 	//	String siori=null;
 
@@ -305,7 +311,7 @@ public class MyLibrary extends Activity {
 
 			Drawable draw = loadDrawable(bookimg[position]);
 			list_book_detail.setImageDrawable(draw);
-
+			
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
 
 			book_key=position+1;
@@ -323,11 +329,10 @@ public class MyLibrary extends Activity {
 		{	
 			String tmpurlStr = "http://www."+urlStr;
 			String imageUrl=tmpurlStr.replace("@amp;", "&");
-			Log.e("imgURL",tmpurlStr);
+			Log.e("imgURL",imageUrl);
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
 			drawable = Drawable.createFromStream(is, "none");
-			
 			
 
 		}
@@ -338,6 +343,7 @@ public class MyLibrary extends Activity {
 		return drawable;
 
 	}
+	
 	public void close()  
 	{  
 
