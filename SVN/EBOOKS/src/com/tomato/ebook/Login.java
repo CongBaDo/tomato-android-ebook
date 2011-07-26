@@ -189,7 +189,6 @@ public class Login extends Activity {
 				for(int i = 0;i<count;i++)
 				{
 					saveBook(resEbook,i);
-					Log.e("login_Imagesave","go!"); 
 					SaveImg(resImage,i);
 					 
 				}
@@ -337,21 +336,20 @@ public class Login extends Activity {
 		try
 		{	
 			String tmpurlStr = "http://www."+ImgUrl[i];
-			Log.e("login_Imagesave","URL change");
 			String imageUrl=tmpurlStr.replace("@amp;", "&");
-			Log.e("imgURL",imageUrl);
-			Log.e("chURLINlogin_Imagesave",imageUrl);
+			
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
+			
 			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
 			OutputStream filestream = null;
-			Log.e("fileSaveINlogin_Imagesave","savefile");
 			filestream = new FileOutputStream(file);
 			bitmap.compress(CompressFormat.JPEG, 100, filestream);
-			Log.e("fileSaveINlogin_Imagesave",String.valueOf(bitmap));
+			
 			filestream.flush();
 			filestream.close();
+			
 		}
 		catch(Exception e)
 		{

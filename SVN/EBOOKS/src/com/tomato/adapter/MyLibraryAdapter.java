@@ -1,5 +1,10 @@
 package com.tomato.adapter;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -8,6 +13,7 @@ import com.tomato.sdcard.SDcard;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,21 +58,20 @@ public class MyLibraryAdapter extends BaseAdapter{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		ImageView imageview;
+		File in;
+		FileReader fl;
+		BufferedReader buf;
 		if (convertView==null) {
 			imageview=new ImageView(mContext);
 		} else {
 			imageview=(ImageView) convertView;
+			
 		}
-		
-		String viewImage="http://www."+list_image[position];
-		
-		Log.e("viewImage", viewImage);
-		
 		try {
-			InputStream is=new URL(viewImage).openStream();		
-			Bitmap bit=BitmapFactory.decodeStream(is);
-			imageview.setImageBitmap(bit);
-			is.close();			
+			in = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_1.jpg");
+			fl = new FileReader(in);
+			buf = new BufferedReader(fl);
+			
 			
 		} catch (Exception e) {
 		Log.e("adapter", "getview-error");

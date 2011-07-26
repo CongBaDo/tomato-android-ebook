@@ -311,7 +311,6 @@ public class MyLibrary extends Activity {
 
 			Drawable draw = loadDrawable(bookimg[position]);
 			list_book_detail.setImageDrawable(draw);
-			
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
 
 			book_key=position+1;
