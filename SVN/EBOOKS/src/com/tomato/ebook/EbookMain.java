@@ -14,7 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -37,66 +36,86 @@ public class EbookMain extends Activity {
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
-		if(!mobile.isConnected()&&!wifi.isConnected())
+//		if(!mobile.isConnected()&&!wifi.isConnected())
+//		{
+//			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+//			if(!userData.exists()||userData.length()==0||!userData.canRead())
+//			{
+//				new AlertDialog.Builder(EbookMain.this)
+//				.setTitle("Notification")
+//				.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
+//				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// TODO Auto-generated method stub			
+//					}
+//				})
+//				.show();
+//			}
+//			else
+//			{
+//				new AlertDialog.Builder(EbookMain.this)
+//				.setTitle("Notification")
+//				.setMessage("ネットがオフーラインです。\n書斎に移動します。")
+//				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// TODO Auto-generated method stub
+//						Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
+//						startActivity(dirIntent);
+//					}
+//				})
+//				.show();
+//			}
+//		}
+//		else
+//		{
+//			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+//			if(!userData.exists()||userData.length()==0||!userData.canRead())
+//			{
+//				Intent intent=new Intent(this, Login.class);
+//				startActivity(intent);
+//			}
+//
+//			else
+//			{
+//				new AlertDialog.Builder(EbookMain.this)
+//				.setTitle("Notification")
+//				.setMessage("書斎に移動します。")
+//				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// TODO Auto-generated method stub
+		if(!mobile.isConnected() && !wifi.isConnected())
 		{
-			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
-			if(!userData.exists()||userData.length()==0||!userData.canRead())
-			{
-				new AlertDialog.Builder(EbookMain.this)
-				.setTitle("Notification")
-				.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(EbookMain.this)
+			.setTitle("Notification")
+			.setMessage("ログインの際、必ずWIFIや３Gに接続して下さい。")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub			
-					}
-				})
-				.show();
-			}
-			else
-			{
-				new AlertDialog.Builder(EbookMain.this)
-				.setTitle("Notification")
-				.setMessage("ネットがオフーラインです。\n書斎に移動します。")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
-						startActivity(dirIntent);
-					}
-				})
-				.show();
-			}
+					Intent dirIntent = new Intent(EbookMain.this,Login.class);
+					startActivity(dirIntent);
+				}
+			})
+			.show();
 		}
 		else
 		{
-			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
-			if(!userData.exists()||userData.length()==0||!userData.canRead())
-			{
-				Intent intent=new Intent(this, Login.class);
-				startActivity(intent);
-			}
-
-			else
-			{
-				new AlertDialog.Builder(EbookMain.this)
-				.setTitle("Notification")
-				.setMessage("書斎に移動します。")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						Intent dirIntent = new Intent(EbookMain.this,MyLibrary.class);
+						Intent dirIntent = new Intent(EbookMain.this,Login.class);
 						startActivity(dirIntent);
-					}
-				})
-				.show();
-			}
 		}
+//		}
+//				})
+//				.show();
+//			}
+//		}
 		return super.onTouchEvent(event);
 	}
 	@Override

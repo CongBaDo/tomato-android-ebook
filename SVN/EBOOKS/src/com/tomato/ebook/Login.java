@@ -33,6 +33,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.tomato.communication.CheckUtil;
@@ -44,6 +45,7 @@ public class Login extends Activity {
 	static int bookCounter=1;
 	EditText EditID,EditPass;
 	Button LogBtn,TorokuBtn;
+	CheckBox Loginck;
 	CheckUtil logTest;
 	HashMap<String, String> hm;
 	Util cmsutil = new Util();
@@ -63,6 +65,7 @@ public class Login extends Activity {
 		EditID = (EditText)findViewById(R.id.Login_EditID);
 		EditPass = (EditText)findViewById(R.id.Login_EditPass);
 		LogBtn = (Button)findViewById(R.id.Login_LogBtn);
+		Loginck = (CheckBox)findViewById(R.id.Login_checkBox);
 		TorokuBtn = (Button)findViewById(R.id.Login_TorokuBtn);
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
@@ -70,18 +73,22 @@ public class Login extends Activity {
 
 		if(!mobile.isConnected() && !wifi.isConnected())
 		{
-			new AlertDialog.Builder(Login.this)
-			.setTitle("Notification")
-			.setMessage("ログインの際、必ずWIFIが３Gに接続して下さい。")
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					
-				}
-			})
-			.show();
+//			new AlertDialog.Builder(Login.this)
+//			.setTitle("Notification")
+//			.setMessage("ログインの際、必ずWIFIや３Gに接続して下さい。")
+//			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//			})
+//			.show();
+			EditID.setEnabled(false);
+			EditPass.setEnabled(false);
+			Loginck.setChecked(true);
+			LogBtn.setEnabled(false);
 		}
 
 		LogBtn.setOnClickListener(new View.OnClickListener() {

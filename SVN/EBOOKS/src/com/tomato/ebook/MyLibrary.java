@@ -73,6 +73,7 @@ public class MyLibrary extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mylibrary);
+		
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
@@ -80,10 +81,12 @@ public class MyLibrary extends Activity {
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
-
 		store=(ImageView)findViewById(R.id.store);
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
-
+		if(!mobile.isConnected() && !wifi.isConnected())
+		{
+			store.setVisibility(View.GONE);
+		}
 		sd=new SDcard();
 		datadata=sd.tryToMyLibrary();//read login.txt
 
@@ -95,6 +98,7 @@ public class MyLibrary extends Activity {
 		mylibrarylist.setOnItemClickListener(list_listener);
 		Log.e("g", "3");
 
+		
 		btn.setOnClickListener(read_listener);
 		store.setOnClickListener(button_listener);
 		exit.setOnClickListener(button_listener);
@@ -314,8 +318,6 @@ public class MyLibrary extends Activity {
 			String viewImage=bookimg[position];
 			Bitmap bit = BitmapFactory.decodeFile(viewImage);
 			list_book_detail.setImageBitmap(bit);
-			//Drawable draw = loadDrawable(bookimg[position]);
-			//list_book_detail.setImageDrawable(draw);
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
 
 			book_key=position+1;
