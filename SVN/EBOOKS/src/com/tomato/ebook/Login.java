@@ -1,6 +1,8 @@
 package com.tomato.ebook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -34,6 +36,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.tomato.communication.CheckUtil;
@@ -44,16 +48,16 @@ public class Login extends Activity {
 	static final int MAX = 100;
 	static int bookCounter=1;
 	EditText EditID,EditPass;
-	Button LogBtn,TorokuBtn;
+	Button LogBtn,TorokuBtn,SyosaiBtn;
 	CheckBox Loginck;
 	CheckUtil logTest;
 	HashMap<String, String> hm;
 	Util cmsutil = new Util();
 	Activity act = this;
-	File userData,userText;
+	File userData,userText,userCheck;
 	FileWriter[] save = new FileWriter[MAX];
 	FileReader idCheck;
-	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate;
+	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate,userId=null;;
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
 	NetworkInfo wifi;    
@@ -65,6 +69,7 @@ public class Login extends Activity {
 		EditID = (EditText)findViewById(R.id.Login_EditID);
 		EditPass = (EditText)findViewById(R.id.Login_EditPass);
 		LogBtn = (Button)findViewById(R.id.Login_LogBtn);
+		SyosaiBtn = (Button)findViewById(R.id.Login_syo);
 		Loginck = (CheckBox)findViewById(R.id.Login_checkBox);
 		TorokuBtn = (Button)findViewById(R.id.Login_TorokuBtn);
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
@@ -73,34 +78,110 @@ public class Login extends Activity {
 
 		if(!mobile.isConnected() && !wifi.isConnected())
 		{
-//			new AlertDialog.Builder(Login.this)
-//			.setTitle("Notification")
-//			.setMessage("ログインの際、必ずWIFIや３Gに接続して下さい。")
-//			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			})
-//			.show();
+			//			new AlertDialog.Builder(Login.this)
+			//			.setTitle("Notification")
+			//			.setMessage("ログインの際、必ずWIFIや３Gに接続して下さい。")
+			//			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			//
+			//				@Override
+			//				public void onClick(DialogInterface dialog, int which) {
+			//					// TODO Auto-generated method stub
+			//					
+			//				}
+			//			})
+			//			.show();
 			EditID.setEnabled(false);
 			EditPass.setEnabled(false);
 			Loginck.setChecked(true);
 			LogBtn.setEnabled(false);
 		}
 
+		Loginck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(Loginck.isChecked())
+				{
+					EditID.setEnabled(false);
+					EditPass.setEnabled(false);
+					LogBtn.setEnabled(false);
+				}
+				else
+				{
+					EditID.setEnabled(true);
+					EditPass.setEnabled(true);
+					LogBtn.setEnabled(true);
+				}
+			}
+		});
+
 		LogBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-							tryToLogin();
+				tryToLogin();
 			}
 		});
 
-		TorokuBtn.setOnClickListener(new View.OnClickListener() {
+		SyosaiBtn.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				email = EditID.getText().toString();
+				userCheck = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+				if(!userCheck.exists()||userCheck.length()==0||!userCheck.canRead())
+				{
+					new AlertDialog.Builder(Login.this)
+					.setTitle("Notification")
+					.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub			
+						}
+					})
+					.show();
+				}
+				else
+				{
+					try {
+						idCheck = new FileReader(userCheck);
+						BufferedReader Br = new BufferedReader(idCheck);
+						for(int i=0;i<2;i++)
+						{
+							userId = Br.readLine();
+						}
+						Br.close();
+						idCheck.close();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					new AlertDialog.Builder(Login.this)
+					.setTitle("Notification")
+					.setMessage("ユーザーのデータが確認しました。\n書斎へ移動します。\n只、 ストアを利用しようとすれば、ログインがひつようです。")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub			
+							Intent Intent = new Intent(Login.this,MyLibrary.class);
+							Intent.putExtra("State", "not");
+							startActivity(Intent);
+							
+						}
+					})
+					.show();
+				}
+			}
+		});
+		TorokuBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			// TODO Auto-generated method stub
 			public void onClick(View v) {
@@ -108,7 +189,7 @@ public class Login extends Activity {
 				Intent Intent = new Intent(Login.this,Join.class);
 				startActivity(Intent);
 
-			}
+			}	
 		});
 	}
 
@@ -197,7 +278,7 @@ public class Login extends Activity {
 				{
 					saveBook(resEbook,i);
 					SaveImg(resImage,i);
-					 
+
 				}
 				bookCounter = 1;
 			} catch (IOException e) {
@@ -289,18 +370,18 @@ public class Login extends Activity {
 			{
 
 				if(i==count)
-						save[0].write("\n");
+					save[0].write("\n");
 				else
 				{
 					if(i==(count-1))
-				{
+					{
 						save[0].write(image[i]);
-				}
-					    else
+					}
+					else
 					{
 						save[0].write(image[i]);
 						save[0].write(",");
-						
+
 					}
 
 				}
@@ -339,24 +420,24 @@ public class Login extends Activity {
 	}
 	void  SaveImg(String[] ImgUrl,int i)throws IOException
 	{
-	
+
 		try
 		{	
 			String tmpurlStr = "http://www."+ImgUrl[i];
 			String imageUrl=tmpurlStr.replace("@amp;", "&");
-			
+
 			URL url = new URL(imageUrl);
 			InputStream is = url.openStream();
-			
+
 			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
 			OutputStream filestream = null;
 			filestream = new FileOutputStream(file);
 			bitmap.compress(CompressFormat.JPEG, 100, filestream);
-			
+
 			filestream.flush();
 			filestream.close();
-			
+
 		}
 		catch(Exception e)
 		{

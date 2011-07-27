@@ -22,9 +22,9 @@ android:layout_height="fill_parent" android:layout_width="fill_parent" android:i
             <CheckBox android:layout_height="wrap_content" android:id="@+id/Login_checkBox" android:layout_marginLeft="10px" android:text="サーバーへ接続しない" android:layout_width="wrap_content"></CheckBox>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout" android:weightSum="1" android:layout_width="wrap_content">
-        <Button android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_marginRight="30px" android:layout_width="wrap_content" android:text="サーバーへ接続"></Button>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30px" android:text="書斎へ" android:id="@+id/Login_syo"></Button>
+    <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout" android:weightSum="1" android:layout_width="match_parent">
+        <Button android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_width="wrap_content" android:text="サーバーへ接続" android:layout_marginRight="15px"></Button>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="書斎へ" android:id="@+id/Login_syo" android:layout_marginRight="15px"></Button>
         <Button android:text="登 録 " android:id="@+id/Login_TorokuBtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"></Button>
     </LinearLayout>
 </LinearLayout>

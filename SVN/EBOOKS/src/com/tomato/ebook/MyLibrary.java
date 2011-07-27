@@ -45,14 +45,8 @@ public class MyLibrary extends Activity {
 	String[] bunri = null;
 	SDcard sd=null;
 
-	String userid=null;
-	String userId = null;
-	String book=null;
-	String title=null;
-	String writer=null;;
-	String des=null;
-	String image_url=null;
-	String date=null;
+	String userid=null,userId = null,book=null,title=null,writer=null,des=null,image_url=null,date=null,state=null;
+	
 	int book_key=1;	
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
@@ -83,10 +77,15 @@ public class MyLibrary extends Activity {
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
 		store=(ImageView)findViewById(R.id.store);
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
-		if(!mobile.isConnected() && !wifi.isConnected())
+		
+		Intent getFromLogin = getIntent();
+		state = getFromLogin.getStringExtra("State");
+		
+		if((!mobile.isConnected() && !wifi.isConnected())||state=="not")
 		{
 			store.setVisibility(View.GONE);
 		}
+		
 		sd=new SDcard();
 		datadata=sd.tryToMyLibrary();//read login.txt
 
