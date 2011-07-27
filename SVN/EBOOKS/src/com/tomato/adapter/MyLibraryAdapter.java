@@ -1,14 +1,9 @@
 package com.tomato.adapter;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import com.tomato.sdcard.SDcard;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;

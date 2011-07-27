@@ -15,6 +15,8 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -307,10 +309,16 @@ public class MyLibrary extends Activity {
 			String[] booktitle=datafor(title);
 			String[] bookwriter=datafor(writer);
 			String[] bookdes=datafor(des);
-			String[] bookimg=datafor(image_url);
+			String[] bookimg=image_url.split(",");
+			for(int k = 0; k < bookimg.length; k++){
+				bookimg[k] = "/sdcard/ebook_"+ (k+1) + ".jpg";
+			}
 
-			Drawable draw = loadDrawable(bookimg[position]);
-			list_book_detail.setImageDrawable(draw);
+			String viewImage=bookimg[position];
+			Bitmap bit = BitmapFactory.decodeFile(viewImage);
+			list_book_detail.setImageBitmap(bit);
+			//Drawable draw = loadDrawable(bookimg[position]);
+			//list_book_detail.setImageDrawable(draw);
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
 
 			book_key=position+1;
