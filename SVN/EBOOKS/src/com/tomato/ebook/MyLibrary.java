@@ -3,8 +3,6 @@ package com.tomato.ebook;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -329,27 +326,6 @@ public class MyLibrary extends Activity {
 		}
 	};
 
-	public Drawable loadDrawable(String urlStr)
-	{
-		Drawable drawable = null;
-		try
-		{	
-			String tmpurlStr = "http://www."+urlStr;
-			String imageUrl=tmpurlStr.replace("@amp;", "&");
-			Log.e("imgURL",imageUrl);
-			URL url = new URL(imageUrl);
-			InputStream is = url.openStream();
-			drawable = Drawable.createFromStream(is, "none");
-			
-
-		}
-		catch(Exception e)
-		{
-			Log.e("URL","error,in load Drawable\n"+e.toString());
-		}
-		return drawable;
-
-	}
 	
 	public void close()  
 	{  

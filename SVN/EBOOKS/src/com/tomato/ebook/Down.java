@@ -3,10 +3,12 @@ package com.tomato.ebook;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +24,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -146,7 +151,7 @@ public class Down extends Activity {
 		Log.e("result_countinDown",String.valueOf(count));
 		String[] bookId=new String[MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],stock=new String[MAX];
 		String[] resBookId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resStock=new String[MAX];	
-		String ebook,resEbook;
+		String ebook,resEbook,img,resImg;
 		Log.e("result_inStrFor","going");
 		for(int i=0;i<count;i++)
 		{
@@ -160,7 +165,8 @@ public class Down extends Activity {
 		}
 
 		ebook="ebook["+(count-1)+"]";
-
+		img="imageurl["+(count-1)+"]";
+		Log.e("Download",img);
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
 
 		for(int i=0;i<count;i++)
@@ -174,7 +180,7 @@ public class Down extends Activity {
 			resStock[i] = hm.get(stock[i]);
 		}
 		resEbook=hm.get(ebook);
-		
+		resImg=hm.get(img);
 		if(checkBook())
 		{
 			CheckUtil result = new CheckUtil();	
@@ -185,10 +191,26 @@ public class Down extends Activity {
 			try {
 				saveFile(rowid,toInfoUserId,resBookId,resTitle,resAuthor,resDescription,resImage,resStock);
 				saveBook(resEbook,count);
+				SaveImg(resImg,count);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			new AlertDialog.Builder(Down.this)
+			.setTitle("Notification")
+			.setMessage("ダウンロードが完了しました。")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent (Down.this,MyLibrary.class);
+					startActivity(intent);
+				}
+			})
+			.show();
 		}
 	}
 
@@ -315,31 +337,38 @@ public class Down extends Activity {
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".ebf");	
 		FileWriter tempSave = save[i]; 
 		tempSave = new FileWriter(userData);
-		tempSave.write("@");
-		tempSave.write(String.valueOf(i));
-		tempSave.write("@");
-		tempSave.write("\n");
 		tempSave.write(ebook);
-		tempSave.write("\n");
-		tempSave.write("@");
-		tempSave.write(String.valueOf(i));
-		tempSave.write("@");	
-		tempSave.write("\n");
 		tempSave.close();	
 
-		new AlertDialog.Builder(Down.this)
-		.setTitle("Notification")
-		.setMessage("ダウンロードが完了しました。")
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	}
+	void  SaveImg(String ImgUrl,int i)throws IOException
+	{
+	
+		try
+		{	
+			String tmpurlStr = "http://www."+ImgUrl;
+			String imageUrl=tmpurlStr.replace("@amp;", "&");
+			
+			URL url = new URL(imageUrl);
+			InputStream is = url.openStream();
+			
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".jpg");
+			Bitmap bitmap = BitmapFactory.decodeStream(is);
+			OutputStream filestream = null;
+			filestream = new FileOutputStream(file);
+			Log.e("Downimage","img");
+			bitmap.compress(CompressFormat.JPEG, 100, filestream);
+			
+			filestream.flush();
+			filestream.close();
+			
+		}
+		catch(Exception e)
+		{
+			Log.e("URL","error,in load Drawable\n"+e.toString());
+		}
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent (Down.this,MyLibrary.class);
-				startActivity(intent);
-			}
-		})
-		.show();
+
 	}
 	public Boolean checkBook()
 	{
