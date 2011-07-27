@@ -1,10 +1,5 @@
 package com.tomato.adapter;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -29,10 +24,7 @@ public class MyLibraryAdapter extends BaseAdapter{
 //			R.drawable.list1,R.drawable.list2,R.drawable.list3,
 //			R.drawable.list4,R.drawable.list5,R.drawable.list6,
 //			R.drawable.list7};
-	private String[] list_image=sd.imageCount();
-
-	
-	
+	private String[] list_image= sd.imageCount();
 
 	public MyLibraryAdapter(Context context) {
 		mContext = context;
@@ -56,30 +48,30 @@ public class MyLibraryAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
 		ImageView imageview;
-		File in;
-		FileReader fl;
-		BufferedReader buf;
 		if (convertView==null) {
 			imageview=new ImageView(mContext);
 		} else {
 			imageview=(ImageView) convertView;
-			
 		}
+		
+		String viewImage=list_image[position];
+		
+		Log.e("viewImage", viewImage);
+		
 		try {
-			in = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_1.jpg");
-			fl = new FileReader(in);
-			buf = new BufferedReader(fl);
 			
+			Bitmap bit = BitmapFactory.decodeFile(viewImage);
+			imageview.setImageBitmap(bit);
+			//InputStream is=new URL(viewImage).openStream();		
+			//Bitmap bit=BitmapFactory.decodeStream(is);
+			//imageview.setImageBitmap(bit);
+			//is.close();			
 			
 		} catch (Exception e) {
 		Log.e("adapter", "getview-error");
 		}
-		
-		
-		
-		
+				
 //		imageview.setImageResource(list_image[position]);
 		imageview.setScaleType(ImageView.ScaleType.FIT_XY);
 		imageview.setLayoutParams(new Gallery.LayoutParams(189, 268));	

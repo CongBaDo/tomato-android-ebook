@@ -31,7 +31,7 @@ public class SDcard {
 	ArrayList<String> data_list=new ArrayList<String>();
 	String id=null,genre=null,title=null,author=null,description=null,ebook=null,count=null,date=null;
 	HashMap<String, String> hm=new HashMap<String, String>();
-
+	String[] imagefile;
 	//////////////////////////////
 	public ArrayList<String> tryToMyLibrary() {
 		
@@ -66,10 +66,14 @@ public class SDcard {
 	public String[] imageCount(){
 		ArrayList<String> data=tryToMyLibrary();
 		String imageTest=data.get(6);
-		String imageUrl=imageTest.replace("@amp;", "&");
-		String[] imageSplit=imageUrl.split(",");
-		
-	return imageSplit;
+		Log.e("image",data.get(6));
+		//String imageUrl=imageTest.replace("@amp;", "&");
+		String[] imageSplit=imageTest.split(",");
+		Log.e("121",imageSplit.length+"");
+		for(int k = 0; k < imageSplit.length; k++){
+			imageSplit[k] = "/sdcard/ebook_"+ (k+1) + ".jpg";
+		}
+		return imageSplit;
 	}
 	
 	/////////////////////////////////
@@ -105,7 +109,7 @@ public class SDcard {
 
 	public void readXML(String key) {
 
-		String theUrl = "http://ebookssongs2.appspot.com/ebookSelectList.jsp";
+		String theUrl = "http://ebookserverhjy5.appspot.com/ebookSelectList.jsp";
 		Log.e("readxml1", theUrl);
 		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 		httpParams.add(new BasicNameValuePair("key",key));
