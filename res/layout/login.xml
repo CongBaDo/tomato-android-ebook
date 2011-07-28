@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+android:orientation="vertical"
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/Login_Layout">
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent" android:orientation="vertical" android:gravity="center">
+        <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/Login_TitleLayout" android:layout_width="match_parent">
+            <TextView android:layout_height="wrap_content" android:text="    " android:id="@+id/Login_space1" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_width="fill_parent"></TextView>
+            <TextView android:textSize="25sp" android:layout_height="wrap_content" android:layout_marginLeft="20px" android:textStyle="bold" android:layout_marginBottom="10px" android:text="ログイン" android:id="@+id/Login_title" android:textColor="#FFFFFF" android:layout_width="wrap_content" android:layout_gravity="center"></TextView>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/Login_IDLayout" android:layout_width="wrap_content">
+            <TextView android:textSize="16sp" android:layout_height="wrap_content" android:layout_marginLeft="10px" android:textStyle="bold" android:text="E-Mail" android:id="@+id/Login_IDTitle" android:textColor="#FFFFFF" android:padding="10px" android:layout_width="wrap_content"></TextView>
+            <EditText android:singleLine="true" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginRight="20px" android:layout_marginLeft="10px" android:textColor="#ff000000" android:textSize="12sp" android:layout_marginBottom="10px" android:hint="IDを入力してください              " android:id="@+id/Login_EditID" android:layout_width="wrap_content">
+                <requestFocus></requestFocus>
+            </EditText>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/Login_PassLayout" android:layout_width="wrap_content">
+            <TextView android:textSize="16sp" android:layout_height="wrap_content" android:layout_marginLeft="10px" android:textStyle="bold" android:text="P/W" android:id="@+id/Login_PassTitle" android:textColor="#FFFFFF" android:padding="10px" android:layout_width="wrap_content"></TextView>
+            <EditText android:singleLine="true" android:layout_height="wrap_content" android:layout_marginRight="20px" android:layout_marginLeft="10px" android:textColor="#ff000000" android:textSize="12sp" android:password="true" android:hint="Passwordを入力してください" android:id="@+id/Login_EditPass" android:layout_width="wrap_content"></EditText>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="wrap_content">
+            <CheckBox android:layout_height="wrap_content" android:id="@+id/Login_checkBox" android:layout_marginLeft="10px" android:text="サーバーへ接続しない" android:layout_width="wrap_content"></CheckBox>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:padding="20px" android:id="@+id/Login_ButtonLayout" android:weightSum="1" android:layout_width="match_parent">
+        <Button android:layout_height="wrap_content" android:id="@+id/Login_LogBtn" android:layout_width="wrap_content" android:text="サーバーへ接続" android:layout_marginRight="15px"></Button>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="書斎へ" android:id="@+id/Login_syo" android:layout_marginRight="15px"></Button>
+        <Button android:text="登 録 " android:id="@+id/Login_TorokuBtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"></Button>
+    </LinearLayout>
+</LinearLayout>

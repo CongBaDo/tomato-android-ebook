@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:orientation="vertical" android:gravity="center" android:layout_height="fill_parent">
+  
+   <TextView  
+    android:id="@+id/preview" 
+    android:layout_width="fill_parent" android:layout_height="250px"></TextView>
+    
+  
+    <TextView android:text="ページー移し方" 
+    android:textSize="15px"
+    android:id="@+id/textView1" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" android:layout_marginTop="20px"></TextView>
+    
+    <Spinner android:id="@+id/spinner1" 
+    android:layout_height="38dip" 
+    android:layout_width="match_parent"/>
+    
+        <TextView android:text="文字の色" 
+            android:textSize="15px"
+    android:id="@+id/textView1" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" android:layout_marginTop="30px"></TextView>
+    
+    <Spinner android:id="@+id/spinner2" 
+ android:layout_height="38dip" 
+    android:layout_width="match_parent"></Spinner>
+    
+    
+        <TextView android:text="背景色"
+            android:textSize="15px"
+    android:id="@+id/textView1" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" android:layout_marginTop="30px"></TextView>
+    
+    <Spinner android:id="@+id/spinner3" 
+   android:layout_height="38dip" 
+    android:layout_width="match_parent"></Spinner>
+   
+   
+    <Button 
+    android:layout_gravity="center"
+    android:text="設定" 
+    android:id="@+id/setup" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" android:layout_marginTop="40px"></Button>
+ 
+  
+</LinearLayout>
