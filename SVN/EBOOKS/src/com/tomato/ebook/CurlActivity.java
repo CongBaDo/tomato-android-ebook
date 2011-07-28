@@ -50,6 +50,7 @@ public class CurlActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
+		MyLibrary.bkList.add(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.curlactivity);
 		Log.e("ac", "ac");
@@ -265,9 +266,11 @@ public class CurlActivity extends Activity {
 //			break;
 		case 1:
 		{
-			finish();
-			Intent intent3 = new Intent(CurlActivity.this,MyLibrary.class);
-			startActivity(intent3);
+			
+			for(int i =0;i <MyLibrary.bkList.size();i++ )
+			{
+				MyLibrary.bkList.get(i).finish();
+			}
 			break;
 		}
 		}

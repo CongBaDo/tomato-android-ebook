@@ -34,6 +34,7 @@ import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
 
 public class MyLibrary extends Activity {
+	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
 	TextView tv;
 	Button btn;
 	ImageView  store,list_book_detail,exit;

@@ -18,7 +18,7 @@ import android.view.MenuItem;
 
 import com.tomato.pagecurl.CurlViewVertical;
 import com.tomato.sdcard.SDcard;
-
+import com.tomato.ebook.MyLibrary;
 /**
  * Simple Activity for curl testing.
  * 
@@ -49,7 +49,7 @@ public class CurlActivityVertical extends Activity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+		MyLibrary.bkList.add(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.curlactivityvertical);
 		Log.e("ac", "ac");
@@ -265,10 +265,11 @@ public class CurlActivityVertical extends Activity {
 //			break;
 		case 1:
 		{
-			finish();
-			Intent intent3 = new Intent(CurlActivityVertical.this,MyLibrary.class);
-			startActivity(intent3);
-		
+			
+			for(int i =0;i <MyLibrary.bkList.size();i++ )
+			{
+				MyLibrary.bkList.get(i).finish();
+			}
 		break;
 		}
 		}
