@@ -67,7 +67,6 @@ public class MyLibrary extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mylibrary);
-		
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		btn=(Button) findViewById(R.id.list_book_read);		
@@ -75,17 +74,8 @@ public class MyLibrary extends Activity {
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
-		store=(ImageView)findViewById(R.id.store);
+		store=(ImageView)findViewById(R.id.store);	
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
-		
-		Intent getFromLogin = getIntent();
-		state = getFromLogin.getStringExtra("State");
-		
-		if((!mobile.isConnected() && !wifi.isConnected())||state=="not")
-		{
-			store.setVisibility(View.GONE);
-		}
-		
 		sd=new SDcard();
 		datadata=sd.tryToMyLibrary();//read login.txt
 
@@ -105,6 +95,14 @@ public class MyLibrary extends Activity {
 		Log.e("main", "main");
 
 
+		Intent getFromLogin = getIntent();
+		state = getFromLogin.getStringExtra("State");
+		if((!mobile.isConnected() && !wifi.isConnected())||state.equals("not"))
+		{
+			store.setVisibility(View.GONE);
+	}
+	
+		
 
 
 

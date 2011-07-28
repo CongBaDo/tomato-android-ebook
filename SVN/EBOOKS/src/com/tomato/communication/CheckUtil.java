@@ -4,6 +4,7 @@ package com.tomato.communication;
 
 
 
+import com.tomato.ebook.Login;
 import com.tomato.ebook.MyLibrary;
 
 import android.app.AlertDialog;
@@ -130,6 +131,7 @@ public class CheckUtil {
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
 						Intent re_Intent = new Intent(re_context,MyLibrary.class);
+						re_Intent.putExtra("State", "OK");
 						re_context.startActivity(re_Intent);
 					}
 				})
