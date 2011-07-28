@@ -264,9 +264,13 @@ public class CurlActivityVertical extends Activity {
 //
 //			break;
 		case 1:
+		{
+			finish();
 			Intent intent3 = new Intent(CurlActivityVertical.this,MyLibrary.class);
 			startActivity(intent3);
-			break;
+		
+		break;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
