@@ -19,7 +19,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,14 +39,19 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.tomato.communication.CheckUtil;
 import com.tomato.communication.Util;
 import com.tomato.communication.cmsHTTP;
 
+
 public class Login extends Activity {
 	static final int MAX = 100;
 	static int bookCounter=1;
+	String[] id=new String[MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],ebook=new String[MAX],date=new String[MAX];
+	String[] resId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resEbook=new String[MAX],resDate=new String[MAX];	
+	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate,userId=null;
 	EditText EditID,EditPass;
 	Button LogBtn,TorokuBtn,SyosaiBtn;
 	CheckBox Loginck;
@@ -57,11 +62,10 @@ public class Login extends Activity {
 	File userData,userText,userCheck;
 	FileWriter[] save = new FileWriter[MAX];
 	FileReader idCheck;
-	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate,userId=null;;
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
 	NetworkInfo wifi;    
-
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
@@ -120,7 +124,19 @@ public class Login extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				tryToLogin();
+				new AlertDialog.Builder(Login.this)
+				.setTitle("Notification")
+				.setMessage("サーバーへ接続します。\n少々お待ち下さい。")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub			
+						tryToLogin(); 
+					}
+				})
+				.show();
+
 			}
 		});
 
@@ -174,7 +190,7 @@ public class Login extends Activity {
 							Intent Intent = new Intent(Login.this,MyLibrary.class);
 							Intent.putExtra("State", "not");
 							startActivity(Intent);
-							
+
 						}
 					})
 					.show();
@@ -193,9 +209,7 @@ public class Login extends Activity {
 		});
 	}
 
-
 	public void tryToLogin() {
-
 		email = EditID.getText().toString();
 		pass = EditPass.getText().toString();
 
@@ -239,8 +253,6 @@ public class Login extends Activity {
 	public void addResult(HashMap<String, String> hm) {
 		int count = Integer.valueOf(hm.get("count"));
 		Log.e("result_count",String.valueOf(count));
-		String[] id=new String[MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],ebook=new String[MAX],date=new String[MAX];
-		String[] resId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resEbook=new String[MAX],resDate=new String[MAX];	
 		Log.e("result_inStrFor","going");
 		for(int i=0;i<count;i++)
 		{
@@ -269,7 +281,7 @@ public class Login extends Activity {
 		}
 
 		Log.e("rowid in addReseult",rowid+"");
-		rowid = 1;
+		//rowid = 1;
 		if(rowid==1)
 		{
 			try {
@@ -409,7 +421,7 @@ public class Login extends Activity {
 		{
 			e.printStackTrace();
 		}
-			}
+	}
 	public void saveBook(String[] ebook,int i) throws IOException
 	{
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
