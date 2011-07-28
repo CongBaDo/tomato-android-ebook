@@ -195,10 +195,10 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 		if (viewmode == SHOW_ONE_PAGE) {
 			mViewMode = viewmode;
 			updatePageRects();
-		} else if (viewmode == SHOW_TWO_PAGES) {
+		}/* else if (viewmode == SHOW_TWO_PAGES) {
 			mViewMode = viewmode;
 			updatePageRects();
-		}
+		}*/
 	}
 
 	/**

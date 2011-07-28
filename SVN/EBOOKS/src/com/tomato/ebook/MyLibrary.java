@@ -245,42 +245,15 @@ public class MyLibrary extends Activity {
 
 		@Override
 		public void onClick(View v) {
-
-			//			allSiori=datadata.get(8);
-			//			String[] siori_data=datafor(allSiori);
-			//			
-			//			for (int i = 0; i < siori_data.length; i++) {
-			//
-			//				String[] data=siori_data[i].split(" ");
-			//								
-			//				if (data[0].equals(book_key+"")) {
-			//					siori=data[1];
-			//				}
-			//			
-			//				Log.e("MYbookcode", data[0]);
-			//				Log.e("MYpagecode", data[1]);
-			//			
-			//			}
-
+			new AlertDialog.Builder(MyLibrary.this)
+			.setTitle("Mode Select")
+			.setPositiveButton("Horizontal",mClick)
+			.setNegativeButton("Vertical",mClick)
+			.show();
 			Log.e("bookKey", book_key+"");
-			//			Log.e("bookKey--siori", siori);
-
-
-
-			Intent intent=new Intent(MyLibrary.this, CurlActivity.class);
-			//			intent.putExtra("bookKey", bookey[book_key]);
-			intent.putExtra("bookKey", book_key+"");
-			intent.putExtra("color", "#000000");
-			intent.putExtra("bgcolor", "#FFFFFF");
-			//			intent.putExtra("siori", siori);
-
-			startActivity(intent);
-
 		}
 	};
-
-
-
+	
 	private OnItemClickListener list_listener=new OnItemClickListener() {
 
 		@Override
@@ -325,7 +298,32 @@ public class MyLibrary extends Activity {
 		}
 	};
 
-	
+	DialogInterface.OnClickListener mClick = new DialogInterface.OnClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			// TODO Auto-generated method stub
+			if(which == DialogInterface.BUTTON1){
+				Intent intent=new Intent(MyLibrary.this, CurlActivity.class);
+				//			intent.putExtra("bookKey", bookey[book_key]);
+				intent.putExtra("bookKey", book_key+"");
+				intent.putExtra("color", "#000000");
+				intent.putExtra("bgcolor", "#FFFFFF");
+				//			intent.putExtra("siori", siori);
+
+				startActivity(intent);
+			}else{
+				Intent intent=new Intent(MyLibrary.this, CurlActivityVertical.class);
+				//			intent.putExtra("bookKey", bookey[book_key]);
+				intent.putExtra("bookKey", book_key+"");
+				intent.putExtra("color", "#000000");
+				intent.putExtra("bgcolor", "#FFFFFF");
+				//			intent.putExtra("siori", siori);
+
+				startActivity(intent);
+			}
+		}
+	};
 	public void close()  
 	{  
 

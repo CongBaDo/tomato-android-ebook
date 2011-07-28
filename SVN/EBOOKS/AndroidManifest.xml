@@ -25,6 +25,7 @@
         <activity android:name="ReadMenu" android:theme="@style/Dialog"></activity>
   <activity android:name="ReadSetup"></activity>
          <activity android:name="CurlActivity"></activity>
+         <activity android:name="CurlActivityVertical"></activity>
              <activity android:name="Login" android:theme="@style/Dialog"></activity>
         <activity android:name="Join" android:theme="@style/Dialog"></activity>
         <activity android:name="Down" android:theme="@style/Dialog"></activity>
