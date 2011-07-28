@@ -236,7 +236,7 @@ public class CurlActivityVertical extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
-			Intent intent = new Intent(CurlActivityVertical.this,ReadSetup.class);
+			Intent intent = new Intent(CurlActivityVertical.this,ReadVerticalSetup.class);
 			intent.putExtra("bookKey", bookKey);
 			intent.putExtra("color", color);
 			intent.putExtra("bgcolor", bgcolor);
