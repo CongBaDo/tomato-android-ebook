@@ -64,7 +64,7 @@ public class MyLibrary extends Activity {
 
 	String ext=Environment.getExternalStorageState();
 	String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
-	String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"\\tmt"+"\\";		
+	String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tmt"+"/";		
 	File bookText;
 	/** Called when the activity is first created. */
 	@Override

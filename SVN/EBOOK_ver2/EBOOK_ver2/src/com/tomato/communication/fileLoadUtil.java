@@ -19,7 +19,7 @@ public class fileLoadUtil {
 	{
 		
 		int j = 0;
-		File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"\\tmt"+"\\");
+		File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/tmt/");
         String files[] = f.list();
         
         for(int i=0;i<files.length;i++)
@@ -42,6 +42,7 @@ public class fileLoadUtil {
 		 try {
 	         final int BUFFER = 2048;
 	         BufferedOutputStream dest = null;
+	         File target = new File(path,name);
 	         FileInputStream fis = new  FileInputStream(path+name);
 	         CheckedInputStream checksum = new CheckedInputStream(fis, new Adler32());
 	         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(checksum));
@@ -52,7 +53,7 @@ public class fileLoadUtil {
 	            int count;
 	            byte data[] = new byte[BUFFER];
 	            // write the files to the disk
-	            FileOutputStream fos = new FileOutputStream(entry.getName());
+	            FileOutputStream fos = new FileOutputStream(path+(entry.getName()));
 	            dest = new BufferedOutputStream(fos,BUFFER);
 	            while ((count = zis.read(data, 0,BUFFER)) != -1) 
 	            {
@@ -62,6 +63,7 @@ public class fileLoadUtil {
 	            dest.close();
 	         }
 	         zis.close();
+	         target.delete();
 	         System.out.println("Checksum: "+checksum.getChecksum().getValue());
 	      } catch(Exception e) {
 	         e.printStackTrace();
