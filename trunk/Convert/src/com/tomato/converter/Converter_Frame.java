@@ -8,6 +8,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.Rectangle;
@@ -18,11 +20,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.zip.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -30,11 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.qoppa.pdf.IPassword;
-import com.qoppa.pdf.PDFException;
-import com.qoppa.pdfImages.PDFImages;
-import com.sun.corba.se.impl.ior.ByteBuffer;
+import com.itextpdf.text.pdf.PdfReader;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 import com.zfqjava.swing.JDirChooser;
@@ -52,7 +55,8 @@ public class Converter_Frame extends Frame{
 
 
 	}
-
+	PDFFile pdffile;
+	PdfReader reader;
 	TextField inputLocation = new TextField();
 	TextField outLocation = new TextField();
 	File pdfSouce,exportsDir;
@@ -142,10 +146,29 @@ public class Converter_Frame extends Frame{
 				if (ret != JFileChooser.APPROVE_OPTION) {
 					return;
 				}
+				try {
+					pdfSouce = chooser.getSelectedFile();
+					File file = new File(pdfSouce.getAbsolutePath());
+					RandomAccessFile raf = new RandomAccessFile(file, "r");
+					FileChannel channel = raf.getChannel();
+					MappedByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+					pdffile = new PDFFile(buf);
+					String pdfInfo = pdffile.getStringMetadata("Producer");
+					if(pdfInfo.contains("PowerPoint"))
+					{
+						JOptionPane.showMessageDialog(this, "PPT形式のPDFは変更できません。");
+					}
 
-				pdfSouce = chooser.getSelectedFile();
-				inputLocation.setEnabled(true);
-				inputLocation.setText(pdfSouce.getAbsolutePath());
+					else
+					{
+						inputLocation.setEnabled(true);
+						inputLocation.setText(pdfSouce.getAbsolutePath());
+					}
+				} 
+				catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			else if(Btn.equals("Out"))
 			{
@@ -171,70 +194,58 @@ public class Converter_Frame extends Frame{
 			}
 			else
 			{
-				try
-				{
-					// Load the document
-					PDFImages images = new PDFImages (pdfSouce.getAbsolutePath(), null);
 
-					// get document pages
-					for (int count = 0; count < images.getPageCount(); ++count)
-					{
-						// Save the buffered image as a JPEG
-						File file = new File(pdfSouce.getAbsolutePath());
-						RandomAccessFile raf;
-						try {
-							raf = new RandomAccessFile(file, "r");
+				try {
+					File file = new File(pdfSouce.getAbsolutePath());
+					RandomAccessFile raf = new RandomAccessFile(file, "r");
+					FileChannel channel = raf.getChannel();
+					MappedByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+					pdffile = new PDFFile(buf);
 
-							FileChannel channel = raf.getChannel();
-							MappedByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-							PDFFile pdffile = new PDFFile(buf);
-							// draw the first page to an image
-							int num=pdffile.getNumPages();
-							for(int i=0;i<num;i++)
-							{
-								PDFPage page = pdffile.getPage(i);
 
-								//get the width and height for the doc at the default zoom				
-								int width=(int)page.getBBox().getWidth();
-								int height=(int)page.getBBox().getHeight();				
-
-								Rectangle rect = new Rectangle(0,0,width,height);
-								int rotation=page.getRotation();
-								Rectangle rect1=rect;
-								if(rotation==90 || rotation==270)
-									rect1=new Rectangle(0,0,rect.height,rect.width);
-
-								//generate the image
-								BufferedImage img = (BufferedImage)page.getImage(
-										rect.width, rect.height, //width & height
-										rect1, // clip rect
-										null, // null for the ImageObserver
-										true, // fill background with white
-										true  // block until drawing is done
-										);
-
-								ImageIO.write(img, "png", new File(exportsDir.getAbsolutePath(),pdfSouce.getName().replaceAll(".pdf", "")+i+".png"));
-							}
-						} 
-						catch (FileNotFoundException e1) {
-							System.err.println(e1.getLocalizedMessage());
-						} catch (IOException Ioe) {
-							System.err.println(Ioe.getLocalizedMessage());
-						}
-						
-					}
-					//						File outFile = new File (exportsDir, "page" + count + ".png");
-					//						images.savePageAsPNG(count, outFile.getAbsolutePath(), 144);
-
-					
-					// Show message
-					JOptionPane.showMessageDialog(this, "Files were exported to:\n" + exportsDir.getAbsolutePath());
-				} catch (PDFException pdfE) {
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog (this, pdfE.getMessage());
-					
+					e1.printStackTrace();
 				}
-				finally{}
+
+				// draw the first page to an image
+				for(int i = 1 ;i<=pdffile.getNumPages();i++ )
+				{				
+					PDFPage page = pdffile.getPage(i);
+
+					//get the width and height for the doc at the default zoom 
+					Rectangle rect = new Rectangle(0,0,
+							(int)page.getBBox().getWidth(),
+							(int)page.getBBox().getHeight());
+
+					//generate the image
+
+					Image image = page.getImage(
+							rect.width, rect.height, //width & height
+							rect, // clip rect
+							null, // null for the ImageObserver
+							true, // fill background with white
+							true  // block until drawing is done
+							);
+
+					int w = image.getWidth(null);
+					int h = image.getHeight(null);
+					BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+					Graphics2D g2 = bi.createGraphics();
+					g2.drawImage(image, 0, 0, null);
+					g2.dispose();
+					try
+					{
+						ImageIO.write(bi, "PNG", new File(exportsDir.getAbsolutePath(),pdfSouce.getName().replaceAll(".pdf", "_")+i+".png"));
+					}
+					catch(IOException ioe)
+					{
+						System.out.println("write: " + ioe.getMessage());
+					}                
+				}
+				Compress zip = new Compress();
+				zip.Zip();
+				JOptionPane.showMessageDialog(this, "Files were exported to:\n" + exportsDir.getAbsolutePath());
 			}
 		}
 	}
@@ -284,6 +295,44 @@ public class Converter_Frame extends Frame{
 		else
 		{
 			return null;
+		}
+	}
+	
+	static final int BUFFER = 2048;
+	public class Compress
+	{
+		public void Zip()
+		{
+			try
+			{
+			BufferedInputStream origin = null;
+			File f = new File(exportsDir.getAbsolutePath());
+	         String files[] = f.list();
+	         FileOutputStream dest = new FileOutputStream(exportsDir.getAbsolutePath()+"\\"+(pdfSouce.getName().replaceAll(".pdf", ".tmt")));
+	         CheckedOutputStream checksum = new CheckedOutputStream(dest, new Adler32());
+	         ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(checksum));
+	         //out.setMethod(ZipOutputStream.DEFLATED);
+	         byte data[] = new byte[BUFFER];
+	         // get a list of files from current directory
+	         
+	         for (int i=0; i<files.length; i++) {
+	        //    System.out.println("Adding: "+files[i]);
+	            FileInputStream fi = new FileInputStream(exportsDir.getAbsolutePath()+"\\"+files[i]);
+	            origin = new BufferedInputStream(fi, BUFFER);
+	            ZipEntry entry = new ZipEntry(files[i]);
+	            out.putNextEntry(entry);
+	            int count;
+	            while((count = origin.read(data, 0, BUFFER)) != -1) {
+	               out.write(data, 0, count);
+	            }
+	            origin.close();
+	         }
+	         out.close();
+	         System.out.println("checksum: "+checksum.getChecksum().getValue());
+	      } catch(Exception e) {
+	         e.printStackTrace();
+	      }
+
 		}
 	}
 }
