@@ -32,7 +32,8 @@ public class fileLoadUtil {
         }
         
 	}
-	private String[] getList()
+	
+	public String[] getList()
 	{
 		return tmtFiles; 
 	}
@@ -53,7 +54,12 @@ public class fileLoadUtil {
 	            int count;
 	            byte data[] = new byte[BUFFER];
 	            // write the files to the disk
-	            FileOutputStream fos = new FileOutputStream(path+(entry.getName()));
+	            File dataFolder = new File(path+(name.replace(".tmt", "/")));
+	            if(!dataFolder.exists())
+	            {
+	            	dataFolder.mkdir();
+	            }
+	            FileOutputStream fos = new FileOutputStream(path+(name.replace(".tmt", "/")+"/")+entry.getName());
 	            dest = new BufferedOutputStream(fos,BUFFER);
 	            while ((count = zis.read(data, 0,BUFFER)) != -1) 
 	            {

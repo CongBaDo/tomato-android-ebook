@@ -269,6 +269,7 @@ public class MyLibrary extends Activity {
 				case R.id.list_file_read:
 				{
 					fileLoadUtil un = new fileLoadUtil();
+					
 					un.unCompress(filePath,"test.tmt");
 					Toast.makeText(MyLibrary.this, "準備中です。", Toast.LENGTH_LONG).show();
 					break;
