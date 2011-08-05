@@ -23,8 +23,10 @@ import java.io.File;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
@@ -245,6 +247,7 @@ public class Converter_Frame extends Frame{
 				}
 				Compress zip = new Compress();
 				zip.Zip();
+				Delfiles();
 				JOptionPane.showMessageDialog(this, "Files were exported to:\n" + exportsDir.getAbsolutePath());
 			}
 		}
@@ -257,7 +260,15 @@ public class Converter_Frame extends Frame{
 		}
 		return null;
 	}
-
+	
+	public void Delfiles()
+	{
+		for (int i=1; i<pdffile.getNumPages(); i++) {
+        	File target= new File(exportsDir.getAbsolutePath()+"\\",pdfSouce.getName().replaceAll(".pdf", "_"+i+".png"));
+        	target.delete();
+         }
+	}
+	
 	public File chooseDir (String initDir, Component parent, boolean createDirs)
 	{
 		JDirChooser dirChooser = new JDirChooser ();
@@ -299,15 +310,31 @@ public class Converter_Frame extends Frame{
 	}
 	
 	static final int BUFFER = 2048;
+	String tmtFiles[] = new String[100];
 	public class Compress
 	{
 		public void Zip()
 		{
 			try
 			{
+			int j = 0;
 			BufferedInputStream origin = null;
 			File f = new File(exportsDir.getAbsolutePath());
-	         String files[] = f.list();
+			FileFilter png = new FileFilter() {
+				
+				@Override
+				public boolean accept(File pathname) {
+					// TODO Auto-generated method stub
+					if(!pathname.getName().endsWith(".png"))
+						return false;
+					return true;
+				}
+			};
+	         File[] files = f.listFiles(png);
+	         for(int i=0;i<files.length;i++)
+	         {
+	        	 
+	         }
 	         FileOutputStream dest = new FileOutputStream(exportsDir.getAbsolutePath()+"\\"+(pdfSouce.getName().replaceAll(".pdf", ".tmt")));
 	         CheckedOutputStream checksum = new CheckedOutputStream(dest, new Adler32());
 	         ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(checksum));
@@ -319,7 +346,7 @@ public class Converter_Frame extends Frame{
 	        //    System.out.println("Adding: "+files[i]);
 	            FileInputStream fi = new FileInputStream(exportsDir.getAbsolutePath()+"\\"+files[i]);
 	            origin = new BufferedInputStream(fi, BUFFER);
-	            ZipEntry entry = new ZipEntry(files[i]);
+	            ZipEntry entry = new ZipEntry(tmtFiles[i]);
 	            out.putNextEntry(entry);
 	            int count;
 	            while((count = origin.read(data, 0, BUFFER)) != -1) {
@@ -329,10 +356,11 @@ public class Converter_Frame extends Frame{
 	         }
 	         out.close();
 	         System.out.println("checksum: "+checksum.getChecksum().getValue());
-	      } catch(Exception e) {
+	     	} catch(Exception e) {
 	         e.printStackTrace();
 	      }
 
 		}
+		
 	}
 }
