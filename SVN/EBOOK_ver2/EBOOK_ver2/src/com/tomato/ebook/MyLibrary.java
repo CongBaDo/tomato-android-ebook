@@ -29,14 +29,16 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
+import com.tomato.communication.*;
 
 public class MyLibrary extends Activity {
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
 	TextView tv;
-	Button btn;
+	Button readBtn,fileBtn;
 	ImageView  store,list_book_detail,exit;
 	final static int MAX = 100; 
 	//	HashMap<String, String> hm;
@@ -47,7 +49,7 @@ public class MyLibrary extends Activity {
 	SDcard sd=null;
 
 	String userid=null,userId = null,book=null,title=null,writer=null,des=null,image_url=null,date=null,state=null;
-	
+
 	int book_key=1;	
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
@@ -55,13 +57,14 @@ public class MyLibrary extends Activity {
 	File userData,userText;
 	FileWriter[] save = new FileWriter[MAX];
 	FileReader idCheck;
-	
+
 	//	String allSiori=null;
 	//	String siori=null;
 
 
 	String ext=Environment.getExternalStorageState();
 	String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
+	String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"\\tmt"+"\\";		
 	File bookText;
 	/** Called when the activity is first created. */
 	@Override
@@ -70,7 +73,8 @@ public class MyLibrary extends Activity {
 		setContentView(R.layout.mylibrary);
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
-		btn=(Button) findViewById(R.id.list_book_read);		
+		readBtn=(Button) findViewById(R.id.list_book_read);	
+		fileBtn=(Button)findViewById(R.id.list_file_read);
 		exit=(ImageView)findViewById(R.id.exit);
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
@@ -88,8 +92,9 @@ public class MyLibrary extends Activity {
 		mylibrarylist.setOnItemClickListener(list_listener);
 		Log.e("g", "3");
 
-		
-		btn.setOnClickListener(read_listener);
+
+		readBtn.setOnClickListener(read_listener);
+		fileBtn.setOnClickListener(read_listener);
 		store.setOnClickListener(button_listener);
 		exit.setOnClickListener(button_listener);
 
@@ -101,9 +106,9 @@ public class MyLibrary extends Activity {
 		if((!mobile.isConnected() && !wifi.isConnected())||state.equals("not"))
 		{
 			store.setVisibility(View.GONE);
-	}
-	
-		
+		}
+
+
 
 
 
@@ -189,7 +194,7 @@ public class MyLibrary extends Activity {
 
 
 			switch (v.getId()) {
-			
+
 			case R.id.store:
 				if(!mobile.isConnected() && !wifi.isConnected())
 				{
@@ -201,19 +206,19 @@ public class MyLibrary extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							
+
 						}
 					})
 					.show();
 				}
 				else
 				{
-				Intent intent=new Intent(MyLibrary.this, Genre_TabActivity.class);
-				startActivity(intent);
+					Intent intent=new Intent(MyLibrary.this, Genre_TabActivity.class);
+					startActivity(intent);
 				}
 				break;
 
-			
+
 			case R.id.exit:
 				new AlertDialog.Builder(MyLibrary.this)
 				.setTitle("Notification")
@@ -234,7 +239,7 @@ public class MyLibrary extends Activity {
 					}
 				})
 				.show();
-				
+
 				break;
 			}
 		}
@@ -246,17 +251,32 @@ public class MyLibrary extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent=new Intent(MyLibrary.this, CurlActivity.class);
-			//			intent.putExtra("bookKey", bookey[book_key]);
-			intent.putExtra("bookKey", book_key+"");
-			intent.putExtra("color", "#000000");
-			intent.putExtra("bgcolor", "#FFFFFF");
-			//			intent.putExtra("siori", siori);
+			switch(v.getId())
+			{
 
-			startActivity(intent);
+				case R.id.list_book_read:
+				{
+					Intent intent=new Intent(MyLibrary.this, CurlActivity.class);
+					//			intent.putExtra("bookKey", bookey[book_key]);
+					intent.putExtra("bookKey", book_key+"");
+					intent.putExtra("color", "#000000");
+					intent.putExtra("bgcolor", "#FFFFFF");
+					//			intent.putExtra("siori", siori);
+	
+					startActivity(intent);
+					break;
+				}
+				case R.id.list_file_read:
+				{
+					fileLoadUtil un = new fileLoadUtil();
+					un.unCompress(filePath,"test.tmt");
+					Toast.makeText(MyLibrary.this, "準備中です。", Toast.LENGTH_LONG).show();
+					break;
+				}
+			}
 		}
 	};
-	
+
 	private OnItemClickListener list_listener=new OnItemClickListener() {
 
 		@Override
@@ -301,7 +321,7 @@ public class MyLibrary extends Activity {
 		}
 	};
 
-		public void close()  
+	public void close()  
 	{  
 
 		finish();  
