@@ -7,8 +7,7 @@
 	<RelativeLayout
 		android:id="@+id/logo_layout"
 	    android:layout_width="280px" 
-	    android:layout_height="230px"
-	    android:layout_centerInParent="true">
+	    android:layout_centerInParent="true" android:layout_height="250px">
 	    
 	    <ImageView
 	    	android:id="@+id/logo_tomato"
