@@ -37,5 +37,6 @@
         <activity android:name="Genre"></activity>
               <activity android:name="EbookMain"></activity>
         <activity android:name="Genre_TabActivity"></activity>
+        <activity android:theme="@style/Dialog" android:name="FileListView"></activity>
     </application>
 </manifest>

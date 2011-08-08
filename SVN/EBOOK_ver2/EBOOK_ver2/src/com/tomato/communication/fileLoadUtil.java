@@ -10,36 +10,52 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Environment;
 
 public class fileLoadUtil {
-	String tmtFiles[] = new String[100];
-	
+	Context complete;
+	String[] tmtFiles=new String[100];
+	int fileLength = 0;
+	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tmt/";
 	public fileLoadUtil()
 	{
 		
-		int j = 0;
-		File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/tmt/");
+		
+		File f = new File(tmtPath);
         String files[] = f.list();
         
         for(int i=0;i<files.length;i++)
         {
         	if(files[i].endsWith(".tmt"))
         	{
-        		tmtFiles[j] = files[i];
-        		j++;
+        		tmtFiles[fileLength] = files[i];
+        		fileLength++;
         	}
         }
         
 	}
 	
+	public String getPath()
+	{
+		return tmtPath;
+	}
 	public String[] getList()
 	{
 		return tmtFiles; 
 	}
 	
-	public void unCompress(String path,String name)
+	public int getLength()
 	{
+		return fileLength; 
+	}
+	
+	public void unCompress(Context context,String path,String name)
+	{
+		complete = context;
+
 		 try {
 	         final int BUFFER = 2048;
 	         BufferedOutputStream dest = null;
@@ -69,7 +85,19 @@ public class fileLoadUtil {
 	            dest.close();
 	         }
 	         zis.close();
-	         target.delete();
+	         
+	         new AlertDialog.Builder(complete)
+	         	.setTitle("Notification")
+				.setMessage("ファイル読み込みが完了しました。")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+					}
+				})
+				.show();
+	         
 	         System.out.println("Checksum: "+checksum.getChecksum().getValue());
 	      } catch(Exception e) {
 	         e.printStackTrace();

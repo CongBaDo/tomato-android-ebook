@@ -7,6 +7,7 @@ android:layout_height="fill_parent" android:layout_width="fill_parent" android:i
         <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/Login_TitleLayout" android:layout_width="match_parent">
             <TextView android:layout_height="wrap_content" android:text="    " android:id="@+id/Login_space1" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_width="fill_parent"></TextView>
             <TextView android:textSize="25sp" android:layout_height="wrap_content" android:layout_marginLeft="20px" android:textStyle="bold" android:layout_marginBottom="10px" android:text="ログイン" android:id="@+id/Login_title" android:textColor="#FFFFFF" android:layout_width="wrap_content" android:layout_gravity="center"></TextView>
+            <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:id="@+id/textView1" android:background="#FFFFFFFF" android:text=" " android:layout_width="fill_parent" android:layout_height="2dip"></TextView>
         </LinearLayout>
         <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/Login_IDLayout" android:layout_width="wrap_content">
             <TextView android:textSize="16sp" android:layout_height="wrap_content" android:layout_marginLeft="10px" android:textStyle="bold" android:text="E-Mail" android:id="@+id/Login_IDTitle" android:textColor="#FFFFFF" android:padding="10px" android:layout_width="wrap_content"></TextView>

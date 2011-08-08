@@ -29,11 +29,8 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
-import com.tomato.communication.*;
 
 public class MyLibrary extends Activity {
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
@@ -268,10 +265,8 @@ public class MyLibrary extends Activity {
 				}
 				case R.id.list_file_read:
 				{
-					fileLoadUtil un = new fileLoadUtil();
-					
-					un.unCompress(filePath,"test.tmt");
-					Toast.makeText(MyLibrary.this, "準備中です。", Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(MyLibrary.this,FileListView.class);
+					startActivity(intent);
 					break;
 				}
 			}

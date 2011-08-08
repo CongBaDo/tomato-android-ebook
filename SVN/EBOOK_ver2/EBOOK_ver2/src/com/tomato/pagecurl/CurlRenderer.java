@@ -8,10 +8,8 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
-import android.widget.ImageView;
 
 /**
  * Actual renderer class.
