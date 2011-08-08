@@ -23,7 +23,7 @@
         <TextView android:textSize="16sp" android:layout_marginLeft="10px" android:layout_height="wrap_content" android:textColor="#FFFFFF" android:padding="10px" android:layout_width="wrap_content" android:textStyle="bold" android:layout_marginRight="10px" android:text="一度P/Wを確認します。" android:id="@+id/Join_CheckPassTitle"></TextView>
         <EditText android:textColor="#ff000000" android:textSize="12sp" android:layout_marginLeft="10px" android:hint="Passwordを入力してください" android:layout_marginRight="20px" android:password="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:singleLine="true" android:id="@+id/Join_EditCheckPass"></EditText>
     </LinearLayout>
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/Login_ButtonLayout" android:padding="20px" android:orientation="horizontal">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/Login_ButtonLayout" android:padding="20px" android:orientation="horizontal" >
         <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="確　認" android:id="@+id/Join_OKBtn" android:layout_marginLeft="50px"></Button>
     </LinearLayout>
     

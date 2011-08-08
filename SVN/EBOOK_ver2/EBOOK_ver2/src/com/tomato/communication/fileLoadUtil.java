@@ -19,12 +19,16 @@ public class fileLoadUtil {
 	Context complete;
 	String[] tmtFiles=new String[100];
 	int fileLength = 0;
-	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/tmt/";
+	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tomato/tmt/";
 	public fileLoadUtil()
 	{
 		
 		
 		File f = new File(tmtPath);
+		if(!f.exists())
+		{
+			f.mkdirs();
+		}
         String files[] = f.list();
         
         for(int i=0;i<files.length;i++)
