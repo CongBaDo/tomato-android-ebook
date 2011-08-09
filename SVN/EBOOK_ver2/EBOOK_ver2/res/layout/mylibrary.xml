@@ -52,7 +52,7 @@ android:layout_toRightOf="@id/list_book_detail"
 <LinearLayout android:id="@+id/linearLayout3" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center">
         <Button android:id="@+id/list_book_read" android:layout_width="wrap_content" android:text="本を読む" android:layout_marginTop="20px" android:layout_gravity="center" android:layout_height="wrap_content"></Button>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20px" android:layout_marginLeft="20px" android:id="@+id/list_file_read" android:text="PDFを読む"></Button>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20px" android:layout_marginLeft="20px" android:id="@+id/list_file_read" android:text="Fileを読む"></Button>
     </LinearLayout>
 </LinearLayout>  
  
