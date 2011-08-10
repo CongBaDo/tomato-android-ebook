@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.R;
 import android.os.Environment;
 import android.util.Log;
 
@@ -18,8 +19,8 @@ import com.tomato.communication.cmsHTTP;
 
 public class SDcard {
 
-	
-//	String ext=Environment.getExternalStorageState();
+
+	//	String ext=Environment.getExternalStorageState();
 	String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
 	File userData;
 	FileWriter save;
@@ -34,59 +35,65 @@ public class SDcard {
 	String[] imagefile;
 	//////////////////////////////
 	public ArrayList<String> tryToMyLibrary() {
-		
+
 		try {
 			Log.e("tryToMyLibrary", "1");
 
 			File file=new File(sdPath, "login.txt");
-//			File file=new File(sdPath, "test.txt");
+			//			File file=new File(sdPath, "test.txt");
 			FileReader fr=new FileReader(file);
 			BufferedReader br=new BufferedReader(fr);
 
 			Log.e("tryToMyLibrary", "2");
-			
+
 			while ((data=br.readLine())!=null) {
-				
+
 
 				Log.e("br.readLine", data);
 				data_list.add(data);
-			
+
 			}//end while
 			Log.e("tryToMyLibrary", "3");
-			
+
 		} catch (Exception e) {
 			Log.e("Login.txt", "loading error");
 		}
-		
+
 		return data_list;
 	}
-	
+
 	///////////////////////////////
-	
+
 	public String[] imageCount(){
 		ArrayList<String> data=tryToMyLibrary();
-		String imageTest=data.get(6);
-		Log.e("image",data.get(6));
-		//String imageUrl=imageTest.replace("@amp;", "&");
-		String[] imageSplit=imageTest.split(",");
-		Log.e("121",imageSplit.length+"");
-		for(int k = 0; k < imageSplit.length; k++){
-			imageSplit[k] = "/sdcard/ebook_"+ (k+1) + ".jpg";
+		if(Integer.valueOf(data.get(0))==1)
+		{	
+			String imageTest=data.get(6);
+			Log.e("image",data.get(6));
+			//String imageUrl=imageTest.replace("@amp;", "&");
+			String[] imageSplit=imageTest.split(",");
+			Log.e("121",imageSplit.length+"");
+			for(int k = 0; k < imageSplit.length; k++){
+				imageSplit[k] = "/sdcard/ebook_"+ (k+1) + ".jpg";
+			}
+			return imageSplit;
 		}
-		return imageSplit;
+		String[] defaultIMG = new String[1];
+		//defaultIMG = 
+		return defaultIMG;
 	}
-	
+
 	/////////////////////////////////
 	public ArrayList<ArrayList<String>> dataload(String bookKey){
-	
+
 		Log.e("book", bookKey);
 		try {
 			File file=new File(sdPath, "ebook_"+bookKey+".ebf");
 			FileReader fr=new FileReader(file);
 			BufferedReader br=new BufferedReader(fr);
-			
+
 			Log.e("dataload", "11");
-				
+
 			while((data=br.readLine())!=null){
 				page.add(data);			
 				if (data.equals("@")) {
@@ -100,7 +107,7 @@ public class SDcard {
 		}		
 
 		Log.e("book.size",book.size()+"");
-		
+
 		return book;
 	}
 
@@ -130,7 +137,7 @@ public class SDcard {
 
 			hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
 			//				Log.v(this.getLocalClassName(), tmpData);
-			
+
 			Log.e("notnull2", "notnull2");
 
 			addResult();
@@ -140,7 +147,7 @@ public class SDcard {
 	public void addResult() {
 
 		//		int stock = cmsutil.str2int(hm.get("stock[0]"));
-		
+
 		id = hm.get("id[0]");
 		genre = hm.get("genre[0]");
 		title = hm.get("title[0]");
@@ -157,6 +164,6 @@ public class SDcard {
 		//		return hm;
 	}
 
-	
+
 
 }

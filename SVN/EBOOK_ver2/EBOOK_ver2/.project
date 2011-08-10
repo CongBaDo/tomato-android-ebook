@@ -30,4 +30,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>res/drawable-mdpi/default.png</name>
+			<type>1</type>
+			<location>C:/Documents and Settings/Tomato234/My Documents/My Pictures/default.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>

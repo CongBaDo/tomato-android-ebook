@@ -68,7 +68,6 @@ public class Join extends Activity{
 			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 			httpParams.add(new BasicNameValuePair("email",joinId));
 			httpParams.add(new BasicNameValuePair("pass", pass));
-			httpParams.add(new BasicNameValuePair("book", Jbook));
 			
 			cmsHTTP cmsHttp = new cmsHTTP();
 			//cmsHttp.encoding = encoding;
@@ -88,22 +87,31 @@ public class Join extends Activity{
 	}
 	public void addResult() {
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
+		String book = hm.get("id[0]");
+		String title = hm.get("title[0]");
+		String author = hm.get("author[0]");
+		String description = hm.get("description[0]");
+		String image = hm.get("imageurl[0]");
+		String ebook = hm.get("ebook[0]");
+		String date = hm.get("date[0]");
 		String msg = hm.get("msg[0]");
-		String book = hm.get("book[0]");
-		if(rowid==1)
+		if(rowid==1||rowid==6)
 		{
 			try {
-					saveFile(rowid,joinId, book);
+				Log.e("Join","savefile");
+					saveFile(rowid,joinId, book,title,author,description,image,ebook,date);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		Log.e("Join","savefinish");
+		
 		CheckUtil jo_result = new CheckUtil();
 		jo_result.CheckResult(this, rowid, msg,0);
 	}
 
-	public void saveFile(int rowid,String id,String book) throws IOException
+	public void saveFile(int rowid,String usrID,String id,String title,String author,String description,String imgurl,String ebook,String date) throws IOException
 	{
 		
 		joinUserData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
@@ -112,9 +120,21 @@ public class Join extends Activity{
 			joinSave = new FileWriter(joinUserData);
 			joinSave.write(String.valueOf(rowid));
 			joinSave.write("\n");
+			joinSave.write(usrID);
+			joinSave.write("\n");
 			joinSave.write(id);
 			joinSave.write("\n");
-			joinSave.write(book);		
+			joinSave.write(title);
+			joinSave.write("\n");
+			joinSave.write(author);
+			joinSave.write("\n");
+			joinSave.write(description);
+			joinSave.write("\n");
+			joinSave.write(imgurl);
+			joinSave.write("\n");
+			joinSave.write(ebook);
+			joinSave.write("\n");
+			joinSave.write(date);
 			joinSave.close();
 			
 		}

@@ -136,22 +136,7 @@ public class CheckUtil {
 				})
 				.show();
 			}
-			else
-			{
-				new AlertDialog.Builder(re_context)
-				.setTitle("Notification")
-				.setMessage("登録しました。")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						Intent intent = new Intent(re_context, MyLibrary.class);
-						re_context.startActivity(intent);
-					}
-				})
-				.show();
-			}
+			
 
 		}
 
@@ -213,6 +198,23 @@ public class CheckUtil {
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 
+				}
+			})
+			.show();
+		}
+		else if(rowid==6)
+		{
+			new AlertDialog.Builder(re_context)
+			.setTitle("Notification")
+			.setMessage("登録しました。")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(re_context, MyLibrary.class);
+					intent.putExtra("State", "OK");
+					re_context.startActivity(intent);
 				}
 			})
 			.show();
