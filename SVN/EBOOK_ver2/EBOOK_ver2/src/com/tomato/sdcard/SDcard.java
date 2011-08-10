@@ -78,11 +78,20 @@ public class SDcard {
 			}
 			return imageSplit;
 		}
-		String[] defaultIMG = new String[1];
-		//defaultIMG = 
-		return defaultIMG;
+		else
+		{
+			String[] defaultIMG = new String[1];
+			defaultIMG[0] = String.valueOf(com.tomato.ebook.R.drawable.default_book);
+			return defaultIMG;
+		}
 	}
-
+	
+	public int getRowId()
+	{
+		ArrayList<String> data=tryToMyLibrary();
+		return Integer.valueOf(data.get(0));
+		
+	}
 	/////////////////////////////////
 	public ArrayList<ArrayList<String>> dataload(String bookKey){
 

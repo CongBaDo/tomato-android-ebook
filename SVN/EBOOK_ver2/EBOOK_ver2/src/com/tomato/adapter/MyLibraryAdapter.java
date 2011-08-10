@@ -1,6 +1,8 @@
 package com.tomato.adapter;
 
 import com.tomato.sdcard.SDcard;
+
+import android.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,14 +57,19 @@ public class MyLibraryAdapter extends BaseAdapter{
 		Log.e("viewImage", viewImage);
 		
 		try {
-			
+			if(Integer.valueOf(sd.getRowId())==1)
+			{
 			Bitmap bit = BitmapFactory.decodeFile(viewImage);
 			imageview.setImageBitmap(bit);
 			//InputStream is=new URL(viewImage).openStream();		
 			//Bitmap bit=BitmapFactory.decodeStream(is);
 			//imageview.setImageBitmap(bit);
 			//is.close();			
-			
+			}
+			else if (Integer.valueOf(sd.getRowId())==6)
+			{
+				imageview.setImageResource(com.tomato.ebook.R.drawable.default_book);
+			}
 		} catch (Exception e) {
 		Log.e("adapter", "getview-error");
 		}

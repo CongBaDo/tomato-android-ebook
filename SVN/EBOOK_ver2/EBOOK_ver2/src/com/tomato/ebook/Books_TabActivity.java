@@ -15,6 +15,7 @@ public class Books_TabActivity extends android.app.TabActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JptomatoLogoActivity.actList.add(this);
         Log.e("inBooks_TabActivity", "savevalue");
         Intent bookIntent = getIntent();
         
@@ -74,6 +75,7 @@ public class Books_TabActivity extends android.app.TabActivity {
 				{
 					tabHost.clearAllTabs();
 					Intent Intent = new Intent(Books_TabActivity.this,MyLibrary.class);
+					Intent.putExtra("State", "OK");
 					startActivity(Intent);
 					break;
 				}

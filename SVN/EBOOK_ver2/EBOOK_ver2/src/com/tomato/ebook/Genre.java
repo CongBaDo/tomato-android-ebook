@@ -32,6 +32,7 @@ public class Genre extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.genre_custom_list);
 
 		GarItem = new ArrayList<MyItem>();

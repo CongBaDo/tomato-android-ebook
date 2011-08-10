@@ -119,8 +119,6 @@ public class CheckUtil {
 		Log.e("rowid",String.valueOf(rowid));
 		if(rowid==1)
 		{
-			if(oneSwich==1)
-			{
 				new AlertDialog.Builder(re_context)
 				.setTitle("Notification")
 				.setMessage(msg)
@@ -135,8 +133,6 @@ public class CheckUtil {
 					}
 				})
 				.show();
-			}
-			
 
 		}
 
@@ -204,6 +200,7 @@ public class CheckUtil {
 		}
 		else if(rowid==6)
 		{
+			if(oneSwich==0){
 			new AlertDialog.Builder(re_context)
 			.setTitle("Notification")
 			.setMessage("登録しました。")
@@ -218,6 +215,24 @@ public class CheckUtil {
 				}
 			})
 			.show();
+			}
+			else if(oneSwich==1)
+			{
+				new AlertDialog.Builder(re_context)
+				.setTitle("Notification")
+				.setMessage(msg)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Intent re_Intent = new Intent(re_context,MyLibrary.class);
+						re_Intent.putExtra("State", "OK");
+						re_context.startActivity(re_Intent);
+					}
+				})
+				.show();
+			}
 		}
 		else
 		{

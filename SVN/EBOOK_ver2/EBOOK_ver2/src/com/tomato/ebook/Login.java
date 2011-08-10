@@ -63,7 +63,7 @@ public class Login extends Activity {
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
 	NetworkInfo wifi;    
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
@@ -219,6 +219,7 @@ public class Login extends Activity {
 			Log.i(this.getLocalClassName(), theUrl);
 			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 
+			httpParams.add(new BasicNameValuePair("rowid",email));
 			httpParams.add(new BasicNameValuePair("email",email));
 			httpParams.add(new BasicNameValuePair("pass", pass));
 			httpParams.add(new BasicNameValuePair("id",bookId));
@@ -296,6 +297,18 @@ public class Login extends Activity {
 				e.printStackTrace();
 			}
 		}
+		else if(rowid==6)
+		{
+
+			try {
+				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
+				saveBook(resEbook,0);
+				SaveImg(resImage,0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		CheckUtil result = new CheckUtil();	
 		result.CheckResult(this,rowid,msg,1);
 	}
@@ -306,154 +319,187 @@ public class Login extends Activity {
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
 		try
 		{
-			save[0] = new FileWriter(userData);
-			save[0].write(String.valueOf(rowid));
-			save[0].write("\n");
-			save[0].write(email);
-			save[0].write("\n");
-			for(int i=0;i<=count;i++)
-			{	
-				if(i==count)
-					save[0].write("\n");
-				else
-				{
-					if(i==(count-1))
-						save[0].write(id[i]);
+			if(rowid==1)
+			{
+				save[0] = new FileWriter(userData);
+				save[0].write(String.valueOf(rowid));
+				save[0].write("\n");
+				save[0].write(email);
+				save[0].write("\n");
+				for(int i=0;i<=count;i++)
+				{	
+					if(i==count)
+						save[0].write("\n");
 					else
 					{
-						save[0].write(id[i]);
-						save[0].write(",");
+						if(i==(count-1))
+							save[0].write(id[i]);
+						else
+						{
+							save[0].write(id[i]);
+							save[0].write(",");
+						}
+					}	
+				}
+
+				for(int i=0;i<=count;i++)
+				{
+					if(i==count)
+						save[0].write("\n");
+					else
+					{
+						if(i==(count-1))
+							save[0].write(title[i]);
+						else
+						{
+							save[0].write(title[i]);
+							save[0].write(",");
+						}
+
+					}	
+				}
+				for(int i=0;i<=count;i++)
+				{
+					if(i==count)
+						save[0].write("\n");
+					else
+					{
+						if(i==(count-1))
+							save[0].write(author[i]);
+						else
+						{
+							save[0].write(author[i]);
+							save[0].write(",");	
+						}
+
+					}	
+				}
+				for(int i=0;i<=count;i++)
+				{
+
+					if(i==count)
+						save[0].write("\n");
+					else
+					{
+						if(i==(count-1))
+							save[0].write(description[i]);
+						else
+						{
+							save[0].write(description[i]);
+							save[0].write(",");
+						}
+
+					}
+				}
+				for(int i=0;i<=count;i++)
+				{
+
+					if(i==count)
+						save[0].write("\n");
+					else
+					{
+						if(i==(count-1))
+						{
+							save[0].write(image[i]);
+						}
+						else
+						{
+							save[0].write(image[i]);
+							save[0].write(",");
+
+						}
+
 					}
 				}	
-			}
-
-			for(int i=0;i<=count;i++)
-			{
-				if(i==count)
-					save[0].write("\n");
-				else
+				for(int i=0;i<=count;i++)
 				{
-					if(i==(count-1))
-						save[0].write(title[i]);
+
+					if(i==count)
+						save[0].write("\n");
 					else
 					{
-						save[0].write(title[i]);
-						save[0].write(",");
-					}
+						if(i==(count-1))
+							save[0].write(date[i]);
+						else
+						{
+							save[0].write(date[i]);
+							save[0].write(",");
+						}
 
+					}
 				}	
+				save[0].close();
 			}
-			for(int i=0;i<=count;i++)
-			{
-				if(i==count)
-					save[0].write("\n");
-				else
-				{
-					if(i==(count-1))
-						save[0].write(author[i]);
-					else
-					{
-						save[0].write(author[i]);
-						save[0].write(",");	
-					}
 
-				}	
+			else if(rowid==6)
+			{
+				save[0] = new FileWriter(userData);
+				save[0].write(String.valueOf(rowid));
+				save[0].write("\n");
+				save[0].write(email);
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].write("%x");
+				save[0].write("\n");
+				save[0].close();
+
 			}
-			for(int i=0;i<=count;i++)
-			{
-
-				if(i==count)
-					save[0].write("\n");
-				else
-				{
-					if(i==(count-1))
-						save[0].write(description[i]);
-					else
-					{
-						save[0].write(description[i]);
-						save[0].write(",");
-					}
-
-				}
-			}
-			for(int i=0;i<=count;i++)
-			{
-
-				if(i==count)
-					save[0].write("\n");
-				else
-				{
-					if(i==(count-1))
-					{
-						save[0].write(image[i]);
-					}
-					else
-					{
-						save[0].write(image[i]);
-						save[0].write(",");
-
-					}
-
-				}
-			}	
-			for(int i=0;i<=count;i++)
-			{
-
-				if(i==count)
-					save[0].write("\n");
-				else
-				{
-					if(i==(count-1))
-						save[0].write(date[i]);
-					else
-					{
-						save[0].write(date[i]);
-						save[0].write(",");
-					}
-
-				}
-			}	
-			save[0].close();
 		}
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-	}
+			}
 	public void saveBook(String[] ebook,int i) throws IOException
 	{
-		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
-		FileWriter tempSave = save[i+1]; 
-		tempSave = new FileWriter(userData);
-		tempSave.write(ebook[i]);
-		tempSave.close();
+		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
+		if(rowid==1)
+		{
+			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
+			FileWriter tempSave = save[i+1]; 
+			tempSave = new FileWriter(userData);
+			tempSave.write(ebook[i]);
+			tempSave.close();
+		}
 	}
 	void  SaveImg(String[] ImgUrl,int i)throws IOException
 	{
-
-		try
-		{	
-			String tmpurlStr = "http://www."+ImgUrl[i];
-			String imageUrl=tmpurlStr.replace("@amp;", "&");
-
-			URL url = new URL(imageUrl);
-			InputStream is = url.openStream();
-
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
-			Bitmap bitmap = BitmapFactory.decodeStream(is);
-			OutputStream filestream = null;
-			filestream = new FileOutputStream(file);
-			bitmap.compress(CompressFormat.JPEG, 100, filestream);
-
-			filestream.flush();
-			filestream.close();
-
-		}
-		catch(Exception e)
+		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
+		if(rowid==1)
 		{
-			Log.e("URL","error,in load Drawable\n"+e.toString());
+			try
+			{	
+				String tmpurlStr = "http://www."+ImgUrl[i];
+				String imageUrl=tmpurlStr.replace("@amp;", "&");
+
+				URL url = new URL(imageUrl);
+				InputStream is = url.openStream();
+
+				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
+				Bitmap bitmap = BitmapFactory.decodeStream(is);
+				OutputStream filestream = null;
+				filestream = new FileOutputStream(file);
+				bitmap.compress(CompressFormat.JPEG, 100, filestream);
+
+				filestream.flush();
+				filestream.close();
+
+			}
+			catch(Exception e)
+			{
+				Log.e("URL","error,in load Drawable\n"+e.toString());
+			}
+
+
 		}
-
-
 	}
 }

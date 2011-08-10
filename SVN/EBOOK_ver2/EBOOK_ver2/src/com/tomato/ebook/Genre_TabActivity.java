@@ -7,6 +7,7 @@ public class Genre_TabActivity extends android.app.TabActivity {
 	TabHost tabHost;
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JptomatoLogoActivity.actList.add(this);
         tabHost = getTabHost();
         
         tabHost.addTab(tabHost.newTabSpec("tab1")
@@ -38,6 +39,7 @@ public class Genre_TabActivity extends android.app.TabActivity {
 				{
 					tabHost.clearAllTabs();
 					Intent Intent = new Intent(Genre_TabActivity.this,MyLibrary.class);
+					Intent.putExtra("State", "OK");
 					startActivity(Intent);
 					break;
 				}

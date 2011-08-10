@@ -1,6 +1,7 @@
 package com.tomato.ebook;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -18,6 +19,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class EbookMain extends Activity {
+	public static ArrayList<Activity> menuList = new ArrayList<Activity>();
+
 	/** Called when the activity is first created. */
 	File userData;
 	ConnectivityManager cManager;    
@@ -26,6 +29,7 @@ public class EbookMain extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.main);
 
 	}

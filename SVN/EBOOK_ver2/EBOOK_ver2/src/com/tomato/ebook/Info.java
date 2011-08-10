@@ -32,6 +32,7 @@ public class Info extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		JptomatoLogoActivity.actList.add(this);
 	    setContentView(R.layout.info);
 	    Intent toBook = getIntent();
 	    Log.e("genIntentinInfo","start");

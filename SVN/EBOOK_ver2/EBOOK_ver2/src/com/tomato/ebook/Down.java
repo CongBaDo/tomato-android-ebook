@@ -59,6 +59,7 @@ public class Down extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.down);
 		Intent fromInfo = getIntent();
 
@@ -207,6 +208,7 @@ public class Down extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent (Down.this,MyLibrary.class);
+					intent.putExtra("State", "OK");
 					startActivity(intent);
 				}
 			})
@@ -222,6 +224,7 @@ public class Down extends Activity {
 		try
 		{
 			save[0] = new FileWriter(userData);
+			if(rowid==6){save[0].write("1");}
 			save[0].write(String.valueOf(rowid));
 			save[0].write("\n");
 			save[0].write(userId);

@@ -26,6 +26,7 @@ public class Books extends Activity {
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.books_custom_list);
 
 		Intent fromGenre = getIntent();

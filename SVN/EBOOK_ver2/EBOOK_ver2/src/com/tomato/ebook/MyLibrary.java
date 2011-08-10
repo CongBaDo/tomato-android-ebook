@@ -231,6 +231,10 @@ public class MyLibrary extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						for(int i =0;i <JptomatoLogoActivity.actList.size();i++ )
+						{
+							JptomatoLogoActivity.actList.get(i).finish();
+						}
 						close();
 						System.exit(1);
 					}
@@ -290,7 +294,7 @@ public class MyLibrary extends Activity {
 			image_url=datadata.get(6);
 			date=datadata.get(7);
 
-
+			if(Integer.valueOf(datadata.get(0))==1){
 			for (int i = 0; i < datadata.size(); i++) {
 				Log.e("datadata", datadata.get(i));
 			}
@@ -308,12 +312,14 @@ public class MyLibrary extends Activity {
 			Bitmap bit = BitmapFactory.decodeFile(viewImage);
 			list_book_detail.setImageBitmap(bit);
 			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
-
 			book_key=position+1;
-
-
-
-
+			}
+			else if(Integer.valueOf(datadata.get(0))==6)
+			{
+				list_book_detail.setImageResource(R.drawable.default_book);
+				tv.setText("未だダウンロードした本が有りません。");
+			
+			}
 		}
 	};
 

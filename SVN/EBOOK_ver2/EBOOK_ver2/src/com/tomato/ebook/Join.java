@@ -95,7 +95,7 @@ public class Join extends Activity{
 		String ebook = hm.get("ebook[0]");
 		String date = hm.get("date[0]");
 		String msg = hm.get("msg[0]");
-		if(rowid==1||rowid==6)
+		if(rowid==6)
 		{
 			try {
 				Log.e("Join","savefile");

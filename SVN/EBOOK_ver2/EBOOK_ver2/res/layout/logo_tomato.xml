@@ -6,8 +6,7 @@
     
 	<RelativeLayout
 		android:id="@+id/logo_layout"
-	    android:layout_width="280px" 
-	    android:layout_centerInParent="true" android:layout_height="250px">
+	    android:layout_centerInParent="true" android:layout_height="250px" android:layout_width="290px">
 	    
 	    <ImageView
 	    	android:id="@+id/logo_tomato"
@@ -73,23 +72,8 @@
 		    android:layout_marginTop="164px" 
 		    android:layout_marginLeft="35px"
 		    android:src="@drawable/logo_text6_o" />
-
-    	<ImageView
-			android:id="@+id/logo_droid_body"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentBottom="true" 
-		    android:layout_marginLeft="10px"
-		    android:src="@drawable/logo_droid_body" />
-		    
-		<ImageView
-			android:id="@+id/logo_droid_head"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_above="@+id/logo_droid_body"
-		    android:layout_marginLeft="23.5px"
-		    android:src="@drawable/logo_droid_head" />
+		<ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/logo_droid_head" android:src="@drawable/logo_droid_head" android:layout_above="@+id/logo_droid_body" android:layout_alignLeft="@+id/logo_droid_body" android:layout_alignRight="@+id/logo_droid_body"></ImageView>
+		<ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/logo_droid_body" android:src="@drawable/logo_droid_body" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"></ImageView>
 		    
     </RelativeLayout>
     
