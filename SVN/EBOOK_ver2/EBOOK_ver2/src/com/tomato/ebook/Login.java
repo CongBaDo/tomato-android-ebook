@@ -47,7 +47,7 @@ import com.tomato.communication.cmsHTTP;
 public class Login extends Activity {
 	static final int MAX = 100;
 	static int bookCounter=1;
-	String[] id=new String[MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],ebook=new String[MAX],date=new String[MAX];
+	String[] id=new String[MAX],pwd = new String [MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],ebook=new String[MAX],date=new String[MAX];
 	String[] resId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resEbook=new String[MAX],resDate=new String[MAX];	
 	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate,userId=null;
 	EditText EditID,EditPass;
@@ -242,10 +242,21 @@ public class Login extends Activity {
 			}
 			else
 			{
+				CheckUtil result = new CheckUtil();	
+				int rowid = 0;
 				hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
 				Log.e("go result","go!");
 				Log.v(this.getLocalClassName(), tmpData);
-				addResult(hm);
+				rowid = Integer.valueOf(hm.get("rowid[0]"));
+				
+				if(rowid==3){
+				String msg = hm.get("msg[0]");
+				result.CheckResult(this,rowid,msg,1);
+				}
+				else
+				{
+					addResult(hm);
+				}
 			}
 		}
 	}
@@ -253,43 +264,62 @@ public class Login extends Activity {
 		int count = Integer.valueOf(hm.get("count"));
 		Log.e("result_count",String.valueOf(count));
 		Log.e("result_inStrFor","going");
-		for(int i=0;i<count;i++)
-		{
-			id[i]=("id["+i+"]");
-			Log.e("id",id[i].toString());
-			title[i]="title["+i+"]";
-			author[i]="author["+i+"]";
-			description[i]="description["+i+"]";
-			image[i]="imageurl["+i+"]";
-			ebook[i]="ebook["+i+"]";
-			date[i]="date["+i+"]";
-		}
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
 		String msg = hm.get("msg[0]");
-
-		for(int i=0;i<count;i++)
+		if(count==0)
 		{
-			Log.e("count_result",String.valueOf(i));
-			resId[i] = hm.get(id[i]);
-			resTitle[i] = hm.get(title[i]);
-			resAuthor[i] = hm.get(author[i]);
-			resDescription[i] = hm.get(description[i]);
-			resImage[i] =hm.get(image[i]);
-			resEbook[i] =hm.get(ebook[i]);
-			resDate[i] = hm.get(date[i]);
+			resId[0] = hm.get("id[0]");
+			resTitle[0] = hm.get("title[0]");
+			resAuthor[0] = hm.get("author[0]");
+			resDescription[0] = hm.get("description[0]");
+			resImage[0] =hm.get("imageurl[0]");
+			resEbook[0] =hm.get("ebook[0]");
+			resDate[0] = hm.get("date[0]");
 		}
-
+		else
+		{
+			for(int i=0;i<count;i++)
+			{
+				id[i]=("id["+i+"]");
+				Log.e("id",id[i].toString());
+				title[i]="title["+i+"]";
+				author[i]="author["+i+"]";
+				description[i]="description["+i+"]";
+				image[i]="imageurl["+i+"]";
+				ebook[i]="ebook["+i+"]";
+				date[i]="date["+i+"]";
+			}
+			for(int i=0;i<count;i++)
+			{
+				Log.e("count_result",String.valueOf(i));
+				resId[i] = hm.get(id[i]);
+				resTitle[i] = hm.get(title[i]);
+				resAuthor[i] = hm.get(author[i]);
+				resDescription[i] = hm.get(description[i]);
+				resImage[i] =hm.get(image[i]);
+				resEbook[i] =hm.get(ebook[i]);
+				resDate[i] = hm.get(date[i]);
+			}
+		}
 		Log.e("rowid in addReseult",rowid+"");
 		//rowid = 1;
 		if(rowid==1)
 		{
 			try {
 				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
-				for(int i = 0;i<count;i++)
+				if(count==0)
 				{
-					saveBook(resEbook,i);
-					SaveImg(resImage,i);
+					saveBook(resEbook,0);
+					SaveImg(resImage,0);
+				}
+				else
+				{
+					for(int i = 0;i<count;i++)
+					{
+						saveBook(resEbook,i);
+						SaveImg(resImage,i);
 
+					}
 				}
 				bookCounter = 1;
 			} catch (IOException e) {
@@ -301,10 +331,8 @@ public class Login extends Activity {
 		{
 
 			try {
-				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
-				saveBook(resEbook,0);
-				SaveImg(resImage,0);
-			} catch (IOException e) {
+					saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
+				} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -326,108 +354,127 @@ public class Login extends Activity {
 				save[0].write("\n");
 				save[0].write(email);
 				save[0].write("\n");
-				for(int i=0;i<=count;i++)
-				{	
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-							save[0].write(id[i]);
+				if(count==0)
+				{
+					save[0].write(id[0]);
+					save[0].write("\n");
+					save[0].write(title[0]);
+					save[0].write("\n");
+					save[0].write(author[0]);
+					save[0].write("\n");
+					save[0].write(description[0]);
+					save[0].write("\n");
+					save[0].write(image[0]);
+					save[0].write("\n");
+					save[0].write(date[0]);
+					save[0].write("\n");
+
+				}
+				else
+				{
+					for(int i=0;i<=count;i++)
+					{	
+						if(i==count)
+							save[0].write("\n");
 						else
 						{
-							save[0].write(id[i]);
-							save[0].write(",");
+							if(i==(count-1))
+								save[0].write(id[i]);
+							else
+							{
+								save[0].write(id[i]);
+								save[0].write(",");
+							}
+						}	
+					}
+
+					for(int i=0;i<=count;i++)
+					{
+						if(i==count)
+							save[0].write("\n");
+						else
+						{
+							if(i==(count-1))
+								save[0].write(title[i]);
+							else
+							{
+								save[0].write(title[i]);
+								save[0].write(",");
+							}
+
+						}	
+					}
+					for(int i=0;i<=count;i++)
+					{
+						if(i==count)
+							save[0].write("\n");
+						else
+						{
+							if(i==(count-1))
+								save[0].write(author[i]);
+							else
+							{
+								save[0].write(author[i]);
+								save[0].write(",");	
+							}
+
+						}	
+					}
+					for(int i=0;i<=count;i++)
+					{
+
+						if(i==count)
+							save[0].write("\n");
+						else
+						{
+							if(i==(count-1))
+								save[0].write(description[i]);
+							else
+							{
+								save[0].write(description[i]);
+								save[0].write(",");
+							}
+
+						}
+					}
+					for(int i=0;i<=count;i++)
+					{
+
+						if(i==count)
+							save[0].write("\n");
+						else
+						{
+							if(i==(count-1))
+							{
+								save[0].write(image[i]);
+							}
+							else
+							{
+								save[0].write(image[i]);
+								save[0].write(",");
+
+							}
+
 						}
 					}	
-				}
-
-				for(int i=0;i<=count;i++)
-				{
-					if(i==count)
-						save[0].write("\n");
-					else
+					for(int i=0;i<=count;i++)
 					{
-						if(i==(count-1))
-							save[0].write(title[i]);
+
+						if(i==count)
+							save[0].write("\n");
 						else
 						{
-							save[0].write(title[i]);
-							save[0].write(",");
+							if(i==(count-1))
+								save[0].write(date[i]);
+							else
+							{
+								save[0].write(date[i]);
+								save[0].write(",");
+							}
+
 						}
-
-					}	
-				}
-				for(int i=0;i<=count;i++)
-				{
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-							save[0].write(author[i]);
-						else
-						{
-							save[0].write(author[i]);
-							save[0].write(",");	
-						}
-
-					}	
-				}
-				for(int i=0;i<=count;i++)
-				{
-
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-							save[0].write(description[i]);
-						else
-						{
-							save[0].write(description[i]);
-							save[0].write(",");
-						}
-
 					}
 				}
-				for(int i=0;i<=count;i++)
-				{
-
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-						{
-							save[0].write(image[i]);
-						}
-						else
-						{
-							save[0].write(image[i]);
-							save[0].write(",");
-
-						}
-
-					}
-				}	
-				for(int i=0;i<=count;i++)
-				{
-
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-							save[0].write(date[i]);
-						else
-						{
-							save[0].write(date[i]);
-							save[0].write(",");
-						}
-
-					}
-				}	
 				save[0].close();
 			}
 

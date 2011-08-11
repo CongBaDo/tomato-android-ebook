@@ -19,7 +19,7 @@ public class fileLoadUtil {
 	Context complete;
 	String[] tmtFiles=new String[100];
 	int fileLength = 0;
-	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tomato/tmt/";
+	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tomato/pdfimg/";
 	public fileLoadUtil()
 	{
 		
@@ -33,7 +33,7 @@ public class fileLoadUtil {
         
         for(int i=0;i<files.length;i++)
         {
-        	if(files[i].endsWith(".tmt"))
+        	if(files[i].endsWith(".pdfImg"))
         	{
         		tmtFiles[fileLength] = files[i];
         		fileLength++;
@@ -74,12 +74,12 @@ public class fileLoadUtil {
 	            int count;
 	            byte data[] = new byte[BUFFER];
 	            // write the files to the disk
-	            File dataFolder = new File(path+(name.replace(".tmt", "/")));
+	            File dataFolder = new File(path+(name.replace(".pdfImg", "/")));
 	            if(!dataFolder.exists())
 	            {
 	            	dataFolder.mkdir();
 	            }
-	            FileOutputStream fos = new FileOutputStream(path+(name.replace(".tmt", "/")+"/")+entry.getName());
+	            FileOutputStream fos = new FileOutputStream(path+(name.replace(".pdfImg", "/")+"/")+entry.getName());
 	            dest = new BufferedOutputStream(fos,BUFFER);
 	            while ((count = zis.read(data, 0,BUFFER)) != -1) 
 	            {

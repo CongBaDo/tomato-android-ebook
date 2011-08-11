@@ -156,7 +156,7 @@ public class CheckUtil {
 		{
 			new AlertDialog.Builder(re_context)
 			.setTitle("Notification")
-			.setMessage("IDが違います。")
+			.setMessage(msg)
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 				@Override
