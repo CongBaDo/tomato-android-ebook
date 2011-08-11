@@ -19,8 +19,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class EbookMain extends Activity {
-	public static ArrayList<Activity> menuList = new ArrayList<Activity>();
-
+	
 	/** Called when the activity is first created. */
 	File userData;
 	ConnectivityManager cManager;    
@@ -135,7 +134,7 @@ public class EbookMain extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-
+					
 
 				}
 			})
@@ -144,7 +143,12 @@ public class EbookMain extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
+					for(int i =0;i <JptomatoLogoActivity.actList.size();i++ )
+					{
+						JptomatoLogoActivity.actList.get(i).finish();
+					}
 					close();
+					System.exit(1);
 				}
 			})
 			.show();
