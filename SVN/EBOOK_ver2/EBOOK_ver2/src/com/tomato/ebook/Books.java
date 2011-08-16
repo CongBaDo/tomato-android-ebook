@@ -17,7 +17,7 @@ public class Books extends Activity {
 	final int MAX = 200;
 	ArrayList<MyItem> arItem;
 	String[] toGenreId = new String[MAX],toGenreTitle= new String[MAX],toGenreAuthor= new String[MAX],toGenreDescription= new String[MAX],
-	toGenreImage= new String[MAX],toGenreGenre= new String[MAX],toGenreHit= new String[MAX],toGenreStock,fixImage= new String[MAX];
+	toGenreImage = new String[MAX],toGenreGenre= new String[MAX],toGenreHit= new String[MAX],toGenreStock,fixImage= new String[MAX];
 
 	String toGenreCount;
 	int intFromCount;
@@ -81,5 +81,4 @@ public class Books extends Activity {
 			}
 		});
 	}
-
 }
