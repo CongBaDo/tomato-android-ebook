@@ -45,59 +45,91 @@ import com.tomato.communication.cmsHTTP;
 
 
 public class Login extends Activity {
-	static final int MAX = 100;
-	static int bookCounter=1;
-	String[] id=new String[MAX],pwd = new String [MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],ebook=new String[MAX],date=new String[MAX];
-	String[] resId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resEbook=new String[MAX],resDate=new String[MAX];	
-	String email,pass,bookId,bookTitle,bookAuthor,bookDescription,bookImage,bookEbook,bookDate,userId=null;
-	EditText EditID,EditPass;
-	Button LogBtn,TorokuBtn,SyosaiBtn;
 	CheckBox Loginck;
 	CheckUtil logTest;
+	//サーバーからもらった"xml"データを保存する資料型
 	HashMap<String, String> hm;
-	Util cmsutil = new Util();
-	Activity act = this;
-	File userData,userText,userCheck;
-	FileWriter[] save = new FileWriter[MAX];
-	FileReader idCheck;
+
 	ConnectivityManager cManager;    
 	NetworkInfo mobile;    
 	NetworkInfo wifi;    
 
+	Util cmsutil = new Util();
+	Activity act = this;
+
+	File userData,userText,userCheck;
+	FileWriter[] save = new FileWriter[MAX];
+	FileReader idCheck;
+
+	static final int MAX = 100;
+	static int bookCounter = 1;
+
+	private String[] id=new String[MAX], 
+			pwd = new String [MAX], 
+			title = new String[MAX], 
+			author = new String[MAX], 
+			description = new String[MAX], 
+			image = new String[MAX], 
+			ebook = new String[MAX], 
+			date = new String[MAX],  
+			resId = new String[MAX],  
+			resTitle = new String[MAX],  
+			resAuthor = new String[MAX],  
+			resDescription = new String[MAX], 
+			resImage = new String[MAX], 
+			resEbook = new String[MAX], 
+			resDate = new String[MAX];
+
+	String email, 
+	pass, 
+	bookId, 
+	bookTitle, 
+	bookAuthor, 
+	bookDescription, 
+	bookImage, 
+	bookEbook, 
+	bookDate, 
+	userId=null;
+
+	EditText EditID,EditPass;
+	Button LogBtn,TorokuBtn,SyosaiBtn;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		//Activityの追加
 		JptomatoLogoActivity.actList.add(this);
-		EditID = (EditText)findViewById(R.id.Login_EditID);
-		EditPass = (EditText)findViewById(R.id.Login_EditPass);
-		LogBtn = (Button)findViewById(R.id.Login_LogBtn);
-		SyosaiBtn = (Button)findViewById(R.id.Login_syo);
-		Loginck = (CheckBox)findViewById(R.id.Login_checkBox);
-		TorokuBtn = (Button)findViewById(R.id.Login_TorokuBtn);
-		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
+
+
+		EditID = ( EditText ) findViewById( R.id.Login_EditID );	//　「Email」エディトボックス
+		EditPass = ( EditText ) findViewById( R.id.Login_EditPass );//　「P/W」エディトボックス
+
+		Loginck = ( CheckBox ) findViewById( R.id.Login_checkBox );//　「サーバーへ接続しない」チェックボックス
+
+		LogBtn = ( Button ) findViewById( R.id.Login_LogBtn );//「サーバーへ接続」ボタン
+		SyosaiBtn = ( Button ) findViewById( R.id.Login_syo );//「書斎へ」ボタン
+		TorokuBtn = ( Button ) findViewById( R.id.Login_TorokuBtn );//「登録」ボタン
+
+		cManager=( ConnectivityManager ) getSystemService( Context.CONNECTIVITY_SERVICE );    
+
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
 
-		if(!mobile.isConnected() && !wifi.isConnected())
+		// 3GとWiFiの環境が出来ない場合
+		if (!mobile.isConnected() && !wifi.isConnected())
 		{
-			//			new AlertDialog.Builder(Login.this)
-			//			.setTitle("Notification")
-			//			.setMessage("ログインの際、必ずWIFIや３Gに接続して下さい。")
-			//			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			//
-			//				@Override
-			//				public void onClick(DialogInterface dialog, int which) {
-			//					// TODO Auto-generated method stub
-			//					
-			//				}
-			//			})
-			//			.show();
+
 			EditID.setEnabled(false);
 			EditPass.setEnabled(false);
 			Loginck.setChecked(true);
 			LogBtn.setEnabled(false);
 		}
 
+		//////////////////////////////////////////////////
+		//
+		// 「サーバへ接続しない」チェックボックス押下時の処理
+		//
+		//////////////////////////////////////////////////
 		Loginck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -118,6 +150,11 @@ public class Login extends Activity {
 			}
 		});
 
+		//////////////////////////////////////////////////
+		//
+		// 「サーバへ接続」ボタン押下時の処理
+		//
+		//////////////////////////////////////////////////
 		LogBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -130,14 +167,18 @@ public class Login extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub			
-						tryToLogin(); 
+						tryToLogin(); //サーバーと通信します。
 					}
 				})
 				.show();
-
 			}
-		});
+		});//LogBtn.setOnClickListener end
 
+		//////////////////////////////////////////////////
+		//
+		// 「書斎へ」ボタン押下時の処理
+		//
+		//////////////////////////////////////////////////
 		SyosaiBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -145,6 +186,7 @@ public class Login extends Activity {
 				// TODO Auto-generated method stub
 				email = EditID.getText().toString();
 				userCheck = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+				//ユーザーのデータが存在しない場合
 				if(!userCheck.exists()||userCheck.length()==0||!userCheck.canRead())
 				{
 					new AlertDialog.Builder(Login.this)
@@ -158,7 +200,8 @@ public class Login extends Activity {
 						}
 					})
 					.show();
-				}
+				}//if end
+				//---もしユーザーのデータが存在したら、ユーザーのデータを読み込み---//
 				else
 				{
 					try {
@@ -192,9 +235,15 @@ public class Login extends Activity {
 						}
 					})
 					.show();
-				}
-			}
-		});
+				}//else end
+			}//onClick end
+		});//SyosaiBtn.setOnClickListener end
+
+		//////////////////////////////////////////////////
+		//
+		// 「登録」ボタン押下時の処理
+		//
+		//////////////////////////////////////////////////
 		TorokuBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			// TODO Auto-generated method stub
@@ -205,79 +254,124 @@ public class Login extends Activity {
 
 			}	
 		});
-	}
+	}//TorokuBtn.setOnClickListener end
 
+	//////////////////////////////////////////////////
+	//
+	// サーバーと通信して、データを引き出し
+	//
+	//////////////////////////////////////////////////
 	public void tryToLogin() {
+		//ユーザーが入力したEmailと秘密番号を読み込む		
 		email = EditID.getText().toString();
 		pass = EditPass.getText().toString();
 
 		logTest = new CheckUtil(Login.this,email,pass);
+		//Emailと秘密番号が全部入力した場合
 		if (logTest.checkStart())
 		{
 			//String theUrl = "http://pairiserver.appspot.com/kaka/android_login.jsp";
+			//ログインを担当するサーバーの住所
 			String theUrl = "http://ebookserverhjy5.appspot.com/android_login.jsp";
 			Log.i(this.getLocalClassName(), theUrl);
-			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 
+			//サーバーに要請するデータ目録を作成する			
+			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+			/*
+			/	ユーザーの状態ID。
+			/	本をダウンロードし無いなら"6"、ダウンロードした本が有ったら"1"、
+			/	IDと秘密番号が間違ったら"3"です。
+			 */
 			httpParams.add(new BasicNameValuePair("rowid",email));
+
+			//ユーザーのID
 			httpParams.add(new BasicNameValuePair("email",email));
+
+			//ユーザーの秘密番号
 			httpParams.add(new BasicNameValuePair("pass", pass));
+
+			//ダウンロードした本のID。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("id",bookId));
+
+			//ダウンロードした本の名前。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("title", bookTitle));
+
+			//ダウンロードした本の著者。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("author",bookAuthor));
+
+			//ダウンロードした本の説明。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("descripstion", bookDescription));
+
+			//ダウンロードした本のイメージ住所。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("imageurl",bookImage));
+
+			//ダウンロードした本の内容。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("ebook",bookEbook));
+
+			//ダウンロードした本がサーバーへ登録された日。登録した最初には"%x"と表示
 			httpParams.add(new BasicNameValuePair("date",bookDate));
 
-			cmsHTTP cmsHttp = new cmsHTTP();
-			//cmsHttp.encoding = encoding;
+			cmsHTTP cmsHttp = new cmsHTTP();//接続準備
 			cmsHttp.act = Login.this;
 			Log.e("sending","sendpost");
-			String tmpData = cmsHttp.sendPost(theUrl, httpParams);
-			//		Log.e("postout",tmpData);
+			String tmpData = cmsHttp.sendPost(theUrl, httpParams);//サーバーへデータを要請
+
+			//サーバーから戻り値がない場合
 			if (tmpData == null)
 			{
 				return;
-			}
+			}//if end
+
+			//戻り値が有る場合
 			else
 			{
-				CheckUtil result = new CheckUtil();	
 				int rowid = 0;
+				CheckUtil result = new CheckUtil();	
+				//サーバーへ要請したデータを保存
 				hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
-				Log.e("go result","go!");
-				Log.v(this.getLocalClassName(), tmpData);
+				//保存したデータの中で、ユーザーの状態データを読み込み
 				rowid = Integer.valueOf(hm.get("rowid[0]"));
-				
+				//rowidの値が3の場合
 				if(rowid==3){
-				String msg = hm.get("msg[0]");
-				result.CheckResult(this,rowid,msg,1);
-				}
+					String msg = hm.get("msg[0]");
+					result.CheckResult(this,rowid,msg,1);
+				}//if end
+				//3がない場合
 				else
 				{
 					addResult(hm);
-				}
-			}
-		}
-	}
+				}//else end
+			}//else end
+		}//if end
+	}//tryToLogin() end
+
+
+	//////////////////////////////////////////////////
+	//
+	// サーバーへ要請したデータを使って、ファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void addResult(HashMap<String, String> hm) {
-		int count = Integer.valueOf(hm.get("count"));
-		Log.e("result_count",String.valueOf(count));
-		Log.e("result_inStrFor","going");
+		int count = cmsutil.str2int(hm.get("count"));//サーバーからもらった本の数。"0"から始まる。
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
-		String msg = hm.get("msg[0]");
+		String msg = hm.get("msg[0]");//rowidに対して、サーバーが送るメッセージ。
+
+		//ユーザーがダウンロードした本が一巻の場合
 		if(count==0)
 		{
-			resId[0] = hm.get("id[0]");
-			resTitle[0] = hm.get("title[0]");
-			resAuthor[0] = hm.get("author[0]");
-			resDescription[0] = hm.get("description[0]");
-			resImage[0] =hm.get("imageurl[0]");
-			resEbook[0] =hm.get("ebook[0]");
-			resDate[0] = hm.get("date[0]");
-		}
+			resId[0] = hm.get("id[0]");//一番目の本のIDデータを引き出し
+			resTitle[0] = hm.get("title[0]");//一番目の本の名前データを引き出し
+			resAuthor[0] = hm.get("author[0]");//一番目の本の著者データを引き出し
+			resDescription[0] = hm.get("description[0]");//一番目の本の説目データを引き出し
+			resImage[0] =hm.get("imageurl[0]");//一番目の本のイメージ住所を引き出し
+			resEbook[0] =hm.get("ebook[0]");//一番目の本の内容データを引き出し
+			resDate[0] = hm.get("date[0]");//一番目の本のIDデータを引き出し
+		}//if end
+
+		//ユーザーがダウンロードした本が一巻以上の場合		
 		else
 		{
+			//サーバーへ要請したデータを保存する変数"hm"からデータを引き出す構文を作る。
 			for(int i=0;i<count;i++)
 			{
 				id[i]=("id["+i+"]");
@@ -288,30 +382,37 @@ public class Login extends Activity {
 				image[i]="imageurl["+i+"]";
 				ebook[i]="ebook["+i+"]";
 				date[i]="date["+i+"]";
-			}
-			for(int i=0;i<count;i++)
+			}//for i  end
+
+			//サーバーへ要請したデータを保存する変数"hm"からデータを引き出して各データ別に保存。
+			for(int j=0;j<count;j++)
 			{
-				Log.e("count_result",String.valueOf(i));
-				resId[i] = hm.get(id[i]);
-				resTitle[i] = hm.get(title[i]);
-				resAuthor[i] = hm.get(author[i]);
-				resDescription[i] = hm.get(description[i]);
-				resImage[i] =hm.get(image[i]);
-				resEbook[i] =hm.get(ebook[i]);
-				resDate[i] = hm.get(date[i]);
-			}
-		}
-		Log.e("rowid in addReseult",rowid+"");
-		//rowid = 1;
+				Log.e("count_result",String.valueOf(j));
+				resId[j] = hm.get(id[j]);
+				resTitle[j] = hm.get(title[j]);
+				resAuthor[j] = hm.get(author[j]);
+				resDescription[j] = hm.get(description[j]);
+				resImage[j] =hm.get(image[j]);
+				resEbook[j] =hm.get(ebook[j]);
+				resDate[j] = hm.get(date[j]);
+			}//for end
+		}//else end
+
+		//rowidが"1"の場合
 		if(rowid==1)
 		{
 			try {
+				//"login.txt"を作成します。
 				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
+
+				//ユーザーがダウンロードした本が一巻の場合		
 				if(count==0)
 				{
-					saveBook(resEbook,0);
-					SaveImg(resImage,0);
-				}
+					saveBook(resEbook,0);//一番目本の内容を保存
+					SaveImg(resImage,0);//一番目本のイメージを保存
+				}//if end
+
+				//ユーザーがダウンロードした本が一巻以上の場合	
 				else
 				{
 					for(int i = 0;i<count;i++)
@@ -320,33 +421,46 @@ public class Login extends Activity {
 						SaveImg(resImage,i);
 
 					}
-				}
+				}//else end
 				bookCounter = 1;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else if(rowid==6)
+		}//if end
+
+		//rowidが"6"の場合
+		else
 		{
 
 			try {
-					saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
-				} catch (IOException e) {
+				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}//else end
+
 		CheckUtil result = new CheckUtil();	
-		result.CheckResult(this,rowid,msg,1);
-	}
+		result.CheckResult(this,rowid,msg,1);//rowidに対して、サーバーが送メッセージを表示する。
+	}//addResult(HashMap<String, String> hm) end
+
+	//////////////////////////////////////////////////
+	//
+	// "login.txt"ファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void saveFile(int rowid,String email, String[] id,String[] title
 			,String[] author,String[] description,String[] image,String[] date) throws IOException
 			{
 		int count = Integer.valueOf(hm.get("count"));
+
+		//保存するファイルを開ける。
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+
 		try
 		{
+			//rowidが"1"の場合
 			if(rowid==1)
 			{
 				save[0] = new FileWriter(userData);
@@ -354,6 +468,8 @@ public class Login extends Activity {
 				save[0].write("\n");
 				save[0].write(email);
 				save[0].write("\n");
+
+				//ユーザーがダウンロードした本が一巻の場合		
 				if(count==0)
 				{
 					save[0].write(id[0]);
@@ -370,12 +486,14 @@ public class Login extends Activity {
 					save[0].write("\n");
 
 				}
+
+				//ユーザーがダウンロードした本が一巻以上の場合		
 				else
 				{
-					for(int i=0;i<=count;i++)
+					for(int i=0;i<=count;i++)//本のIDを保存
 					{	
 						if(i==count)
-							save[0].write("\n");
+							save[0].write("\n");//if end
 						else
 						{
 							if(i==(count-1))
@@ -384,11 +502,11 @@ public class Login extends Activity {
 							{
 								save[0].write(id[i]);
 								save[0].write(",");
-							}
-						}	
-					}
+							}//else end
+						}//else end	
+					}//for i end
 
-					for(int i=0;i<=count;i++)
+					for(int i=0;i<=count;i++)//本の名前を保存
 					{
 						if(i==count)
 							save[0].write("\n");
@@ -400,11 +518,12 @@ public class Login extends Activity {
 							{
 								save[0].write(title[i]);
 								save[0].write(",");
-							}
+							}//else end
 
-						}	
-					}
-					for(int i=0;i<=count;i++)
+						}//else end	
+					}//for i end
+
+					for(int i=0;i<=count;i++)//本の著者を保存
 					{
 						if(i==count)
 							save[0].write("\n");
@@ -416,11 +535,12 @@ public class Login extends Activity {
 							{
 								save[0].write(author[i]);
 								save[0].write(",");	
-							}
+							}//else end
 
-						}	
-					}
-					for(int i=0;i<=count;i++)
+						}//else end	
+					}//for i end
+
+					for(int i=0;i<=count;i++)//本の説明を保存
 					{
 
 						if(i==count)
@@ -433,11 +553,12 @@ public class Login extends Activity {
 							{
 								save[0].write(description[i]);
 								save[0].write(",");
-							}
+							}//else end
 
-						}
-					}
-					for(int i=0;i<=count;i++)
+						}//else end
+					}//for i end
+
+					for(int i=0;i<=count;i++)//本のイメージ住所を保存
 					{
 
 						if(i==count)
@@ -453,11 +574,12 @@ public class Login extends Activity {
 								save[0].write(image[i]);
 								save[0].write(",");
 
-							}
+							}//else end
 
-						}
-					}	
-					for(int i=0;i<=count;i++)
+						}//else end
+					}//for i end	
+
+					for(int i=0;i<=count;i++)//本がサーバーに登録した時間を保存
 					{
 
 						if(i==count)
@@ -470,14 +592,15 @@ public class Login extends Activity {
 							{
 								save[0].write(date[i]);
 								save[0].write(",");
-							}
+							}//else
 
-						}
-					}
-				}
-				save[0].close();
-			}
+						}//else
+					}//for i end
+				}//else end
+				save[0].close();//保存するファイルを閉める。
+			}//if end
 
+			//rowidが"6"の場合
 			else if(rowid==6)
 			{
 				save[0] = new FileWriter(userData);
@@ -499,54 +622,72 @@ public class Login extends Activity {
 				save[0].write("\n");
 				save[0].close();
 
-			}
-		}
+			}//else if end
+		}//try end
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-			}
+	}/*
+	  *saveFile(int rowid,String email, String[] id,String[] title,String[] author,
+	  *         String[] description,String[] image,String[] date) end
+	  */
+
+	//////////////////////////////////////////////////
+	//
+	// Ebookファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void saveBook(String[] ebook,int i) throws IOException
 	{
-		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
-		if(rowid==1)
-		{
-			userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
-			FileWriter tempSave = save[i+1]; 
-			tempSave = new FileWriter(userData);
-			tempSave.write(ebook[i]);
-			tempSave.close();
-		}
+
+		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".ebf");	
+		FileWriter tempSave = save[i+1]; 
+		tempSave = new FileWriter(userData);
+		tempSave.write(ebook[i]);
+		tempSave.close();
 	}
+	
+	//////////////////////////////////////////////////
+	//
+	// Ebookのイメージファイルを作成
+	//
+	/////////////////////////////////////////////////
 	void  SaveImg(String[] ImgUrl,int i)throws IOException
 	{
-		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
-		if(rowid==1)
-		{
-			try
-			{	
-				String tmpurlStr = "http://www."+ImgUrl[i];
-				String imageUrl=tmpurlStr.replace("@amp;", "&");
 
-				URL url = new URL(imageUrl);
-				InputStream is = url.openStream();
+		try
+		{	
+			//保存したイメージの住所にイメージを要請するように住所を処理します。
+			String tmpurlStr = "http://www."+ImgUrl[i];//住所の前で、"http://www."を追加
+			
+			/*サーバーから端末までデータを送る課程で特殊文字が端末に届かない問題が発生。
+			 * それで、サーバーで"&"を"@amp;"で交代する。
+			 * 下の構文はその"@amp;"を"&"で交代する。
+			 */
+			String imageUrl=tmpurlStr.replace("@amp;", "&");
 
-				File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
-				Bitmap bitmap = BitmapFactory.decodeStream(is);
-				OutputStream filestream = null;
-				filestream = new FileOutputStream(file);
-				bitmap.compress(CompressFormat.JPEG, 100, filestream);
+			URL url = new URL(imageUrl);
+			InputStream is = url.openStream();//処理した住所でイメージ・データを引き出し
+			
+			//保存するファイルを開ける
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+(i+1)+".jpg");
+			Bitmap bitmap = BitmapFactory.decodeStream(is);//データをイメージの形で保存
+			OutputStream filestream = null;
+			filestream = new FileOutputStream(file);
+			//保存したデータをイメージ形式で圧縮して、開けたファイルに保存
+			bitmap.compress(CompressFormat.JPEG, 100, filestream);
 
-				filestream.flush();
-				filestream.close();
-
-			}
-			catch(Exception e)
-			{
-				Log.e("URL","error,in load Drawable\n"+e.toString());
-			}
-
+			filestream.flush();
+			filestream.close();//保存するファイルを閉める。
 
 		}
+		catch(Exception e)
+		{
+			Log.e("URL","error,in load Drawable\n"+e.toString());
+		}
+
+
+
 	}
 }

@@ -2,6 +2,8 @@
 <resources>
     <string name="hello">Hello World, EbookMain!</string>
     <string name="app_name">e-books</string>
+    <string name="defaultPath">Environment.getExternalStorageDirectory().getAbsolutePath()</string>
+    <string name="login">login.txt</string>
     
 
 </resources>
