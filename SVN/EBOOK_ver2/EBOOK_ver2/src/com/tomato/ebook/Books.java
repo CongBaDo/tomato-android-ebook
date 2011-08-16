@@ -21,7 +21,7 @@ public class Books extends Activity {
 
 	String toGenreCount;
 	int intFromCount;
-
+//
 	@Override 
 	public void onCreate(Bundle savedInstanceState) 
 	{
