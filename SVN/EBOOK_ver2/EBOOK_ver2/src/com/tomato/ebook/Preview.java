@@ -181,7 +181,6 @@ public class Preview extends Activity {
 			paint.setTextSize(TEXT_SIZE);
 			paint.setAntiAlias(true); 
 
-			
 			if (color != null || bgcolor != null) {
 				
 				canvas.drawColor(Color.parseColor(bgcolor));
@@ -191,16 +190,11 @@ public class Preview extends Activity {
 				canvas.drawRect(rect, paint);
 				canvas.drawColor(Color.parseColor("#FFFFFF"));
 			}
-
-			
 			rect.left   += border;
 			rect.right  -= border;
 			rect.top    += border;
 			rect.bottom -= border;
-
 			drawable.setBounds(rect);
-			
-			
 			// [ 1 . 1 ] の座標
 			
 			int hTab = TEXT_SIZE;  // タイトルバーを含むサイズ
@@ -215,16 +209,18 @@ public class Preview extends Activity {
 					
 					if (line.equals("@")) {
 						line = " ";
-						
 					}
-					if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+					//横と縦の場合違う場面を見せる
+					/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 						canvas.drawText(line, lTeb , hTab, paint);
 						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 					}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 						paint.setTextSize(TEXT_SIZE+7);
 						canvas.drawText(line, lTeb , hTab+50, paint);
 						hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-					}
+					}*/
+					canvas.drawText(line, lTeb , hTab, paint);
+					hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 				}//end for 
 				//mCurlView.addCurrentIndex();
 			}
@@ -244,15 +240,17 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
-						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						//横と縦の場合違う場面を見せる
+						/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 							canvas.drawText(line, lTeb + width /2 , hTab, paint);
 							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 							paint.setTextSize(TEXT_SIZE+7);
 							canvas.drawText(line, lTeb + width /2 , hTab+50, paint);
 							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}
-						
+						}*/
+						canvas.drawText(line, lTeb +width /2 , hTab, paint);
+						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						
 					}//end for 
 				}
@@ -273,14 +271,17 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
-						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						//横と縦の場合違う場面を見せる
+						/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 							canvas.drawText(line, lTeb , hTab, paint);
 							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 							paint.setTextSize(TEXT_SIZE+7);
 							canvas.drawText(line, lTeb , hTab, paint);
 							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}
+						}*/
+						canvas.drawText(line, lTeb , hTab, paint);
+						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 					}//end for 
 				}
 			}
@@ -299,16 +300,17 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
-						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-							
+						//横と縦の場合違う場面を見せる
+					/*	if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 							canvas.drawText(line, lTeb , hTab, paint);
 							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 							paint.setTextSize(TEXT_SIZE+7);
 							canvas.drawText(line, lTeb , hTab, paint);
 							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}
-						
+						}*/
+						canvas.drawText(line, lTeb , hTab, paint);
+						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						
 					}//end for 
 					
