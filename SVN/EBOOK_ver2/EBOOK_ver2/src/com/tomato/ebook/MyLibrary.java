@@ -35,7 +35,7 @@ import com.tomato.sdcard.SDcard;
 public class MyLibrary extends Activity {
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
 	TextView tv;
-	Button readBtn,fileBtn;
+	Button readBtn,fileBtn,prevBtn;
 	ImageView  store,list_book_detail,exit;
 	final static int MAX = 100; 
 	//	HashMap<String, String> hm;
@@ -70,6 +70,7 @@ public class MyLibrary extends Activity {
 		setContentView(R.layout.mylibrary);
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
+		prevBtn=(Button) findViewById(R.id.preview);
 		readBtn=(Button) findViewById(R.id.list_book_read);	
 		fileBtn=(Button)findViewById(R.id.list_file_read);
 		exit=(ImageView)findViewById(R.id.exit);
@@ -90,6 +91,7 @@ public class MyLibrary extends Activity {
 		Log.e("g", "3");
 
 
+		prevBtn.setOnClickListener(read_listener);
 		readBtn.setOnClickListener(read_listener);
 		fileBtn.setOnClickListener(read_listener);
 		store.setOnClickListener(button_listener);
@@ -104,11 +106,6 @@ public class MyLibrary extends Activity {
 		{
 			store.setVisibility(View.GONE);
 		}
-
-
-
-
-
 	}
 
 	String[] redata=null;
@@ -119,70 +116,6 @@ public class MyLibrary extends Activity {
 
 		return redata;
 	}
-
-
-
-
-
-
-	//		String theUrl = "http://ebookssongs3.appspot.com/ebookSelectList.jsp";
-	//		Log.i(this.getLocalClassName(), theUrl);
-	//		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-	//		httpParams.add(new BasicNameValuePair("key","6002"));
-	//
-	//		cmsHTTP cmsHttp = new cmsHTTP();
-	//		//cmsHttp.encoding = encoding;
-	//		cmsHttp.act = MyLibrary.this;
-	//		String tmpData = cmsHttp.sendPost(theUrl, httpParams);
-	//		if (tmpData == null)
-	//		{
-	//			return;
-	//		}
-	//		else
-	//		{
-	//			hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
-	//			Log.v("nakami", tmpData);
-	//			addResult(hm);
-	//		}
-
-
-	//	public void addResult(HashMap<String, String> hm) {
-	//
-	//		Log.e("in","in:");
-	//		//		String msg = hm.get("msg[0]");
-	////		for (int i = 0; i < hm.size(); i++) {
-	////			id=hm.get("id["+i+"]");
-	////			Log.e("hm", id);
-	////			genre=hm.get("genre["+i+"]");
-	////			title=hm.get("title["+i+"]");
-	////			author=hm.get("author["+i+"]");
-	////			decriptions=hm.get("decriptions["+i+"]");
-	////			ebook=hm.get("ebook["+i+"]");
-	////			count=hm.get("count["+i+"]");
-	////			date=hm.get("date["+i+"]");
-	////
-	////			HashMap<String, String> data=new HashMap<String, String>();
-	////			data.put("id", id);
-	////			data.put("genre", genre);
-	////			data.put("title", title);
-	////			data.put("author", author);
-	////			data.put("decriptions", decriptions);
-	////			data.put("ebook", ebook);
-	////			data.put("count", count);
-	////			data.put("date", date);
-	////			
-	////			data_list.add(data);
-	////
-	////			
-	////		}
-	//
-	//		tv.setText(hm.get("ebook[0]"));
-	//		
-	////		Toast.makeText(MyLibrary.this, hm.get("id[0]"), Toast.LENGTH_LONG).show();
-	////
-	////		Log.e("ebook", hm.get("book[0]"));
-	//
-	//	}
 
 	private OnClickListener button_listener=new OnClickListener() {
 
@@ -270,6 +203,16 @@ public class MyLibrary extends Activity {
 				case R.id.list_file_read:
 				{
 					Intent intent = new Intent(MyLibrary.this,FileListView.class);
+					startActivity(intent);
+					break;
+				}
+				case R.id.preview:
+				{
+					Intent intent=new Intent(MyLibrary.this, Preview.class);
+					//			intent.putExtra("bookKey", bookey[book_key]);
+					intent.putExtra("bookKey", book_key+"");
+					intent.putExtra("color", "#000000");
+					intent.putExtra("bgcolor", "#FFFFFF");
 					startActivity(intent);
 					break;
 				}

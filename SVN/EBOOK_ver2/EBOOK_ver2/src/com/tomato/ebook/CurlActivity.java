@@ -69,7 +69,7 @@ public class CurlActivity extends Activity {
 			e.printStackTrace();
 		}
 	
-		Log.e("book2size??????",book2.size()+"");
+		
 		int index = 0;
 		if (getLastNonConfigurationInstance() != null) {
 			index = (Integer) getLastNonConfigurationInstance();
