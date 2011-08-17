@@ -1,11 +1,16 @@
 package com.tomato.ebook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,6 +21,8 @@ import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.tomato.pagecurl.CurlPreview;
 import com.tomato.pagecurl.CurlView;
@@ -29,7 +36,7 @@ import com.tomato.sdcard.SDcard;
 public class Preview extends Activity {
 
 //	static int siori;
-
+	Configuration config;
 	File sdPath=Environment.getExternalStorageDirectory();
 	//String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
 	/*일단 제일위에 올려놓고*/
@@ -38,8 +45,8 @@ public class Preview extends Activity {
 	
 	//private GestureDetector ges=null;
 	private CurlView mCurlView2;
-	ArrayList<ArrayList<String>> book = new ArrayList<ArrayList<String>>();
-	ArrayList<String> page=new ArrayList<String>();
+	ArrayList<ArrayList<String>> book2 = new ArrayList<ArrayList<String>>();
+	ArrayList<String> page2=new ArrayList<String>();
 
 //	int cnt=0;
 //	HashMap<String, String> hm=new HashMap<String, String>();
@@ -61,24 +68,31 @@ public class Preview extends Activity {
 		bookKey=intent.getStringExtra("bookKey");
 		color=intent.getStringExtra("color");
 		bgcolor=intent.getStringExtra("bgcolor");
-
-		Log.e("bookKeyCurl", bookKey);
-		Log.e("colorCurl", color);
-		Log.e("bgcolorCurl", bgcolor);
-	
-		Log.e("11", "11");
-		
-				
-		Log.e("22", "22");
-		
-		
-		book=sd.dataload(bookKey);
-		
-	
-		
+		try {
+			book2 = booksgo(bookKey);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		int index = 0;
 		if (getLastNonConfigurationInstance() != null) {
 			index = (Integer) getLastNonConfigurationInstance();
+		}
+		config = getResources().getConfiguration();
+		ImageView image = (ImageView)findViewById(R.id.imageView1);
+		//最初の場面
+		if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+			image.setVisibility(View.VISIBLE);
+			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
+			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
+			image.setAlpha(80);
+			image.setImageBitmap(resize);
+		}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+			image.setVisibility(View.VISIBLE);
+			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain);  
+			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 340, 540, true);
+			image.setAlpha(80);
+			image.setImageBitmap(resize);
 		}
 		mCurlView2 = (CurlView) findViewById(R.id.curl);
 		
@@ -191,14 +205,13 @@ public class Preview extends Activity {
 			
 			int hTab = TEXT_SIZE;  // タイトルバーを含むサイズ
 			int lTeb = 10;
-			if(book.size() > index){
-				page = book.get(index++);//順番通りでる
+			if(book2.size() > index){
+				page2 = book2.get(index++);//順番通りでる
 				
-				Log.e("page",page+"");
 				Log.e("index",index+"");
 				
-				for (int j = 0; j < page.size(); j++) {
-					String line = String.valueOf( page.get(j) );
+				for (int j = 0; j < page2.size(); j++) {
+					String line = String.valueOf( page2.get(j) );
 					
 					if (line.equals("@")) {
 						line = " ";
@@ -216,15 +229,14 @@ public class Preview extends Activity {
 			
 			hTab = TEXT_SIZE;  // 上位の初期値
 			
-			if(book.size() > index){
-				page = book.get(index++);
-				Log.e("page",page+"");
+			if(book2.size() > index){
+				page2 = book2.get(index++);
 				Log.e("index",index+"");
 				
-				if(page != null || page.size() != 0 ){
+				if(page2 != null || page2.size() != 0 ){
 					
-					for (int j = 0; j < page.size(); j++) {
-						String line = String.valueOf( page.get(j) );
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
 						
 						if (line.equals("@")) {
 							line = " ";
@@ -239,15 +251,15 @@ public class Preview extends Activity {
 			// [ 2 . 1 ] の座標
 			
 			hTab = TEXT_SIZE + height / 2;  // 上位の初期値
-			if(book.size() > index){
-				page = book.get(index++);
-				Log.e("page",page+"");
+			if(book2.size() > index){
+				page2 = book2.get(index++);
+				Log.e("page",page2+"");
 				Log.e("index",index+"");
 				
-				if(page != null || page.size() != 0 ){
+				if(page2 != null || page2.size() != 0 ){
 					
-					for (int j = 0; j < page.size(); j++) {
-						String line = String.valueOf( page.get(j) );
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
 						
 						if (line.equals("@")) {
 							line = " ";
@@ -262,15 +274,14 @@ public class Preview extends Activity {
 						
 			hTab = TEXT_SIZE + height / 2;  // 上位の初期値
 			lTeb = lTeb + width /2 ;        // 上位の初期値
-			if(book.size() > index){
-				page = book.get(index++);
-				Log.e("page",page+"");
+			if(book2.size() > index){
+				page2 = book2.get(index++);
 				Log.e("index",index+"");
 		
-				if(page != null || page.size() != 0 ){
+				if(page2 != null || page2.size() != 0 ){
 					
-					for (int j = 0; j < page.size(); j++) {
-						String line = String.valueOf( page.get(j) );
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
 						
 						if (line.equals("@")) {
 							line = " ";
@@ -292,7 +303,7 @@ public class Preview extends Activity {
 		@Override//page count
 		public int getBitmapCount() {
 			
-			int e = (int) Math.ceil(book.size()/4)+1;
+			int e = (int) Math.ceil(book2.size()/4)+1;
 					Log.e("booksize/4", e + "hj");
 			return e;
 		}
@@ -305,13 +316,11 @@ public class Preview extends Activity {
 		@Override
 		public void onSizeChanged(int w, int h) {
 			if (w > h) {
-				mCurlView2.setViewMode(CurlPreview.SHOW_TWO_PAGES);
-				//mCurlView.setMargins(.1f, .05f, .1f, .05f);
-				mCurlView2.setMargins(0, 0, 0, 0);
+				mCurlView2.setViewMode(CurlView.SHOW_TWO_PAGES);
+				mCurlView2.setMargins(.07f, .05f, .07f, .05f);//left,top,right,bo
 			} else {
-				mCurlView2.setViewMode(CurlPreview.SHOW_ONE_PAGE);
-				//mCurlView.setMargins(.1f, .1f, .1f, .1f);
-				mCurlView2.setMargins(0, 0, 0, 0);
+				mCurlView2.setViewMode(CurlView.SHOW_ONE_PAGE);
+				mCurlView2.setMargins(.03f, .0228f, .053f, .028f);
 			}
 		}
 	}
@@ -365,8 +374,107 @@ public class Preview extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	public ArrayList<ArrayList<String>> booksgo(String bookKey) throws IOException{
+		ArrayList<ArrayList<String>> book=new ArrayList<ArrayList<String>>();
+		ArrayList<String> page=new ArrayList<String>();
+		String book1="";
+		String bookAdd="";
+		FileReader fr = new FileReader("/sdcard/ebook_"+bookKey+".ebf");//bookKeyに該当する本を呼ぶ
+		BufferedReader br=new BufferedReader(fr);
+		int y=0;
+		while((bookAdd=br.readLine())!=null){
+			book1= book1+ bookAdd;
+			if(y <=1){
+				book1= book1+"@";//タイトルと著書を区別するため
+			}
+			y= y+1;
+		}
+		//タイトルと本文を区別するために＠をタイトルに残す
+		StringBuffer sk = new StringBuffer(); 
+		for(int k = 0; k < book1.length(); k++){
+			if(book1.charAt(k)=='@'){
+				if(k > 50){
+					//50番目の列から＠をすべて削除
+					sk.append("");
+				}else{
+					sk.append(book1.charAt(k));
+				}
+			}else{
+				sk.append(book1.charAt(k));
+			}
+		}
+		book1 = sk.toString();
+		//本文のページの区別に入る
+		String linere= "";
+		//まずタイトルと本文の内容で区別する
+		//タイトルだけ最初のページに追加して置く
+		for(int k =0; k < book1.length(); k++){
+			if(book1.charAt(k)=='@'){
+				//booksgo メソッドで追加しておいた＠ぺーじを最初のページに追加
+				page.add(linere);
+				linere = "";
+			}else{
+				linere = linere + String.valueOf(book1.charAt(k));
+			}
+		}
+		//タイトルページを本に追加
+		book.add(page);
+		//ぺーじをリセットする
+		page = new ArrayList<String>();
+		StringBuffer strBuf = new StringBuffer();
+        char c = 0;
+        int nSrcLength = linere.length();
+        //まずは文字をすべて全角で変換
+        for (int i = 0; i < nSrcLength; i++)
+        {
+            c = linere.charAt(i);
+            //英語化特注文字の場合
+            if (c >= 0x21 && c <= 0x7e)
+            {
+                c += 0xfee0;
+            }
+            //空白の場合
+            else if (c == 0x20)
+            {
+                c = 0x3000;
+            }
+            //文字列　バッファーに変換した文字を入れる
+            strBuf.append(c);
+        }
 
-
-
+        linere = strBuf.toString();
+		Log.e("linere", linere.length()+"");
+		//lineNumberはline, stringGetは文字の数
+		int lineNumber=0, w=0,stringGet=14;
+		String linere2= "";
+		//本文の整列
+		for(int k =0; k< linere.length(); k++){
+			linere2 = linere2 + String.valueOf(linere.charAt(k));
+			if(k == stringGet){
+				//15文字ずつ
+				stringGet += 15; 
+				//lineの計算
+				page.add(linere2);
+				Log.e("page2", linere2+""+stringGet);
+				//lineを空にする
+				linere2 = "";
+				//lineが何lineか
+				lineNumber += 1;
+			}
+			//15列になったら
+			else if(lineNumber==15){
+				//本にページを追加
+				book.add(page);
+				//ページを空にする
+				page=new ArrayList<String>();
+				//列の計算初期化
+				lineNumber=0;
+			}
+		}
+		//forの中で追加できなかった最後のページを追加
+		book.add(page);
+		page=new ArrayList<String>();
+		return book;
+	}
 
 }
