@@ -35,26 +35,15 @@ import com.tomato.sdcard.SDcard;
  */
 public class Preview extends Activity {
 
-//	static int siori;
 	Configuration config;
 	File sdPath=Environment.getExternalStorageDirectory();
-	//String sdPath=Environment.getExternalStorageDirectory().getAbsolutePath();
-	/*일단 제일위에 올려놓고*/
-//	static int emulheight=0;/*전체를 보여주기위해*/
-//	static int emulwidth=0;/*전체를 보여주기위해*/
-	
-	//private GestureDetector ges=null;
 	private CurlPreview mCurlView2;
-	ArrayList<ArrayList<String>> book2 = new ArrayList<ArrayList<String>>();
-	ArrayList<String> page2=new ArrayList<String>();
+	private ArrayList<ArrayList<String>> book2 = new ArrayList<ArrayList<String>>();
+	private ArrayList<String> page2=new ArrayList<String>();
 
-//	int cnt=0;
-//	HashMap<String, String> hm=new HashMap<String, String>();
-	SDcard sd=new SDcard();
-	String color=null;
-	String bgcolor=null;
-	String bookKey=null;
-//	String nowSiori=null;
+	private String color=null;
+	private String bgcolor=null;
+	private String bookKey=null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -210,7 +199,7 @@ public class Preview extends Activity {
 					if (line.equals("@")) {
 						line = " ";
 					}
-					//横と縦の場合違う場面を見せる
+					//横と縦の場合違う場面を見せる//tabletの場合
 					/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 						canvas.drawText(line, lTeb , hTab, paint);
 						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );

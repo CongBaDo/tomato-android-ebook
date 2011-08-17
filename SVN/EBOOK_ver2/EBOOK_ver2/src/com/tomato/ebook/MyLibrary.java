@@ -241,8 +241,6 @@ public class MyLibrary extends Activity {
 			for (int i = 0; i < datadata.size(); i++) {
 				Log.e("datadata", datadata.get(i));
 			}
-
-
 			String[] booktitle=datafor(title);
 			String[] bookwriter=datafor(writer);
 			String[] bookdes=datafor(des);
@@ -250,7 +248,6 @@ public class MyLibrary extends Activity {
 			for(int k = 0; k < bookimg.length; k++){
 				bookimg[k] = "/sdcard/ebook_"+ (k+1) + ".jpg";
 			}
-
 			String viewImage=bookimg[position];
 			Bitmap bit = BitmapFactory.decodeFile(viewImage);
 			list_book_detail.setImageBitmap(bit);
@@ -316,20 +313,13 @@ public class MyLibrary extends Activity {
 								Thread.yield();  
 
 								break;  
-
 							}  
-
 						}  
-
 					}  
-
 				}  
 
 			}, "Process Killer").start();  
-
 		}  
 		System.exit(0);
 	}  
-
-
 }

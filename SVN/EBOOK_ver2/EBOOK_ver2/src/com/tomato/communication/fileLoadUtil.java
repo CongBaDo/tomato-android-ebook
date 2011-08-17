@@ -22,17 +22,19 @@ public class fileLoadUtil {
 	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tomato/pdfimg/";
 	public fileLoadUtil()
 	{
-		
-		
+		//fileをloadするために使用
 		File f = new File(tmtPath);
 		if(!f.exists())
 		{
+			//Directoryがない場合に作る
 			f.mkdirs();
 		}
+		//でもfile配列を作る
         String files[] = f.list();
         
         for(int i=0;i<files.length;i++)
         {
+        	//fileの拡張子名がPDFIMG
         	if(files[i].endsWith(".pdfImg"))
         	{
         		tmtFiles[fileLength] = files[i];
@@ -41,7 +43,6 @@ public class fileLoadUtil {
         }
         
 	}
-	
 	public String getPath()
 	{
 		return tmtPath;
@@ -59,10 +60,11 @@ public class fileLoadUtil {
 	public void unCompress(Context context,String path,String name)
 	{
 		complete = context;
-
 		 try {
-	         final int BUFFER = 2048;
-	         BufferedOutputStream dest = null;
+	         //バッファの固定
+			 final int BUFFER = 2048;
+	         //まずNullに設定
+			 BufferedOutputStream dest = null;
 	         File target = new File(path,name);
 	         FileInputStream fis = new  FileInputStream(path+name);
 	         CheckedInputStream checksum = new CheckedInputStream(fis, new Adler32());
@@ -74,23 +76,31 @@ public class fileLoadUtil {
 	            int count;
 	            byte data[] = new byte[BUFFER];
 	            // write the files to the disk
+	            //フォルダ内のfileの拡張子がを探す
 	            File dataFolder = new File(path+(name.replace(".pdfImg", "/")));
 	            if(!dataFolder.exists())
-	            {
+	            {	
+	            	//フォルダがなかったら作る
 	            	dataFolder.mkdir();
 	            }
+	            //敬老を探しpdfimgファイルを検索して作る
 	            FileOutputStream fos = new FileOutputStream(path+(name.replace(".pdfImg", "/")+"/")+entry.getName());
+	            //バッファを使ってファイルを整理する
 	            dest = new BufferedOutputStream(fos,BUFFER);
+	            //ファイルを一つずつ読む
 	            while ((count = zis.read(data, 0,BUFFER)) != -1) 
 	            {
 	               dest.write(data, 0, count);
 	            }
+	            //バッファを空く
 	            dest.flush();
+	            //バッファを閉ざす
 	            dest.close();
 	         }
 	         zis.close();
-	         
+	         //ダイアルログを使う
 	         new AlertDialog.Builder(complete)
+	         	
 	         	.setTitle("Notification")
 				.setMessage("ファイル読み込みが完了しました。")
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -101,11 +111,9 @@ public class fileLoadUtil {
 					}
 				})
 				.show();
-	         
-	         System.out.println("Checksum: "+checksum.getChecksum().getValue());
+	        System.out.println("Checksum: "+checksum.getChecksum().getValue());
 	      } catch(Exception e) {
-	         e.printStackTrace();
+	        e.printStackTrace();
 	      }
-
 	}
 }

@@ -302,7 +302,7 @@ public class CurlActivity extends Activity {
 			linere2 = linere2 + String.valueOf(linere.charAt(k));
 			if(k == stringGet){
 				//15文字ずつ
-				stringGet += 15; 
+				stringGet += 15;
 				//lineの計算
 				page.add(linere2);
 				Log.e("page2", linere2+""+stringGet);
