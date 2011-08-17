@@ -23,6 +23,7 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 	public static final int SHOW_TWO_PAGES = 2;
 	private int mViewMode = SHOW_ONE_PAGE;
 	private CurlView mCurlView;
+
 	// Constant for requesting left page rect.
 	public static final int PAGE_LEFT = 1;
 	// Constant for requesting right page rect.

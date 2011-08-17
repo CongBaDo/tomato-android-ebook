@@ -44,7 +44,7 @@ public class Preview extends Activity {
 //	static int emulwidth=0;/*전체를 보여주기위해*/
 	
 	//private GestureDetector ges=null;
-	private CurlView mCurlView2;
+	private CurlPreview mCurlView2;
 	ArrayList<ArrayList<String>> book2 = new ArrayList<ArrayList<String>>();
 	ArrayList<String> page2=new ArrayList<String>();
 
@@ -94,8 +94,8 @@ public class Preview extends Activity {
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
 		}
-		mCurlView2 = (CurlView) findViewById(R.id.curl);
-		
+		mCurlView2 = (CurlPreview) findViewById(R.id.curlpre);
+		mCurlView2.setVisibility(View.VISIBLE);
 		mCurlView2.setBitmapProvider(new BitmapProvider());
 		mCurlView2.setSizeChangedObserver(new SizeChangedObserver());
 		mCurlView2.setCurrentIndex(index);
@@ -129,7 +129,7 @@ public class Preview extends Activity {
 	 * Bitmap provider.
 	 */
 
-	private class BitmapProvider implements CurlView.BitmapProvider {
+	private class BitmapProvider implements CurlPreview.BitmapProvider {
 
 		@Override
 		public Bitmap getBitmap(int width, int height, int index) {
@@ -312,7 +312,7 @@ public class Preview extends Activity {
 	/**
 	 * CurlView size changed observer.
 	 */
-	private class SizeChangedObserver implements CurlView.SizeChangedObserver {
+	private class SizeChangedObserver implements CurlPreview.SizeChangedObserver {
 		@Override
 		public void onSizeChanged(int w, int h) {
 			if (w > h) {

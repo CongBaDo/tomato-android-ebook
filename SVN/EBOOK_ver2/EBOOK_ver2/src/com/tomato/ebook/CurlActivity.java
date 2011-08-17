@@ -91,6 +91,7 @@ public class CurlActivity extends Activity {
 			image.setImageBitmap(resize);
 		}
 		mCurlView = (CurlView) findViewById(R.id.curl);
+		mCurlView.setVisibility(View.VISIBLE);
 		mCurlView.setBitmapProvider(new BitmapProvider());
 		mCurlView.setSizeChangedObserver(new SizeChangedObserver());
 		mCurlView.setCurrentIndex(index);
