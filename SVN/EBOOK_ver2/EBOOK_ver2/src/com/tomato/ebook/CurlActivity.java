@@ -38,19 +38,16 @@ import com.tomato.sdcard.SDcard;
  */
 public class CurlActivity extends Activity {
 
-//	static int siori;
-	Configuration config;
-	File sdPath=Environment.getExternalStorageDirectory();
-	/*일단 제일위에 올려놓고*/
 
-	private CurlView mCurlView;
-	ArrayList<ArrayList<String>> book2=new ArrayList<ArrayList<String>>();
-	ArrayList<String> page2=new ArrayList<String>();
-	SDcard sd=new SDcard();
-	String color=null;
-	String bgcolor=null;
-	String bookKey=null;
-	String books="";
+	Configuration config;													//横と縦の時を区別する
+	
+	private CurlView mCurlView;												
+	private ArrayList<ArrayList<String>> book2=new ArrayList<ArrayList<String>>();	//実際の本のデータ
+	private ArrayList<String> page2=new ArrayList<String>();						//実際の本でページをつかみ出す
+	private String color=null;														
+	private String bgcolor=null;
+	private String bookKey=null;
+	private String books="";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -76,7 +73,7 @@ public class CurlActivity extends Activity {
 		}
 		config = getResources().getConfiguration();
 		ImageView image = (ImageView)findViewById(R.id.imageView1);
-		//最初の場面
+		//場面の後ろの背景
 		if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
@@ -153,26 +150,33 @@ public class CurlActivity extends Activity {
 			d.setBounds(r);
 			int y=65;
 			int x=90;
+			//本のページを計算
 			page2 = book2.get(index);
+			
 			Log.e("page2",page2+"");
 			Log.e("index",index+"");
 			for (int j = 0; j < page2.size(); j++) {
+				//該当ページの内容を書く
 				String line=String.valueOf( page2.get(j));
 				if (line.equals("@")) {
 					line="";
 				}
 				if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+					//文字のサイズを23に修正
 					p.setTextSize(23);
 					c.drawText(line, x , y, p);
+					//横の場合文字の行の距離を35に修正
 					y+=35;
 				}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 					c.drawText(line, x , y, p);
+					//縦の場合文字の行の距離を65に修正
 					y+=65;
 				}
 			} 
 			d.draw(c);
 			return b;
 		}
+		//本のページ数を返す
 		@Override//page count
 		public int getBitmapCount() {
 			return book2.size();
@@ -218,18 +222,20 @@ public class CurlActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	//ページの再配置のために
-	public ArrayList<ArrayList<String>> booksgo(String bookKey) throws IOException{
+	private ArrayList<ArrayList<String>> booksgo(String bookKey) throws IOException{
 		ArrayList<ArrayList<String>> book=new ArrayList<ArrayList<String>>();
 		ArrayList<String> page=new ArrayList<String>();
 		String book1="";
 		String bookAdd="";
-		FileReader fr = new FileReader("/sdcard/ebook_"+bookKey+".ebf");//bookKeyに該当する本を呼ぶ
+		//bookKeyに該当する本を呼ぶ
+		FileReader fr = new FileReader("/sdcard/ebook_"+bookKey+".ebf");
 		BufferedReader br=new BufferedReader(fr);
 		int y=0;
 		while((bookAdd=br.readLine())!=null){
 			book1= book1+ bookAdd;
 			if(y <=1){
-				book1= book1+"@";//タイトルと著書を区別するため
+				//タイトルと著書を区別するため
+				book1= book1+"@";
 			}
 			y= y+1;
 		}
@@ -300,7 +306,7 @@ public class CurlActivity extends Activity {
 				//lineの計算
 				page.add(linere2);
 				Log.e("page2", linere2+""+stringGet);
-				//lineを空にする
+				//lineを空く
 				linere2 = "";
 				//lineが何lineか
 				lineNumber += 1;
