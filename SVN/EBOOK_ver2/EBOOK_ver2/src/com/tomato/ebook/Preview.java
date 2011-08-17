@@ -217,11 +217,14 @@ public class Preview extends Activity {
 						line = " ";
 						
 					}
-					
-					canvas.drawText(line, lTeb , hTab, paint);
-					
-					hTab += TEXT_SIZE + ( 10 / DIVID_SIZE ) ;
-					
+					if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						canvas.drawText(line, lTeb , hTab, paint);
+						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
+					}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+						paint.setTextSize(TEXT_SIZE+7);
+						canvas.drawText(line, lTeb , hTab+50, paint);
+						hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
+					}
 				}//end for 
 				//mCurlView.addCurrentIndex();
 			}
@@ -241,9 +244,15 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							canvas.drawText(line, lTeb + width /2 , hTab, paint);
+							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb + width /2 , hTab+50, paint);
+							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
 						
-						canvas.drawText(line, lTeb + width /2 , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE ) ;
 						
 					}//end for 
 				}
@@ -264,10 +273,14 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
-						
-						canvas.drawText(line, lTeb , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE ) ;
-						
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							canvas.drawText(line, lTeb , hTab, paint);
+							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb , hTab, paint);
+							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
 					}//end for 
 				}
 			}
@@ -286,9 +299,16 @@ public class Preview extends Activity {
 						if (line.equals("@")) {
 							line = " ";
 						}
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							
+							canvas.drawText(line, lTeb , hTab, paint);
+							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb , hTab, paint);
+							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
 						
-						canvas.drawText(line, lTeb , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						
 					}//end for 
 					
