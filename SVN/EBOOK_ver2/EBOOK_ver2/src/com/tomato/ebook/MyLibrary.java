@@ -309,15 +309,12 @@ public class MyLibrary extends Activity {
 								if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
 
 									actMng.restartPackage(getPackageName());  
-
-								Thread.yield();  
-
+									Thread.yield();  
 								break;  
 							}  
 						}  
 					}  
-				}  
-
+				}
 			}, "Process Killer").start();  
 		}  
 		System.exit(0);
