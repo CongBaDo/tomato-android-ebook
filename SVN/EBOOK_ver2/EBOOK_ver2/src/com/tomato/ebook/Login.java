@@ -270,11 +270,9 @@ public class Login extends Activity {
 		//Emailと秘密番号が全部入力した場合
 		if (logTest.checkStart())
 		{
-			//String theUrl = "http://pairiserver.appspot.com/kaka/android_login.jsp";
 			//ログインを担当するサーバーの住所
 			String theUrl = "http://ebookserverhjy5.appspot.com/android_login.jsp";
-			Log.i(this.getLocalClassName(), theUrl);
-
+			
 			//サーバーに要請するデータ目録を作成する			
 			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 			/*
@@ -365,7 +363,7 @@ public class Login extends Activity {
 			resDescription[0] = hm.get("description[0]");//一番目の本の説目データを引き出し
 			resImage[0] =hm.get("imageurl[0]");//一番目の本のイメージ住所を引き出し
 			resEbook[0] =hm.get("ebook[0]");//一番目の本の内容データを引き出し
-			resDate[0] = hm.get("date[0]");//一番目の本のIDデータを引き出し
+			resDate[0] = hm.get("date[0]");//一番目の本本がサーバーへ登録された日を引き出し
 		}//if end
 
 		//ユーザーがダウンロードした本が一巻以上の場合		
@@ -434,6 +432,7 @@ public class Login extends Activity {
 		{
 
 			try {
+				//"login.txt"ファイルを作成
 				saveFile(rowid,email,resId,resTitle,resAuthor,resDescription,resImage,resDate);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
