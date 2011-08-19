@@ -78,7 +78,7 @@ public class Join extends Activity{
 		//Emailと秘密番号が全部入力した場合
 		if (joinTest.checkStart())
 		{
-			//解任登録を担当するサーバーの住所
+			//会員登録を担当するサーバーの住所
 			String theUrl = "http://ebookserverhjy5.appspot.com/android_rejister.jsp";
 			
 			//サーバーに要請するデータ目録を作成する	

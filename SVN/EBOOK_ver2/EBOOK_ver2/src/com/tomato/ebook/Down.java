@@ -39,65 +39,88 @@ import android.widget.ImageView;
 
 public class Down extends Activity {
 
-	Button OKBtn,CancelBtn;
-	ImageView bookCover;
-	String toInfoImage=null,toInfoBook=null,toInfoUserId=null;
-
 	static final int MAX = 100;
-	EditText EditID,EditPass;
-	Button LogBtn,TorokuBtn;
+	String toInfoImage=null,
+			toInfoBook=null,
+			toInfoUserId=null,
+			bookId=null,
+			bookTitle=null,
+			bookAuthor=null,
+			msg=null,
+			bookDescription=null,
+			bookImage=null,
+			bookEbook=null,
+			bookDate=null,
+			checkedBook=null;
+	
+	File bookText,userData;
+	FileReader bookCheck;
+	FileWriter[] save = new FileWriter[MAX];
+
 	CheckUtil logTest;
-	HashMap<String, String> hm;
 	Util cmsutil = new Util();
 	Activity act = this;
-	File userData;
-	FileWriter[] save = new FileWriter[MAX];
-	String bookId=null,bookTitle=null,bookAuthor=null,msg=null,
-			bookDescription=null,bookImage=null,bookEbook=null,bookDate=null,checkedBook=null;
-	File bookText;
-	FileReader bookCheck;
-
+	HashMap<String, String> hm;
+	
+	EditText EditID,EditPass;
+	Button LogBtn,TorokuBtn;
+	Button OKBtn,CancelBtn;
+	ImageView bookCover;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Activityの追加
 		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.down);
-		Intent fromInfo = getIntent();
+		
+		Intent fromInfo = getIntent();//"Genre.javaか"らインデントでもらったデータを引き出し
 
-		toInfoImage=fromInfo.getStringExtra("fromInfoImage");
-		toInfoBook=fromInfo.getStringExtra("fromInfoBookId");
-		Log.e("InfoBookValue",toInfoBook);
-		toInfoUserId=fromInfo.getStringExtra("fromFileUserId");
+		toInfoImage=fromInfo.getStringExtra("fromInfoImage");//本のイメージ住所
+		toInfoBook=fromInfo.getStringExtra("fromInfoBookId");//本のID
+		toInfoUserId=fromInfo.getStringExtra("fromFileUserId");//ユーザーのID
 
 		bookCover = (ImageView)findViewById(R.id.DOWN_BookImage);
 		Drawable draw = loadDrawable(toInfoImage);
 		bookCover.setImageDrawable(draw);
 
-		OKBtn = (Button)findViewById(R.id.DOWN_OKBtn);
-		CancelBtn = (Button)findViewById(R.id.DOWN_CancelBtn);
+		OKBtn = (Button)findViewById(R.id.DOWN_OKBtn);//「はい」ボタン
+		CancelBtn = (Button)findViewById(R.id.DOWN_CancelBtn);//「いいえ」ボタン
 
-
+		//////////////////////////////////////////////////
+		//
+		// 「はい」ボタン押下時の処理
+		//
+		//////////////////////////////////////////////////
 		OKBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
-				tryToLogin();
-
-
+				tryToLogin();//サーバーと通信します。
 			}
 		});
 
+		//////////////////////////////////////////////////
+		//
+		// 「いいえ」ボタン押下時の処理
+		//
+		//////////////////////////////////////////////////
 		CancelBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				finish();
+				finish();//今の画面を消して、以前の本の詳細情報画面に戻ります
 			}
 		});   
 
 	}
+	
+	//////////////////////////////////////////////////
+	//
+	// イメージの住所を使って、イメージ・データを読み込む
+	//
+	//////////////////////////////////////////////////
 	public Drawable loadDrawable(String urlStr)
 	{
 		Drawable drawable = null;
@@ -117,44 +140,72 @@ public class Down extends Activity {
 
 	}
 
+	//////////////////////////////////////////////////
+	//
+	// サーバーと通信して、データを引き出し
+	//
+	//////////////////////////////////////////////////
 	public void tryToLogin() {
 
-		//String theUrl = "http://pairiserver.appspot.com/kaka/android_login.jsp";
+		//ダウンロードを担当するサーバーの住所
 		String theUrl = "http://ebookserverhjy5.appspot.com/bookdownloder.jsp";
 		Log.i(this.getLocalClassName(), theUrl);
+		
+		//サーバーに要請するデータ目録を作成する
 		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-
+		//ユーザーのID														
 		httpParams.add(new BasicNameValuePair("email",toInfoUserId));
+		//本のID
 		httpParams.add(new BasicNameValuePair("bookid",toInfoBook));
 
-		cmsHTTP cmsHttp = new cmsHTTP();
+		cmsHTTP cmsHttp = new cmsHTTP();//接続準備
 		//cmsHttp.encoding = encoding;
 		cmsHttp.act = Down.this;
-		Log.e("sending","sendpost");
-		String tmpData = cmsHttp.sendPost(theUrl, httpParams);
-		//		Log.e("postout",tmpData);
+		
+		String tmpData = cmsHttp.sendPost(theUrl, httpParams);//サーバーへデータを要請
+
+		//サーバーから戻り値がない場合
 		if (tmpData == null)
 		{
 			return;
-		}
+		}//if end
+		
+		//戻り値が有る場合
 		else
 		{
+			//サーバーへ要請したデータを保存
 			hm = cmsutil.xml2HashMap(tmpData, cmsHttp.encoding);
-			Log.e("go result","go!");
 			Log.v(this.getLocalClassName(), tmpData);
 			addResult(hm);
-		}
+		}//else end
 
 	}
 
+	//////////////////////////////////////////////////
+	//
+	// サーバーへ要請したデータを使って、ファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void addResult(HashMap<String, String> hm) {
 		int count = Integer.valueOf(hm.get("count"));
-		Log.e("result_countinDown",String.valueOf(count));
-		String[] bookId=new String[MAX],title=new String[MAX],author=new String[MAX],description=new String[MAX],image=new String[MAX],stock=new String[MAX];
-		String[] resBookId=new String[MAX],resTitle=new String[MAX],resAuthor=new String[MAX],resDescription=new String[MAX],resImage=new String[MAX],resStock=new String[MAX];	
-		String ebook,resEbook,img,resImg;
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
-		Log.e("result_inStrFor","going");
+
+		String[] bookId=new String[MAX],
+				title=new String[MAX],
+				author=new String[MAX],
+				description=new String[MAX],
+				image=new String[MAX],
+				stock=new String[MAX],
+				resBookId=new String[MAX],
+				resTitle=new String[MAX],
+				resAuthor=new String[MAX],
+				resDescription=new String[MAX],
+				resImage=new String[MAX],
+				resStock=new String[MAX];
+		
+		String ebook,resEbook,img,resImg;
+		
+		//ユーザーがダウンロードした本が一巻の場合
 		if(count==0)
 		{
 			resBookId[0] = hm.get("id[0]");
@@ -188,57 +239,56 @@ public class Down extends Activity {
 				}
 			})
 			.show();
-		}
+		}//if end
+		
+		/*  ユーザーがダウンロードした本が一巻以上の場合		
+		 *  以前のユーザー・データを更新して、新しい本を追加する
+		 */
 		else
 		{
+			//サーバーへ要請したデータを保存する変数"hm"からデータを引き出す構文を作る。
 			for(int i=0;i<count;i++)
 			{
 				bookId[i]=("id["+i+"]");
-				Log.e("id",bookId[i].toString());
 				title[i]="title["+i+"]";
 				author[i]="author["+i+"]";
 				description[i]="description["+i+"]";
 				image[i]="imageurl["+i+"]";
 				stock[i]="stock["+i+"]";
-			}
-			if(count!=0)
-			{
+			}//for i end
 				ebook="ebook["+(count-1)+"]";
 				img="imageurl["+(count-1)+"]";
-			}
-			else
+				
+			//サーバーへ要請したデータを保存する変数"hm"からデータを引き出して各データ別に保存。
+			for(int j=0;j<count;j++)
 			{
-				ebook="ebook["+(count)+"]";
-				img="imageurl["+(count)+"]";
-			}
-			Log.e("Download",img);
-
-
-			for(int i=0;i<count;i++)
-			{
-				Log.e("count_result",String.valueOf(i));
-				resBookId[i] = hm.get(bookId[i]);
-				resTitle[i] = hm.get(title[i]);
-				resAuthor[i] = hm.get(author[i]);
-				resDescription[i] = hm.get(description[i]);
-				resImage[i] =hm.get(image[i]);
-				resStock[i] = hm.get(stock[i]);
-			}
+				resBookId[j] = hm.get(bookId[j]);
+				resTitle[j] = hm.get(title[j]);
+				resAuthor[j] = hm.get(author[j]);
+				resDescription[j] = hm.get(description[j]);
+				resImage[j] =hm.get(image[j]);
+				resStock[j] = hm.get(stock[j]);
+			}//for j end
+			
 			resEbook=hm.get(ebook);
 			resImg=hm.get(img);
 
-
+			//同じ本がいる場合
 			if(checkBook())
 			{
 				CheckUtil result = new CheckUtil();	
-				result.CheckResult(Down.this,5,msg,0);
-			}
+				result.CheckResult(Down.this,5,msg,0);//rowidに対して、サーバーが送メッセージを表示する。
+			}//if end
+			
+			//同じ本がイない場合
 			else
 			{
 				try {
+					//"login.txt"を作成します。
 					saveFile(rowid,toInfoUserId,resBookId,resTitle,resAuthor,resDescription,resImage,resStock);
-					saveBook(resEbook,count);
-					SaveImg(resImg,count);
+					
+					saveBook(resEbook,count);//ダウンロードした本を保存。
+					SaveImg(resImg,count);//本のイメージを保存
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -253,21 +303,31 @@ public class Down extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						finish();
 						Intent intent = new Intent (Down.this,MyLibrary.class);
 						intent.putExtra("State", "OK");
-						startActivity(intent);
+						startActivity(intent);//書斎画面へ戻ります。
 					}
 				})
 				.show();
-			}
-		}
-	}
+			}//else end
+			
+		}//else end
+	}//addResult(HashMap<String, String> hm) end
 
+	//////////////////////////////////////////////////
+	//
+	// "login.txt"ファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void saveFile(int rowid,String userId, String[] bookId,String[] bookTitle
 			,String[] author,String[] description,String[] image,String[] stock) throws IOException
-			{
+	{
 		int count = Integer.valueOf(hm.get("count"));
+
+		//保存するファイルを開ける。
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+
 		try
 		{
 
@@ -276,6 +336,8 @@ public class Down extends Activity {
 			save[0].write("\n");
 			save[0].write(userId);
 			save[0].write("\n");
+
+			//ユーザーがダウンロードした本が一巻の場合		
 			if(count==0)
 			{
 
@@ -292,116 +354,141 @@ public class Down extends Activity {
 				save[0].write(stock[0]);
 				save[0].write("\n");
 
-			}
+			}//if end
+			
+			//ユーザーがダウンロードした本が一巻以上の場合		
 			else
 			{
 				for(int i=0;i<=count;i++)
 				{	
 					if(i==count)
 						save[0].write("\n");
+					
 					else
 					{
 						if(i==(count-1))
 							save[0].write(bookId[i]);
+						
 						else
 						{
 							save[0].write(bookId[i]);
 							save[0].write(",");
-						}
-					}	
-				}
+						}//else end
+						
+					}//else end	
+					
+				}//for i end
 
-				for(int i=0;i<=count;i++)
+				for(int j=0;j<=count;j++)
 				{
-					if(i==count)
+					if(j==count)
 						save[0].write("\n");
+					
 					else
 					{
-						if(i==(count-1))
-							save[0].write(bookTitle[i]);
+						if(j==(count-1))
+							save[0].write(bookTitle[j]);
+					
 						else
 						{
-							save[0].write(bookTitle[i]);
+							save[0].write(bookTitle[j]);
 							save[0].write(",");
-						}
+						}//else end
 
-					}	
-				}
-				for(int i=0;i<=count;i++)
+					}//else end	
+					
+				}//for j end
+				
+				for(int k=0;k<=count;k++)
 				{
-					if(i==count)
+					if(k==count)
 						save[0].write("\n");
+					
 					else
 					{
-						if(i==(count-1))
-							save[0].write(author[i]);
+						if(k==(count-1))
+							save[0].write(author[k]);
+						
 						else
 						{
-							save[0].write(author[i]);
+							save[0].write(author[k]);
 							save[0].write(",");	
-						}
+						}//else end
 
-					}	
-				}
-				for(int i=0;i<=count;i++)
+					}//else end
+					
+				}//for k end
+				
+				for(int l=0;l<=count;l++)
 				{
 
-					if(i==count)
+					if(l==count)
+						save[0].write("\n");
+					
+					else
+					{
+						if(l==(count-1))
+							save[0].write(description[l]);
+					
+						else
+						{
+							save[0].write(description[l]);
+							save[0].write(",");
+						}//else end
+
+					}//else end
+					
+				}//for l end
+				
+				for(int m=0;m<=count;m++)
+				{
+
+					if(m==count)
 						save[0].write("\n");
 					else
 					{
-						if(i==(count-1))
-							save[0].write(description[i]);
+						if(m==(count-1))
+							save[0].write(image[m]);
 						else
 						{
-							save[0].write(description[i]);
+							save[0].write(image[m]);
 							save[0].write(",");
-						}
+						}//else end
 
-					}
-				}
-				for(int i=0;i<=count;i++)
+					}//else end
+					
+				}//for m end	
+				
+				for(int n=0;n<=count;n++)
 				{
 
-					if(i==count)
+					if(n==count)
 						save[0].write("\n");
 					else
 					{
-						if(i==(count-1))
-							save[0].write(image[i]);
+						if(n==(count-1))
+							save[0].write(stock[n]);
 						else
 						{
-							save[0].write(image[i]);
+							save[0].write(stock[n]);
 							save[0].write(",");
-						}
+						}//else end
 
-					}
-				}	
-				for(int i=0;i<=count;i++)
-				{
-
-					if(i==count)
-						save[0].write("\n");
-					else
-					{
-						if(i==(count-1))
-							save[0].write(stock[i]);
-						else
-						{
-							save[0].write(stock[i]);
-							save[0].write(",");
-						}
-
-					}
-				}	
-			}
-			save[0].close();
+					}//else end
+					
+				}//for n end
+				
+			}//else end
+			
+			save[0].close();//保存するファイルを閉める。
+			
 		}
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
 			}
+	
 	public void saveBook(String ebook,int i) throws IOException
 	{
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".ebf");	
