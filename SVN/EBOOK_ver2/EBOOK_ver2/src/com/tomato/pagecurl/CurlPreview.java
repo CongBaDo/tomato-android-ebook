@@ -100,7 +100,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	 */
 	/*컬엑티비티에서 오버라이드해서 잘쓰고 잇음 여기선기냥 시체처럼 선언만해놧네*/
 	public int getCurrentIndex() {
-		return mCurrentIndex;
+		return mCurrentIndex;						//GetしたIndexをPreviewに適用
 	}
 	
 	@Override
@@ -150,6 +150,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mPageLeft = left;
 				// If we were curling right page update current index.
 				if (mCurlState == CURL_RIGHT) {
+					//多分右なら+1になる
 					mCurrentIndex++; /*아마도 오른쪽을 넘어가면 ++가됨 즉 1인건가 왼쪽넘어갓다 오른쪽넘기면 0이겟네*/
 				}
 			}
@@ -398,7 +399,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void setBitmapProvider(BitmapProvider bitmapProvider, int num) {
 		pageNum = num;						//PageNumを引き受けてNumに入れる
 		mBitmapProvider = bitmapProvider;
-		mCurrentIndex = 0;
+		mCurrentIndex = 0;					//最初に0にSetting
 		updateBitmaps();
 		requestRender();
 	}
@@ -698,7 +699,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		mRenderer.removeCurlMesh(mPageLeft);
 		mRenderer.removeCurlMesh(mPageRight);
 		mRenderer.removeCurlMesh(mPageCurl);
-
+		//ここからPageIndexを計算する部分
 		int leftIdx = mCurrentIndex - 1;
 		int rightIdx = mCurrentIndex;
 		int curlIdx = -1;
@@ -767,18 +768,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 
 		// If curl happens on right page, or on left page on two page mode,
 		// we'll calculate curl position from pointerPos.
-		if (mCurlState == CURL_RIGHT
-				|| (mCurlState == CURL_LEFT && mViewMode == SHOW_TWO_PAGES)) {
-
+		if (mCurlState == CURL_RIGHT	|| (mCurlState == CURL_LEFT && mViewMode == SHOW_TWO_PAGES)) {
 			mCurlDir.x = mCurlPos.x - mDragStartPos.x;
 			mCurlDir.y = mCurlPos.y - mDragStartPos.y;
-			float dist = (float) Math.sqrt(mCurlDir.x * mCurlDir.x + mCurlDir.y
-					* mCurlDir.y);
+			float dist = (float) Math.sqrt(mCurlDir.x * mCurlDir.x + mCurlDir.y	* mCurlDir.y);
 
 			// Adjust curl radius so that if page is dragged far enough on
 			// opposite side, radius gets closer to zero.
-			float pageWidth = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT)
-					.width();
+			float pageWidth = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT).width();
 			double curlLen = radius * Math.PI;
 			if (dist > (pageWidth * 2) - curlLen) {
 				curlLen = Math.max((pageWidth * 2) - dist, 0f);
@@ -800,7 +797,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			setCurlPos(mCurlPos, mCurlDir, radius);
 		}
 		// Otherwise we'll let curl follow pointer position.
-		else if (mCurlState == CURL_LEFT) {
+		else if (mCurlState == CURL_LEFT){
 
 			// Adjust radius regarding how close to page edge we are.
 			float pageLeftX = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT).left;
@@ -813,20 +810,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 
 			setCurlPos(mCurlPos, mCurlDir, radius);
 		}
-		/*탑도 가능하면 수정하게끔여기도 셋팅*/
-//		else if (mCurlState == CURL_TOP) {
-//
-//			// Adjust radius regarding how close to page edge we are.
-//			float pageLeftX = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT).left;
-//			radius = Math.max(Math.min(mCurlPos.x - pageLeftX, radius), 0f);
-//
-//			float pageRightX = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT).right;
-//			mCurlPos.x -= Math.min(pageRightX - mCurlPos.x, radius);
-//			mCurlDir.x = mCurlPos.x + mDragStartPos.x;
-//			mCurlDir.y = mCurlPos.y - mDragStartPos.y;
-//
-//			setCurlPos(mCurlPos, mCurlDir, radius);
-//		}
 	}
 
 	/**
