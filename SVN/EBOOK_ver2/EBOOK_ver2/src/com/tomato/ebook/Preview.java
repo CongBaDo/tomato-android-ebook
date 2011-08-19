@@ -173,9 +173,13 @@ public class Preview extends Activity {
 			int hTeb = TEXT_SIZE;
 			switch(pageNum){
 			case 1:
+				if(index > 3){
+					index = index + 1;
+				}
 				if(book2.size() > index){
+					Log.e("index1",index+"");
 					page2 = book2.get(index++);//順番通りでる
-					Log.e("index",index+"");
+					Log.e("index2",index+"");
 					for (int j = 0; j < page2.size(); j++) {
 						String line = String.valueOf( page2.get(j) );
 						if (line.equals("@")) {
@@ -196,8 +200,9 @@ public class Preview extends Activity {
 				hTeb = TEXT_SIZE;  // 上位の初期値
 				lTeb = lTeb + widthSize / 2;
 				if(book2.size() > index){
+					Log.e("index3",index+"");
 					page2 = book2.get(index++);
-					Log.e("index",index+"");
+					Log.e("index4",index+"");
 					
 					if(page2 != null || page2.size() != 0 ){
 						
@@ -714,7 +719,8 @@ public class Preview extends Activity {
 		@Override//page count
 		public int getBitmapCount() {
 			Log.e("pageNum",pageNum+"");
-			int e = (int) Math.ceil(book2.size()/(pageNum*2))+1;
+			int pageNumRe = pageNum * 2;
+			int e = (int) Math.ceil(book2.size()/pageNumRe)+1;
 					Log.e("booksize/pageNum", e + "hj");
 			return e;
 		}

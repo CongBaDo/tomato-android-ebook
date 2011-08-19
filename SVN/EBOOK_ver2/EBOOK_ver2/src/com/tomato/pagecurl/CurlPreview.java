@@ -635,12 +635,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			mRenderer.removeCurlMesh(mPageLeft);
 			mRenderer.removeCurlMesh(mPageRight);
 			mRenderer.removeCurlMesh(mPageCurl);
-
 			// We are curling right page.
 			CurlMesh curl = mPageRight;
 			mPageRight = mPageCurl;
 			mPageCurl = curl;
-
 			// If there is something to show on left page, simply add it to
 			// renderer.
 			if (mCurrentIndex > 0) {
@@ -651,11 +649,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 					mRenderer.addCurlMesh(mPageLeft);
 				}
 			}
-
-			// If there is new/next available, set it to right page.
 			if (mCurrentIndex < mBitmapProvider.getBitmapCount() - 1) {
-				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
-						mPageBitmapHeight, mCurrentIndex + (pageNum*2)); //8);//ぺーじ数を決定
+				int pageNumRe = pageNum * 2;
+				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,	mPageBitmapHeight,
+								mCurrentIndex + pageNumRe); //8);//ぺーじ数を決定
 				Log.e("pageNumgogogogogogoggogogogogogo","GOGOGO"+pageNum+"");
 				mPageRight.setBitmap(bitmap);
 				mPageRight.setRect(mRenderer
