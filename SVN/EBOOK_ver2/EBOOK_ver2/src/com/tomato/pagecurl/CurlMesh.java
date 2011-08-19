@@ -781,7 +781,7 @@ public class CurlMesh {
 			// original Bitmap to it more efficiently? Immutable bitmap anyone?
 			/*TODO가 :보다 효율적으로 그것에 큰 비트맵 복사 비트맵 원본을 만들 수있다
 			 *  다른 방법 있나요? 불변의 비트맵 누구?*/
-			mBitmap = Bitmap.createBitmap(newW, newH, bitmap.getConfig());
+			mBitmap = Bitmap.createBitmap(newW, newH, bitmap.getConfig());//previewエーらの原因
 			Canvas c = new Canvas(mBitmap);
 			c.drawBitmap(bitmap, 0, 0, null);
 

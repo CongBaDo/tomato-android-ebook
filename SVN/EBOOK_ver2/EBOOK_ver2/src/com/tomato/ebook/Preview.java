@@ -50,16 +50,14 @@ public class Preview extends Activity {
 	int index = 0;
 	final int DIVID_SIZE = 2;
 	final int TEXT_SIZE = 28 / DIVID_SIZE ;
-	Drawable drawable;
-	Bitmap b;
-	Paint paint;
-	Canvas canvas;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		MyLibrary.bkList.add(this);
+	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.curlactivity);
+		MyLibrary.bkList.add(this);
 		Log.e("ac", "ac");
 		
 		Intent intent=getIntent();
@@ -132,10 +130,10 @@ public class Preview extends Activity {
 			//int width1 = getWindowManager().getDefaultDisplay().getWidth();
 			widthSize = width;
 			heightSize = height;
-			b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
+			Bitmap b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
 			b.eraseColor(0xFFFFFFFF);
-			canvas = new Canvas(b);
-			drawable = getResources().getDrawable(R.drawable.aaa);
+			Canvas canvas = new Canvas(b);
+			Drawable drawable = getResources().getDrawable(R.drawable.aaa);
 			int margin = 7;
 			int border = 3;
 			Rect rect = new Rect(margin, margin, width - margin, height - margin);
@@ -341,7 +339,7 @@ public class Preview extends Activity {
 						}
 						//横と縦の場合違う場面を見せる//tabletの場合
 						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-							canvas.drawText(line, lTeb , hTeb, paint);
+							canvas.drawText(line, lTeb+10 , hTeb+10, paint);
 							hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 							paint.setTextSize(TEXT_SIZE);
@@ -366,7 +364,7 @@ public class Preview extends Activity {
 							}
 							//横と縦の場合違う場面を見せる
 							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-								canvas.drawText(line, lTeb, hTeb, paint);
+								canvas.drawText(line, lTeb+10, hTeb+10, paint);
 								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
 							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 								paint.setTextSize(TEXT_SIZE);
@@ -395,7 +393,7 @@ public class Preview extends Activity {
 							}
 							//横と縦の場合違う場面を見せる
 							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-								canvas.drawText(line, lTeb , hTeb, paint);
+								canvas.drawText(line, lTeb+10 , hTeb+10, paint);
 								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
 							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 								paint.setTextSize(TEXT_SIZE);
@@ -405,7 +403,6 @@ public class Preview extends Activity {
 						}//end for 
 					}
 				}
-							
 				hTeb = TEXT_SIZE + heightSize/2;
 				lTeb = 10;
 				if(book2.size() > index){

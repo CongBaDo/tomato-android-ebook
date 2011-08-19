@@ -122,19 +122,19 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
-		gl.glViewport(0, 0, width, height);/*여기를 수정하면 크기가변햇음*/
-		mViewportWidth = width;/*여기를 수정하면 크기가변햇음*/
-		mViewportHeight = height;/*여기를 수정하면 크기가변햇음*/
+		gl.glViewport(0, 0, width, height);/*修正後大きさが変わった*/
+		mViewportWidth = width;/*修正後大きさが変わった*/
+		mViewportHeight = height;/*修正後大きさが変わった*/
 
 		float ratio = (float) width / height;
 		mViewRect.top = 1.0f;
 		mViewRect.bottom = -1.0f;
 		mViewRect.left = -ratio;
 		mViewRect.right = ratio;
-		updatePageRects();
+		updatePageRects();						//previewエーらの原因
 
-		gl.glMatrixMode(GL10.GL_PROJECTION);/*투영을 위한 행렬 변환을 하는 부분.*/
-		gl.glLoadIdentity();/*행렬처리가 이루어 지기 전에 좌표계를 초기화 하는 역활.*/
+		gl.glMatrixMode(GL10.GL_PROJECTION);/*投影のための行列を変換する部分*/
+		gl.glLoadIdentity();/*行列処理の前の座標を初期化.*/
 		if (USE_PERSPECTIVE_PROJECTION) {
 			GLU.gluPerspective(gl, 20f, (float) width / height, .1f, 100f);
 		} else {
@@ -143,7 +143,7 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 					mViewRect.bottom, mViewRect.top);
 		}
 
-		gl.glMatrixMode(GL10.GL_MODELVIEW);/*투영을 위한 행렬 변환을 하는 부분.*/
+		gl.glMatrixMode(GL10.GL_MODELVIEW);/*投影のための行列を変換する部分*/
 		gl.glLoadIdentity();/*행렬처리가 이루어 지기 전에 좌표계를 초기화 하는 역활.*/
 	}
 
@@ -238,7 +238,7 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 					.width());
 			int bitmapH = (int) ((mPageRectRight.height() * mViewportHeight) / mViewRect
 					.height());
-			mObserver.onPageSizeChanged(bitmapW, bitmapH);
+			mObserver.onPageSizeChanged(bitmapW, bitmapH);					//previewエーらの原因
 		} 
 		else if (mViewMode == SHOW_TWO_PAGES) {/*쇼투페이지는 일단 재끼자 가로니까*/
 			mPageRectRight.set(mViewRect);

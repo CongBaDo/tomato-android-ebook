@@ -188,7 +188,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void onPageSizeChanged(int width, int height) {
 		mPageBitmapWidth = width;
 		mPageBitmapHeight = height;
-		updateBitmaps();
+		updateBitmaps();									//previewエーらの原因
 		requestRender();
 	}
 
@@ -770,7 +770,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		if (rightIdx >= 0 && rightIdx < mBitmapProvider.getBitmapCount()) {
 			Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
 					mPageBitmapHeight, rightIdx);
-			mPageRight.setBitmap(bitmap);
+			mPageRight.setBitmap(bitmap); //previewエーらの原因
 			mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 			mPageRight.reset();
 			mRenderer.addCurlMesh(mPageRight);
