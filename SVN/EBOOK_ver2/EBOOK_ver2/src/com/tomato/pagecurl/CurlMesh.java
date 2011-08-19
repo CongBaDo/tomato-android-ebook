@@ -459,7 +459,10 @@ public class CurlMesh {
 
 				// Untouched vertices.
 				if (i == 0) {
+					//v.mAlpha = 0f;
+					//修正縛を白に
 					v.mAlpha = mFlipTexture ? BACKFACE_ALPHA : FRONTFACE_ALPHA;
+					//前の半分
 					mVerticesCountFront++;
 				}
 				// 'Completely' rotated vertices.
@@ -467,8 +470,9 @@ public class CurlMesh {
 					v.mPosX = -(curlLength + v.mPosX);
 					v.mPosZ = 2 * radius;
 					v.mPenumbraX = -v.mPenumbraX;
-
-					v.mAlpha = mFlipTexture ? FRONTFACE_ALPHA : BACKFACE_ALPHA;
+					//修正縛を白に
+					v.mAlpha = 0f;
+					//v.mAlpha = mFlipTexture ? FRONTFACE_ALPHA : BACKFACE_ALPHA;
 					mVerticesCountBack++;
 				}
 				// Vertex lies within 'curl'.
@@ -484,12 +488,16 @@ public class CurlMesh {
 					v.mColor = .1f + .9f * Math.sqrt(Math.sin(rotY) + 1);
 
 					if (v.mPosZ >= radius) {
-						v.mAlpha = mFlipTexture ? FRONTFACE_ALPHA
-								: BACKFACE_ALPHA;
+						v.mAlpha = 0f;
+						//修正縛を白に
+						//v.mAlpha = mFlipTexture ? FRONTFACE_ALPHA : BACKFACE_ALPHA;
+						//後ろの文字
 						mVerticesCountBack++;
 					} else {
-						v.mAlpha = mFlipTexture ? BACKFACE_ALPHA
-								: FRONTFACE_ALPHA;
+						//v.mAlpha=0f;
+						//修正縛を白に
+						v.mAlpha = mFlipTexture ? BACKFACE_ALPHA : FRONTFACE_ALPHA;
+						//前の文字の半分
 						mVerticesCountFront++;
 					}
 				}
@@ -794,20 +802,23 @@ public class CurlMesh {
 	 */
 	/*true이면, 텍스처 옆으로 팅겨주는군요.*/
 	public synchronized void setFlipTexture(boolean flipTexture) {
-		mFlipTexture = flipTexture;
+		/*mFlipTexture = flipTexture;
 
 		if (mFlipTexture) {
-			setTexCoords(mTextureRect.right, mTextureRect.top,
-					mTextureRect.left, mTextureRect.bottom);
-		} else {
 			setTexCoords(mTextureRect.left, mTextureRect.top,
 					mTextureRect.right, mTextureRect.bottom);
-		}
-
-		for (int i = 0; i < 4; ++i) {
+			
+		}/* else {
+			setTexCoords(mTextureRect.left, mTextureRect.top,
+					mTextureRect.right, mTextureRect.bottom);
+		}*/
+		
+		//修正AｌPhaを0に
+		/*for (int i = 0; i < 4; ++i) {
 			mRectangle[i].mAlpha = mFlipTexture ? BACKFACE_ALPHA
 					: FRONTFACE_ALPHA;
-		}
+		}*/
+		
 	}
 
 	/**

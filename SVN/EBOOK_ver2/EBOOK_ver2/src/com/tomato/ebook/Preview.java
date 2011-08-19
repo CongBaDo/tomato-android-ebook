@@ -26,7 +26,7 @@ import android.widget.ImageView;
 
 import com.tomato.pagecurl.CurlPreview;
 import com.tomato.pagecurl.CurlView;
-import com.tomato.sdcard.SDcard;
+
 
 /**
  * Simple Activity for curl testing.
@@ -44,7 +44,16 @@ public class Preview extends Activity {
 	private String color=null;
 	private String bgcolor=null;
 	private String bookKey=null;
-	
+	private int pageNum = 0;
+	private int widthSize = 0;
+	private int heightSize = 0;
+	int index = 0;
+	final int DIVID_SIZE = 2;
+	final int TEXT_SIZE = 28 / DIVID_SIZE ;
+	Drawable drawable;
+	Bitmap b;
+	Paint paint;
+	Canvas canvas;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -57,13 +66,14 @@ public class Preview extends Activity {
 		bookKey=intent.getStringExtra("bookKey");
 		color=intent.getStringExtra("color");
 		bgcolor=intent.getStringExtra("bgcolor");
+		pageNum = intent.getIntExtra("pageNum", 0);
+		Log.e("pageNumNum",pageNum+"");
 		try {
 			book2 = booksgo(bookKey);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int index = 0;
 		if (getLastNonConfigurationInstance() != null) {
 			index = (Integer) getLastNonConfigurationInstance();
 		}
@@ -72,7 +82,7 @@ public class Preview extends Activity {
 		//最初の場面
 		if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 			image.setVisibility(View.VISIBLE);
-			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
+			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain3);  
 			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
@@ -85,7 +95,7 @@ public class Preview extends Activity {
 		}
 		mCurlView2 = (CurlPreview) findViewById(R.id.curlpre);
 		mCurlView2.setVisibility(View.VISIBLE);
-		mCurlView2.setBitmapProvider(new BitmapProvider());
+		mCurlView2.setBitmapProvider(new BitmapProvider(), pageNum);
 		mCurlView2.setSizeChangedObserver(new SizeChangedObserver());
 		mCurlView2.setCurrentIndex(index);
 		mCurlView2.setBackgroundColor(0xFF202830);
@@ -114,208 +124,601 @@ public class Preview extends Activity {
 		return mCurlView2.getCurrentIndex();
 	}
 
-	/**
-	 * Bitmap provider.
-	 */
-
 	private class BitmapProvider implements CurlPreview.BitmapProvider {
 
 		@Override
 		public Bitmap getBitmap(int width, int height, int index) {
-			
-			final int DIVID_SIZE = 2;
-			final int TEXT_SIZE = 28 / DIVID_SIZE ;
-			
-			
-			
-			
-			int height1 = getWindowManager().getDefaultDisplay().getHeight();
-			int width1 = getWindowManager().getDefaultDisplay().getWidth();
-			
-			
-			
-			
-			Bitmap b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
+			//int height1 = getWindowManager().getDefaultDisplay().getHeight();
+			//int width1 = getWindowManager().getDefaultDisplay().getWidth();
+			widthSize = width;
+			heightSize = height;
+			b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
 			b.eraseColor(0xFFFFFFFF);
-			Canvas canvas = new Canvas(b);
-
-
-			Drawable drawable = getResources().getDrawable(R.drawable.aaa);
-
+			canvas = new Canvas(b);
+			drawable = getResources().getDrawable(R.drawable.aaa);
 			int margin = 7;
 			int border = 3;
 			Rect rect = new Rect(margin, margin, width - margin, height - margin);
-
 			int imageWidth  =  rect.width() - (border * 2);
-			int imageHeight =  imageWidth 
-								* drawable.getIntrinsicHeight()
-								/ drawable.getIntrinsicWidth();
+			int imageHeight =  imageWidth * drawable.getIntrinsicHeight() / drawable.getIntrinsicWidth();
 			
 			if (imageHeight > rect.height() - (border * 2)) {
 				imageHeight = rect.height() - (border * 2);
-				imageWidth = 
-							imageHeight 
-							* drawable.getIntrinsicWidth()
-							/ drawable.getIntrinsicHeight();
+				imageWidth = imageHeight * drawable.getIntrinsicWidth()	/ drawable.getIntrinsicHeight();
 			}
-
 			rect.left  += ((rect.width() - imageWidth) / 2) - border;
 			rect.right  = rect.left + imageWidth + border + border;
 			rect.top   += ((rect.height() - imageHeight) / 2)- border;
 			rect.bottom = rect.top + imageHeight + border + border;
-
 			Paint paint = new Paint();
 			paint.setColor(Color.BLACK);
 			paint.setTextAlign(Paint.Align.LEFT);
 			paint.setTextSize(TEXT_SIZE);
 			paint.setAntiAlias(true); 
-
-			if (color != null || bgcolor != null) {
+			/*if (color != null || bgcolor != null) {
 				
 				canvas.drawColor(Color.parseColor(bgcolor));
 				paint.setColor(Color.parseColor(color));
 			}else{
-				
 				canvas.drawRect(rect, paint);
 				canvas.drawColor(Color.parseColor("#FFFFFF"));
-			}
+			}*/
 			rect.left   += border;
 			rect.right  -= border;
 			rect.top    += border;
 			rect.bottom -= border;
 			drawable.setBounds(rect);
 			// [ 1 . 1 ] の座標
+			Log.e("pageNum",pageNum+"");
 			
-			int hTab = TEXT_SIZE;  // タイトルバーを含むサイズ
-			int lTeb = 10;
-			if(book2.size() > index){
-				page2 = book2.get(index++);//順番通りでる
-				
-				Log.e("index",index+"");
-				
-				for (int j = 0; j < page2.size(); j++) {
-					String line = String.valueOf( page2.get(j) );
+			int lTeb= 10, TEXT_SIZE= 28/DIVID_SIZE;
+			int hTeb = TEXT_SIZE;
+			switch(pageNum){
+			case 1:
+				if(book2.size() > index){
+					page2 = book2.get(index++);//順番通りでる
+					Log.e("index",index+"");
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
+						if (line.equals("@")) {
+							line = " ";
+						}
+						//横と縦の場合違う場面を見せる//tabletの場合
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb , hTeb+50, paint);
+							hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb , hTeb+50, paint);
+							hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
+					}//end for 
+				}
+				hTeb = TEXT_SIZE;  // 上位の初期値
+				lTeb = lTeb + widthSize / 2;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
 					
-					if (line.equals("@")) {
-						line = " ";
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								paint.setTextSize(TEXT_SIZE+7);
+								canvas.drawText(line, lTeb, hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE+7);
+								canvas.drawText(line, lTeb, hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
 					}
-					//横と縦の場合違う場面を見せる//tabletの場合
-					/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-						canvas.drawText(line, lTeb , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-					}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-						paint.setTextSize(TEXT_SIZE+7);
-						canvas.drawText(line, lTeb , hTab+50, paint);
-						hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-					}*/
-					canvas.drawText(line, lTeb , hTab, paint);
-					hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-				}//end for 
-				//mCurlView.addCurrentIndex();
-			}
-			// [ 1 . 2 ] の座標
-			
-			hTab = TEXT_SIZE;  // 上位の初期値
-			
-			if(book2.size() > index){
-				page2 = book2.get(index++);
-				Log.e("index",index+"");
+				}
+				break;
+			case 2:
+				if(book2.size() > index){
+					page2 = book2.get(index++);//順番通りでる
+					Log.e("index",index+"");
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
+						if (line.equals("@")) {
+							line = " ";
+						}
+						//横と縦の場合違う場面を見せる//tabletの場合
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							canvas.drawText(line, lTeb , hTeb, paint);
+							hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE+7);
+							canvas.drawText(line, lTeb , hTeb+50, paint);
+							hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
+					}//end for 
+				}
+				hTeb = TEXT_SIZE;  // 上位の初期値
+				lTeb = lTeb + widthSize / 2;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+					
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb, hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE+7);
+								canvas.drawText(line, lTeb, hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
+				}
+				// [ 2 . 1 ] の座標
 				
-				if(page2 != null || page2.size() != 0 ){
+				lTeb = lTeb - widthSize /2;
+				hTeb = TEXT_SIZE + heightSize / 2;  // 上位の初期値
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("page",page2+"");
+					Log.e("index",index+"");
 					
-					for (int j = 0; j < page2.size(); j++) {
-						String line = String.valueOf( page2.get(j) );
+					if(page2 != null || page2.size() != 0 ){
 						
-						if (line.equals("@")) {
-							line = " ";
-						}
-						//横と縦の場合違う場面を見せる
-						/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-							canvas.drawText(line, lTeb + width /2 , hTab, paint);
-							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-							paint.setTextSize(TEXT_SIZE+7);
-							canvas.drawText(line, lTeb + width /2 , hTab+50, paint);
-							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}*/
-						canvas.drawText(line, lTeb +width /2 , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-						
-					}//end for 
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE+7);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
 				}
-			}
-			// [ 2 . 1 ] の座標
+							
+				hTeb = TEXT_SIZE + heightSize / 2;  // 上位の初期値
+				lTeb = lTeb + widthSize /2 ;        // 上位の初期値
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
 			
-			hTab = TEXT_SIZE + height / 2;  // 上位の初期値
-			if(book2.size() > index){
-				page2 = book2.get(index++);
-				Log.e("page",page2+"");
-				Log.e("index",index+"");
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE+7);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				drawable.draw(canvas);
+				break;
+			case 3:
+				//paint.setTextSize();
+				if(book2.size() > index){
+					page2 = book2.get(index++);//順番通りでる
+					Log.e("index",index+"");
+					for (int j = 0; j < page2.size(); j++) {
+						String line = String.valueOf( page2.get(j) );
+						if (line.equals("@")) {
+							line = " ";
+						}
+						//横と縦の場合違う場面を見せる//tabletの場合
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							canvas.drawText(line, lTeb , hTeb, paint);
+							hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							paint.setTextSize(TEXT_SIZE);
+							canvas.drawText(line, lTeb , hTeb+50, paint);
+							hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+						}
+					}//end for 
+				}
+				hTeb = TEXT_SIZE;
+				lTeb = lTeb + widthSize/3;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+					
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb, hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE);
+								canvas.drawText(line, lTeb, hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
+				}
+				// [ 2 . 1 ] の座標
 				
-				if(page2 != null || page2.size() != 0 ){
+				hTeb = TEXT_SIZE;
+				lTeb = lTeb + widthSize/3;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("page",page2+"");
+					Log.e("index",index+"");
 					
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE);
+								canvas.drawText(line, lTeb , hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
+				}
+							
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = 10;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = lTeb + widthSize/3;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = lTeb + widthSize/3;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(TEXT_SIZE);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				
+				drawable.draw(canvas);
+				break;
+			case 4:
+				if(book2.size() > index){
+					page2 = book2.get(index++);//順番通りでる
+					Log.e("index",index+"");
 					for (int j = 0; j < page2.size(); j++) {
 						String line = String.valueOf( page2.get(j) );
-						
 						if (line.equals("@")) {
 							line = " ";
 						}
-						//横と縦の場合違う場面を見せる
-						/*if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-							canvas.drawText(line, lTeb , hTab, paint);
-							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
+						//横と縦の場合違う場面を見せる//tabletの場合
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							canvas.drawText(line, lTeb , hTeb+10, paint);
+							hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
 						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-							paint.setTextSize(TEXT_SIZE+7);
-							canvas.drawText(line, lTeb , hTab, paint);
-							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}*/
-						canvas.drawText(line, lTeb , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-					}//end for 
-				}
-			}
-						
-			hTab = TEXT_SIZE + height / 2;  // 上位の初期値
-			lTeb = lTeb + width /2 ;        // 上位の初期値
-			if(book2.size() > index){
-				page2 = book2.get(index++);
-				Log.e("index",index+"");
-		
-				if(page2 != null || page2.size() != 0 ){
-					
-					for (int j = 0; j < page2.size(); j++) {
-						String line = String.valueOf( page2.get(j) );
-						
-						if (line.equals("@")) {
-							line = " ";
+							paint.setTextSize(10);
+							canvas.drawText(line, lTeb , hTeb+50, paint);
+							hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 						}
-						//横と縦の場合違う場面を見せる
-					/*	if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-							canvas.drawText(line, lTeb , hTab, paint);
-							hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-							paint.setTextSize(TEXT_SIZE+7);
-							canvas.drawText(line, lTeb , hTab, paint);
-							hTab += TEXT_SIZE + ( 40 / DIVID_SIZE );
-						}*/
-						canvas.drawText(line, lTeb , hTab, paint);
-						hTab += TEXT_SIZE + ( 10 / DIVID_SIZE );
-						
 					}//end for 
-					
-					//mCurlView.addCurrentIndex();
 				}
+				hTeb = TEXT_SIZE;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+					
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb, hTeb+10, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb, hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
+				}
+				// [ 2 . 1 ] の座標
+				
+				hTeb = TEXT_SIZE;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("page",page2+"");
+					Log.e("index",index+"");
+					
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb+10, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}
+						}//end for 
+					}
+				}
+							
+				hTeb = TEXT_SIZE;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb+10, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb+50, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = 10;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+						
+						//mCurlView.addCurrentIndex();
+					}
+				}
+				hTeb = TEXT_SIZE + heightSize/2;
+				lTeb = lTeb + widthSize/4;
+				if(book2.size() > index){
+					page2 = book2.get(index++);
+					Log.e("index",index+"");
+			
+					if(page2 != null || page2.size() != 0 ){
+						
+						for (int j = 0; j < page2.size(); j++) {
+							String line = String.valueOf( page2.get(j) );
+							
+							if (line.equals("@")) {
+								line = " ";
+							}
+							//横と縦の場合違う場面を見せる
+							if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 10 / DIVID_SIZE );
+							}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+								paint.setTextSize(10);
+								canvas.drawText(line, lTeb , hTeb, paint);
+								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
+							}						
+						}//end for 
+					}
+				}
+			
+				drawable.draw(canvas);
+				break;
 			}
-			//mCurlView.addCurrentIndex(index);
-			drawable.draw(canvas);
 			return b;
 		}
 
 		@Override//page count
 		public int getBitmapCount() {
-			
-			int e = (int) Math.ceil(book2.size()/4)+1;
-					Log.e("booksize/4", e + "hj");
+			Log.e("pageNum",pageNum+"");
+			int e = (int) Math.ceil(book2.size()/(pageNum*2))+1;
+					Log.e("booksize/pageNum", e + "hj");
 			return e;
 		}
 	}
@@ -354,25 +757,6 @@ public class Preview extends Activity {
 
 			startActivity(intent);
 			break;
-//		case 1:
-//			try {
-//				
-//				
-//				Toast.makeText(CurlActivity.this, ":+:しおり設定完了:+:", Toast.LENGTH_LONG).show();
-//				
-////				AlertDialog.Builder bld = new AlertDialog.Builder(CurlActivity.this);
-////				bld.setTitle(":+:しおり設定完了:+:");
-////				bld.setMessage("しおりを保存しました");
-////				bld.show();
-//
-//
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//
-//
-//
-//			break;
 		case 1:
 		{
 			
@@ -456,7 +840,7 @@ public class Preview extends Activity {
         linere = strBuf.toString();
 		Log.e("linere", linere.length()+"");
 		//lineNumberはline, stringGetは文字の数
-		int lineNumber=0, w=0,stringGet=14;
+		int lineNumber=0,stringGet=14;
 		String linere2= "";
 		//本文の整列
 		for(int k =0; k< linere.length(); k++){
@@ -487,5 +871,4 @@ public class Preview extends Activity {
 		page=new ArrayList<String>();
 		return book;
 	}
-
 }

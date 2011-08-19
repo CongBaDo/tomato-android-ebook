@@ -47,7 +47,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 
 	// Current page index. This is always showed on right page.
 	private int mCurrentIndex = 0;/*0으로 초기화된 인덱스 페이지*/
-
+	private int pageNum = 0;
 	// Bitmap size. These are updated from renderer once it's initialized.
 	private int mPageBitmapWidth = -1;
 	private int mPageBitmapHeight = -1;
@@ -412,7 +412,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	 * Update/set bitmap provider.
 	 */
 	/* setBitmapProvider  */
-	public void setBitmapProvider(BitmapProvider bitmapProvider) {
+	public void setBitmapProvider(BitmapProvider bitmapProvider, int num) {
+		pageNum = num;
 		mBitmapProvider = bitmapProvider;
 		mCurrentIndex = 0;
 		updateBitmaps();
@@ -428,7 +429,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			mCurrentIndex = 0;
 		} else {
 			mCurrentIndex = Math.min(index,
-					mBitmapProvider.getBitmapCount() - 1);
+			mBitmapProvider.getBitmapCount() - 1);
 		}
 		
 		
@@ -484,10 +485,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			mViewMode = viewMode;
 			mRenderer.setViewMode(CurlRenderer.SHOW_ONE_PAGE);
 			break;
-		case SHOW_TWO_PAGES:
+		/*case SHOW_TWO_PAGES:
 			mViewMode = viewMode;
 			mRenderer.setViewMode(CurlRenderer.SHOW_TWO_PAGES);
-			break;
+			break;*/
 		}
 	}
 
@@ -654,7 +655,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			// If there is new/next available, set it to right page.
 			if (mCurrentIndex < mBitmapProvider.getBitmapCount() - 1) {
 				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
-						mPageBitmapHeight, mCurrentIndex + 4);
+						mPageBitmapHeight, mCurrentIndex + (pageNum*2)); //8);//ぺーじ数を決定
+				Log.e("pageNumgogogogogogoggogogogogogo","GOGOGO"+pageNum+"");
 				mPageRight.setBitmap(bitmap);
 				mPageRight.setRect(mRenderer
 						.getPageRect(CurlRenderer.PAGE_RIGHT));

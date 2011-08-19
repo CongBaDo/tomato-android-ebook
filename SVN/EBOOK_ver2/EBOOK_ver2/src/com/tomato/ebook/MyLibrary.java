@@ -21,6 +21,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -29,6 +33,8 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
 
@@ -71,6 +77,7 @@ public class MyLibrary extends Activity {
 		JptomatoLogoActivity.actList.add(this);
 		tv=(TextView) findViewById(R.id.list_book_detail_text);
 		prevBtn=(Button) findViewById(R.id.preview);
+		registerForContextMenu(prevBtn);
 		readBtn=(Button) findViewById(R.id.list_book_read);	
 		fileBtn=(Button)findViewById(R.id.list_file_read);
 		exit=(ImageView)findViewById(R.id.exit);
@@ -92,6 +99,7 @@ public class MyLibrary extends Activity {
 
 
 		prevBtn.setOnClickListener(read_listener);
+		
 		readBtn.setOnClickListener(read_listener);
 		fileBtn.setOnClickListener(read_listener);
 		store.setOnClickListener(button_listener);
@@ -206,20 +214,10 @@ public class MyLibrary extends Activity {
 					startActivity(intent);
 					break;
 				}
-				case R.id.preview:
-				{
-					Intent intent=new Intent(MyLibrary.this, Preview.class);
-					//			intent.putExtra("bookKey", bookey[book_key]);
-					intent.putExtra("bookKey", book_key+"");
-					intent.putExtra("color", "#000000");
-					intent.putExtra("bgcolor", "#FFFFFF");
-					startActivity(intent);
-					break;
-				}
 			}
 		}
 	};
-
+	
 	private OnItemClickListener list_listener=new OnItemClickListener() {
 
 		@Override
@@ -294,22 +292,22 @@ public class MyLibrary extends Activity {
 
 					while(true)  
 
-					{  
+					{
 
 						List<RunningAppProcessInfo> list = actMng.getRunningAppProcesses();  
 
 						for(RunningAppProcessInfo rap : list)  
 
-						{  
+						{
 
-							if(rap.processName.equals(strProcessName))  
+							if(rap.processName.equals(strProcessName))
 
 							{  
 
 								if(rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)  
 
 									actMng.restartPackage(getPackageName());  
-									Thread.yield();  
+									Thread.yield(); 
 								break;  
 							}  
 						}  
@@ -318,5 +316,61 @@ public class MyLibrary extends Activity {
 			}, "Process Killer").start();  
 		}  
 		System.exit(0);
-	}  
+	}
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if(v==prevBtn){
+			menu.setHeaderTitle("枚数選択");
+			menu.add(0,1,0, "2");
+			menu.add(0,2,0, "4");
+			menu.add(0,3,0, "6");
+			menu.add(0,4,0, "8");
+		}
+	}
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		switch(item.getItemId()){
+		case 1:
+			Intent intent=new Intent(MyLibrary.this, Preview.class);
+			intent.putExtra("bookKey", book_key+"");
+			intent.putExtra("color", "#000000");
+			intent.putExtra("bgcolor", "#FFFFFF");
+			intent.putExtra("pageNum",1);
+			startActivity(intent);
+			break;
+		case 2:
+			Intent intent2=new Intent(MyLibrary.this, Preview.class);
+			intent2.putExtra("bookKey", book_key+"");
+			intent2.putExtra("color", "#000000");
+			intent2.putExtra("bgcolor", "#FFFFFF");
+			intent2.putExtra("pageNum",2);
+			startActivity(intent2);
+			break;
+		case 3:
+			Intent intent3=new Intent(MyLibrary.this, Preview.class);
+			intent3.putExtra("bookKey", book_key+"");
+			intent3.putExtra("color", "#000000");
+			intent3.putExtra("bgcolor", "#FFFFFF");
+			intent3.putExtra("pageNum",3);
+			startActivity(intent3);
+			break;
+		case 4:
+			Intent intent4=new Intent(MyLibrary.this, Preview.class);
+			intent4.putExtra("bookKey", book_key+"");
+			intent4.putExtra("color", "#000000");
+			intent4.putExtra("bgcolor", "#FFFFFF");
+			intent4.putExtra("pageNum", 4);
+			startActivity(intent4);
+			break;
+		}
+		return false;
+	}
+	
+	
 }
