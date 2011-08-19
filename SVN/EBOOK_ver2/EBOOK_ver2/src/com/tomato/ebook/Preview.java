@@ -93,7 +93,7 @@ public class Preview extends Activity {
 		}
 		mCurlView2 = (CurlPreview) findViewById(R.id.curlpre);
 		mCurlView2.setVisibility(View.VISIBLE);
-		mCurlView2.setBitmapProvider(new BitmapProvider(), pageNum);
+		mCurlView2.setBitmapProvider(new BitmapProvider(), pageNum);		//PageNumをCurlpreviewに渡す
 		mCurlView2.setSizeChangedObserver(new SizeChangedObserver());
 		mCurlView2.setCurrentIndex(index);
 		mCurlView2.setBackgroundColor(0xFF202830);

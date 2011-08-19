@@ -36,13 +36,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	private CurlMesh mPageCurl;/*이게 젤중요하네*/
 	private CurlMesh mPageLeft;/**/
 	private CurlMesh mPageRight;/**/
-	private CurlMesh mPageTop;/*세화는 페이지를 위로 넘기고 싶어 미칠것같아 페이지탑을 만들기에 이른다*/
-
 	// Curl state. We are flipping none, left or right page.
 	private static final int CURL_NONE = 0;
 	private static final int CURL_LEFT = 1;
 	private static final int CURL_RIGHT = 2;
-	private static final int CURL_TOP = 3;/*세화는 탑으로 넘기기위해 파이널로 탑을 선언하기에 이른다*/
 	private int mCurlState = CURL_NONE;
 
 	// Current page index. This is always showed on right page.
@@ -68,8 +65,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	// Constants for mAnimationTargetEvent.
 	private static final int SET_CURL_TO_LEFT = 1;
 	private static final int SET_CURL_TO_RIGHT = 2;
-	private static final int SET_CURL_TO_TOP = 3; /*탑을 여기서도 셋팅이 필요할거라 예상*/
-
+	
 	private CurlRenderer mRenderer; /*mRenderer를 여기서 셋팅*/
 	private BitmapProvider mBitmapProvider;
 	private SizeChangedObserver mSizeChangedObserver;
@@ -135,7 +131,9 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mPageRight = right;
 				// If we were curling left page update current index.
 				if (mCurlState == CURL_LEFT) {
-					mCurrentIndex--;/*아마도 왼쪽을 넘어가면 --가됨 즉 -1인건가*/
+					//恐らく左なら-1になる
+					mCurrentIndex--;
+					/*아마도 왼쪽을 넘어가면 --가됨 즉 -1인건가*/
 				}
 			} else if (mAnimationTargetEvent == SET_CURL_TO_LEFT) {
 				// Switch curled page to left.
@@ -154,21 +152,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				if (mCurlState == CURL_RIGHT) {
 					mCurrentIndex++; /*아마도 오른쪽을 넘어가면 ++가됨 즉 1인건가 왼쪽넘어갓다 오른쪽넘기면 0이겟네*/
 				}
-			}else if (mAnimationTargetEvent == SET_CURL_TO_TOP) {
-				// Switch curled page to left.
-				CurlMesh top = mPageCurl;
-				CurlMesh curl = mPageTop;
-				top.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_TOP));
-				top.setFlipTexture(true);
-				top.reset();
-				mRenderer.removeCurlMesh(curl);
-				if (!mRenderLeftPage) {
-					mRenderer.removeCurlMesh(top);
-				}
-				mPageCurl = curl;
-				mPageTop = top;
-				// If we were curling right page update current index.
-				
 			}
 			mCurlState = CURL_NONE;
 			mAnimate = false;
@@ -413,7 +396,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	 */
 	/* setBitmapProvider  */
 	public void setBitmapProvider(BitmapProvider bitmapProvider, int num) {
-		pageNum = num;
+		pageNum = num;						//PageNumを引き受けてNumに入れる
 		mBitmapProvider = bitmapProvider;
 		mCurrentIndex = 0;
 		updateBitmaps();
@@ -506,11 +489,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		// to swap texture ids only.
 		mPageLeft = new CurlMesh(10);/*숫자 조정했을떄 그림이 미세히 즈레테루 칸지가 시마스*/
 		mPageRight = new CurlMesh(10);/*숫자 조정했을떄 그림이 미세히 즈레테루 칸지가 시마스*/
-		mPageTop = new CurlMesh(10);/*세화는 레프트라이트랑 똑같은 방식으로 탑도 셋팅해보자는 집념에 휩싸이게된다*/
 		mPageCurl = new CurlMesh(10);/*숫자 조정했을떄 그림이 미세히 즈레테루 칸지가 시마스*/
 		mPageLeft.setFlipTexture(true);
 		mPageRight.setFlipTexture(false);
-		mPageTop.setFlipTexture(false);/*잘모르겠지만 흉내를 내보자*/
+
 	}
 
 	/**
@@ -582,30 +564,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				}
 			}
 		}
-/*김세화는 탑으로 메소드를 흉내내기에 이른다*/
-		else if (mCurlState == CURL_TOP) {/*mCurlState는 0이었는데 탑은 3으로 셋팅*/
-			RectF pageRect = mRenderer.getPageRect(CurlRenderer.PAGE_TOP);/*렌더에도 탑질을 시작하기에 이른다*/
-			if (curlPos.x <= pageRect.left) {
-				mPageCurl.reset();
-				requestRender();
-				return;
-			}
-			if (curlPos.x > pageRect.right) {
-				curlPos.x = pageRect.right;
-			}
-			if (curlDir.y != 0) {
-				float diffX = curlPos.x - pageRect.right;
-				float rightY = curlPos.y + (diffX * curlDir.x / curlDir.y);
-				if (curlDir.y < 0 && rightY < pageRect.top) {
-					curlDir.x = pageRect.top - curlPos.y;
-					curlDir.y = curlPos.x - pageRect.right;
-				} else if (curlDir.y > 0 && rightY > pageRect.bottom) {
-					curlDir.x = curlPos.y - pageRect.bottom;
-					curlDir.y = pageRect.right - curlPos.x;
-				}
-			}
-		}
-		// Finally normalize direction vector and do rendering.
 		double dist = Math.sqrt(curlDir.x * curlDir.x + curlDir.y * curlDir.y);
 		if (dist != 0) {
 			curlDir.x /= dist;
@@ -724,18 +682,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			mCurlState = CURL_LEFT;
 			break;
 		}
-		case CURL_TOP:{/*우에야될꼬*/
-			mRenderer.removeCurlMesh(mPageLeft);
-			mRenderer.removeCurlMesh(mPageRight);
-			mRenderer.removeCurlMesh(mPageCurl);
-			
-			CurlMesh curl = mPageTop;
-			mPageTop = mPageCurl;
-			mPageCurl = curl;
-			
-		}
-			
-
 		}
 	}/*startCurl메소드 닫기*/
 
