@@ -69,18 +69,13 @@ public class ReadSetup extends Activity{
 		data3.add("薄い緑");
 		data3.add("薄い黄");		
 
-
-		spin1=new ArrayAdapter<CharSequence>(this, 
-
-				android.R.layout.simple_spinner_item, data1);
+		spin1=new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item, data1);
 		sp1.setAdapter(spin1);
-		spin2=new ArrayAdapter<CharSequence>(this, 
-
-				android.R.layout.simple_spinner_item, data2);
+		
+		spin2=new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, data2);
 		sp2.setAdapter(spin2);
-		spin3=new ArrayAdapter<CharSequence>(this, 
-
-				android.R.layout.simple_spinner_item, data3);
+		
+		spin3=new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, data3);
 		sp3.setAdapter(spin3);
 
 
@@ -180,11 +175,11 @@ public class ReadSetup extends Activity{
 			{
 
 			case R.id.spinner1:{
-				preview.setText(data1.get(position));
+				preview.setText(" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。");
 				break;}
 
 			case R.id.spinner2:{
-				preview.setText(data2.get(position));
+				preview.setText(" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。");
 				switch (position) {
 				case 0:
 					preview.setTextColor(Color.BLACK);
@@ -210,7 +205,7 @@ public class ReadSetup extends Activity{
 			}
 
 			case R.id.spinner3:{
-				String bg=(String) data3.get(position);
+				String bg=" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。";
 				preview.setText(bg);
 				switch (position) {
 				case 0:
