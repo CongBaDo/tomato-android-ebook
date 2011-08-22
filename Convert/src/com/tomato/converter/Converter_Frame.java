@@ -164,7 +164,7 @@ public class Converter_Frame extends Frame{
 					{
 						inputLocation.setEnabled(true);
 						inputLocation.setText(pdfSouce.getAbsolutePath());
-					}
+				}
 				} 
 				catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -327,7 +327,7 @@ public class Converter_Frame extends Frame{
 					}
 				};
 				files = png.list(pngFilter);
-				FileOutputStream dest = new FileOutputStream(exportsDir.getAbsolutePath()+"\\"+(pdfSouce.getName().replaceAll(".pdf", ".tmt")));
+				FileOutputStream dest = new FileOutputStream(exportsDir.getAbsolutePath()+"\\"+(pdfSouce.getName().replaceAll(".pdf", ".pdfImg")));
 				CheckedOutputStream checksum = new CheckedOutputStream(dest, new Adler32());
 				ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(checksum));
 				//out.setMethod(ZipOutputStream.DEFLATED);
