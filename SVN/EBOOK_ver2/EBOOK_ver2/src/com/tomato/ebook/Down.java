@@ -488,7 +488,17 @@ public class Down extends Activity {
 			e.printStackTrace();
 		}
 			}
+			/*
+			*public void saveFile(int rowid,String userId, String[] bookId,String[] bookTitle
+			*,String[] author,String[] description,String[] image,String[] stock) throws IOException
+			* end
+			*/
 	
+	//////////////////////////////////////////////////
+	//
+	// Ebookファイルを作成
+	//
+	//////////////////////////////////////////////////
 	public void saveBook(String ebook,int i) throws IOException
 	{
 		userData = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".ebf");	
@@ -498,26 +508,41 @@ public class Down extends Activity {
 		tempSave.close();	
 
 	}
+	
+	//////////////////////////////////////////////////
+	//
+	// Ebookのイメージファイルを作成
+	//
+	/////////////////////////////////////////////////
 	void  SaveImg(String ImgUrl,int i)throws IOException
 	{
 
 		try
 		{	
+			//保存したイメージの住所にイメージを要請するように住所を処理します。
 			String tmpurlStr = "http://www."+ImgUrl;
+			
+			
+			/*サーバーから端末までデータを送る課程で特殊文字が端末に届かない問題が発生。
+			 * それで、サーバーで"&"を"@amp;"で交代する。
+			 * 下の構文はその"@amp;"を"&"で交代する。
+			 */
 			String imageUrl=tmpurlStr.replace("@amp;", "&");
 
 			URL url = new URL(imageUrl);
-			InputStream is = url.openStream();
+			InputStream is = url.openStream();//処理した住所でイメージ・データを引き出し
 
+			//保存するファイルを開ける
 			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"ebook_"+i+".jpg");
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
 			OutputStream filestream = null;
 			filestream = new FileOutputStream(file);
 			Log.e("Downimage","img");
+			//保存したデータをイメージ形式で圧縮して、開けたファイルに保存
 			bitmap.compress(CompressFormat.JPEG, 100, filestream);
 
 			filestream.flush();
-			filestream.close();
+			filestream.close();//保存するファイルを閉める。
 
 		}
 		catch(Exception e)
@@ -527,22 +552,35 @@ public class Down extends Activity {
 
 
 	}
+	
+	//////////////////////////////////////////////////
+	//
+	// ユーザーがダウンロードする本が保存しているのか判断する
+	//
+	/////////////////////////////////////////////////
 	public Boolean checkBook()
 	{
-		Boolean swit = false;
+		Boolean swit = false;//判断変数
 		msg = hm.get("msg[0]");
+		//ユーザーが持っている各本のＩＤを保存する変数
 		String[] bookIdList= new String[100];
 		String ckBook = null;
+		//保存したファイルを開ける
 		bookText = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"login.txt");
+
 		try {
 			bookCheck = new FileReader(bookText);
+
+			//データを読み込むバッファを開ける。
 			BufferedReader Br = new BufferedReader(bookCheck);
 			for(int i=0;i<3;i++)
 			{
-				ckBook = Br.readLine();
-			}
-			Br.close();
-			bookCheck.close();
+				ckBook = Br.readLine();//本のＩＤを読む
+			}//for i end
+			
+			Br.close();//バッファを閉める。
+			bookCheck.close();//ファイルを閉める。
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -550,18 +588,19 @@ public class Down extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		bookIdList = ckBook.split(",");
-		for (int i = 0 ; i<bookIdList.length;i++)
+		
+		bookIdList = ckBook.split(",");//読んだ本のＩＤを目録で分類
+
+		for (int j = 0 ; j<bookIdList.length;j++)
 		{
-			Log.e("bookInList1",bookIdList[i]);
-			Log.e("bookInList2",toInfoBook);
-			if(bookIdList[i].equals(toInfoBook))
+			//目録上に同じ本がいる場合
+			if(bookIdList[j].equals(toInfoBook))
 			{
 				swit = true;
-
-			}
-		}
+			}//if end
+			
+		}//for i end
+		
 		return swit;
 	}
 }
-
