@@ -175,11 +175,11 @@ public class ReadSetup extends Activity{
 			{
 
 			case R.id.spinner1:{
-				preview.setText(" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。");
+				preview.setText(" この画面はテスト画面です。\n この画面で設定した部分は本に適用されます。");
 				break;}
 
 			case R.id.spinner2:{
-				preview.setText(" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。");
+				preview.setText(" この画面はテスト画面です。\n この画面で設定した部分は本に適用されます。");
 				switch (position) {
 				case 0:
 					preview.setTextColor(Color.BLACK);
@@ -205,7 +205,7 @@ public class ReadSetup extends Activity{
 			}
 
 			case R.id.spinner3:{
-				String bg=" この画面はテスト画面です。\n この画面で適用した部分は本にてきようされます。";
+				String bg=" この画面はテスト画面です。\n この画面で設定した部分は本に適用されます。";
 				preview.setText(bg);
 				switch (position) {
 				case 0:
