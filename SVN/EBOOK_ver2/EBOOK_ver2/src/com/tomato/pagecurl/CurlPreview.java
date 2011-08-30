@@ -125,7 +125,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				// If we were curling left page update current index.
 				if (mCurlState == CURL_LEFT) {
 					//恐らく左なら-1になる
-					mCurrentIndex--;//枚数手を出すと大変なことが起こります
+					mCurrentIndex--;
+					//枚数手を出すと大変なことが起こります
 					/*아마도 왼쪽을 넘어가면 --가됨 즉 -1인건가*/
 				}
 			} else if (mAnimationTargetEvent == SET_CURL_TO_LEFT) {
@@ -144,8 +145,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				// If we were curling right page update current index.
 				if (mCurlState == CURL_RIGHT) {
 					//多分右なら+1になる
-					mCurrentIndex++; /*아마도 오른쪽을 넘어가면 ++가됨 즉 1인건가 왼쪽넘어갓다 오른쪽넘기면 0이겟네*/
 					mCurrentIndex++;
+					/*아마도 오른쪽을 넘어가면 ++가됨 즉 1인건가 왼쪽넘어갓다 오른쪽넘기면 0이겟네*/
 				}
 			}
 			mCurlState = CURL_NONE;
@@ -332,7 +333,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				} else {
 					// On left side target depends on visible pages.
 					mAnimationTarget.set(mDragStartPos);
-					if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES) {
+					if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES){
 						mAnimationTarget.x = leftRect.left;
 					} else {
 						mAnimationTarget.x = rightRect.left;
@@ -554,12 +555,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			}
 			if (mCurrentIndex < mBitmapProvider.getBitmapCount() - 1) {
 				int pageNumRe = pageNum * 2;
+				
 				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,	mPageBitmapHeight,
 								mCurrentIndex + pageNumRe); //8);//ぺーじ数を決定//最初のページだけ
 				Log.e("pageNumgogogogogogoggogogogogogo","GOGOGO"+pageNum+"");
 				mPageRight.setBitmap(bitmap);
-				mPageRight.setRect(mRenderer
-						.getPageRect(CurlRenderer.PAGE_RIGHT));
+				mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 				mPageRight.setFlipTexture(false);
 				mPageRight.reset();
 				mRenderer.addCurlMesh(mPageRight);
@@ -584,6 +585,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			CurlMesh curl = mPageLeft;
 			mPageLeft = mPageCurl;
 			mPageCurl = curl;
+	
 			// If there is new/previous bitmap available load it to left page.
 			if (mCurrentIndex > 1) {
 				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
@@ -603,8 +605,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 						.getPageRect(CurlRenderer.PAGE_RIGHT));
 				mPageRight.reset();
 				mRenderer.addCurlMesh(mPageRight);
-			}
-			
+			}			
 			// How dragging previous page happens depends on view mode.
 			if (mViewMode == SHOW_ONE_PAGE) {
 				mPageCurl.setRect(mRenderer
@@ -761,7 +762,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		 * Return number of pages/bitmaps available.
 		 */
 		public int getBitmapCount();
-		//public void drawtextgogo(String t);/*일단 김세화는 인터페이스안에 이메소드를 정의해놓았다*/
 	}
 	/**
 	 * Observer interface for handling CurlView size changes.

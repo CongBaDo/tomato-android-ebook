@@ -97,9 +97,6 @@ public class Preview extends Activity {
 		mCurlView2.setSizeChangedObserver(new SizeChangedObserver());
 		mCurlView2.setCurrentIndex(index);
 		mCurlView2.setBackgroundColor(0xFF202830);
-		
-		Log.e("22", "22");
-		
 	}
 
 
@@ -123,11 +120,8 @@ public class Preview extends Activity {
 	}
 
 	private class BitmapProvider implements CurlPreview.BitmapProvider {
-
 		@Override
 		public Bitmap getBitmap(int width, int height, int index) {
-			//int height1 = getWindowManager().getDefaultDisplay().getHeight();
-			//int width1 = getWindowManager().getDefaultDisplay().getWidth();
 			widthSize = width;
 			heightSize = height;
 			Bitmap b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
@@ -139,7 +133,6 @@ public class Preview extends Activity {
 			Rect rect = new Rect(margin, margin, width - margin, height - margin);
 			int imageWidth  =  rect.width() - (border * 2);
 			int imageHeight =  imageWidth * drawable.getIntrinsicHeight() / drawable.getIntrinsicWidth();
-			
 			if (imageHeight > rect.height() - (border * 2)) {
 				imageHeight = rect.height() - (border * 2);
 				imageWidth = imageHeight * drawable.getIntrinsicWidth()	/ drawable.getIntrinsicHeight();
@@ -153,14 +146,6 @@ public class Preview extends Activity {
 			paint.setTextAlign(Paint.Align.LEFT);
 			paint.setTextSize(TEXT_SIZE);
 			paint.setAntiAlias(true); 
-			/*if (color != null || bgcolor != null) {
-				
-				canvas.drawColor(Color.parseColor(bgcolor));
-				paint.setColor(Color.parseColor(color));
-			}else{
-				canvas.drawRect(rect, paint);
-				canvas.drawColor(Color.parseColor("#FFFFFF"));
-			}*/
 			rect.left   += border;
 			rect.right  -= border;
 			rect.top    += border;
@@ -170,11 +155,20 @@ public class Preview extends Activity {
 			int lTeb= 10, TEXT_SIZE= 28/DIVID_SIZE;
 			int hTeb = TEXT_SIZE;
 			switch(pageNum){
+			
 			case 1:
+				Log.e("index_???",index+"");
+				Log.e("booksize",book2.size()+"");
 				if(book2.size() > index){
-					Log.e("index1",index+"");
-					page2 = book2.get(index++);//順番通りでる
-					Log.e("index2",index+"");
+					if(index<3){
+						page2 = book2.get(index);//順番通りでる
+					}
+					else if(index < 4){
+						page2 = book2.get(index+1);//順番通りでる
+					}
+					else{
+						page2 = book2.get(index+2);//順番通りでる
+					}
 					for (int j = 0; j < page2.size(); j++) {
 						String line = String.valueOf( page2.get(j) );
 						if (line.equals("@")) {
@@ -192,13 +186,28 @@ public class Preview extends Activity {
 						}
 					}//end for 
 				}
+				
 				hTeb = TEXT_SIZE;  // 上位の初期値
 				lTeb = lTeb + widthSize / 2;
-				if(book2.size() > index){
-					Log.e("index3",index+"");
-					page2 = book2.get(index++);
-					Log.e("index4",index+"");
-					
+				if(book2.size() > index+3){
+					if(index<3){
+						page2 = book2.get(index+1);//順番通りでる
+					}
+				//	else{
+					//	page2 = book2.get(index+2);
+					//}
+					else if(index <4){
+						page2 = book2.get(index+2);//順番通りでる
+					}
+					else{
+						if(book2.size() > (index+3)){
+							page2 = book2.get(index+3);//順番通りでる
+						}
+						else{
+							page2 = null;
+						}
+					}
+				
 					if(page2 != null || page2.size() != 0 ){
 						
 						for (int j = 0; j < page2.size(); j++) {
@@ -220,7 +229,10 @@ public class Preview extends Activity {
 						}//end for 
 					}
 				}
-				
+				if(index <4){
+					index++;
+				}
+				drawable.draw(canvas);
 				break;
 			case 2:
 				if(book2.size() > index){
@@ -322,14 +334,11 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				drawable.draw(canvas);
 				break;
 			case 3:
-				//paint.setTextSize();
 				if(book2.size() > index){
 					page2 = book2.get(index++);//順番通りでる
 					Log.e("index",index+"");
@@ -428,8 +437,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -456,8 +463,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -484,8 +489,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				
@@ -513,6 +516,7 @@ public class Preview extends Activity {
 				}
 				hTeb = TEXT_SIZE;
 				lTeb = lTeb + widthSize/4;
+				
 				if(book2.size() > index){
 					page2 = book2.get(index++);
 					Log.e("index",index+"");
@@ -538,7 +542,6 @@ public class Preview extends Activity {
 					}
 				}
 				// [ 2 . 1 ] の座標
-				
 				hTeb = TEXT_SIZE;
 				lTeb = lTeb + widthSize/4;
 				if(book2.size() > index){
@@ -566,18 +569,14 @@ public class Preview extends Activity {
 						}//end for 
 					}
 				}
-							
 				hTeb = TEXT_SIZE;
 				lTeb = lTeb + widthSize/4;
 				if(book2.size() > index){
 					page2 = book2.get(index++);
 					Log.e("index",index+"");
-			
 					if(page2 != null || page2.size() != 0 ){
-						
 						for (int j = 0; j < page2.size(); j++) {
 							String line = String.valueOf( page2.get(j) );
-							
 							if (line.equals("@")) {
 								line = " ";
 							}
@@ -591,8 +590,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -619,8 +616,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -628,7 +623,6 @@ public class Preview extends Activity {
 				if(book2.size() > index){
 					page2 = book2.get(index++);
 					Log.e("index",index+"");
-			
 					if(page2 != null || page2.size() != 0 ){
 						
 						for (int j = 0; j < page2.size(); j++) {
@@ -647,7 +641,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -672,8 +665,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
-						//mCurlView.addCurrentIndex();
 					}
 				}
 				hTeb = TEXT_SIZE + heightSize/2;
@@ -712,7 +703,7 @@ public class Preview extends Activity {
 			Log.e("pageNum",pageNum+"");
 			int pageNumRe = pageNum * 2;
 			int e = (int) Math.ceil(book2.size()/pageNumRe)+1;
-					Log.e("booksize/pageNum", e + "hj");
+			Log.e("booksize/pageNum", e + "hj");
 			return e;
 		}
 	}
