@@ -40,7 +40,7 @@ import com.tomato.sdcard.SDcard;
 
 public class MyLibrary extends Activity {
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
-	TextView tv;
+	TextView titleName,authorName,description;
 	Button readBtn,fileBtn,prevBtn;
 	ImageView  store,list_book_detail,exit;
 	final static int MAX = 100; 
@@ -75,17 +75,25 @@ public class MyLibrary extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mylibrary);
 		JptomatoLogoActivity.actList.add(this);
-		tv=(TextView) findViewById(R.id.list_book_detail_text);
-		prevBtn=(Button) findViewById(R.id.preview);
-		registerForContextMenu(prevBtn);
+		
+		titleName=(TextView) findViewById(R.id.MyLibrary_TitleName);
+		authorName=(TextView) findViewById(R.id.MyLibrary_AuthorName);
+		description=(TextView) findViewById(R.id.MyLibrary_Story);
+		
 		readBtn=(Button) findViewById(R.id.list_book_read);	
 		fileBtn=(Button)findViewById(R.id.list_file_read);
+		prevBtn=(Button) findViewById(R.id.preview);
+		registerForContextMenu(prevBtn);
+		
 		exit=(ImageView)findViewById(R.id.exit);
-		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
-		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
-		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
 		store=(ImageView)findViewById(R.id.store);	
 		list_book_detail=(ImageView) findViewById(R.id.list_book_detail);
+		
+		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
+		
+		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);    
+		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);   
+		
 		sd=new SDcard();
 		datadata=sd.tryToMyLibrary();//read login.txt
 
@@ -248,14 +256,17 @@ public class MyLibrary extends Activity {
 			}
 			String viewImage=bookimg[position];
 			Bitmap bit = BitmapFactory.decodeFile(viewImage);
+			
 			list_book_detail.setImageBitmap(bit);
-			tv.setText("タイトル＝"+booktitle[position]+"\n"+"作家＝"+bookwriter[position]+"\n"+"簡単説明＝"+bookdes[position]);
+			titleName.setText(booktitle[position]);
+			authorName.setText(bookwriter[position]);
+			description.setText(bookdes[position]);
 			book_key=position+1;
 			}
 			else if(Integer.valueOf(datadata.get(0))==6)
 			{
 				list_book_detail.setImageResource(R.drawable.default_book);
-				tv.setText("未だダウンロードした本が有りません。");
+				titleName.setText("未だダウンロードした本が有りません。");
 			
 			}
 		}

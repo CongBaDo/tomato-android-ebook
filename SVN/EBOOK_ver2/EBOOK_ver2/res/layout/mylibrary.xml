@@ -4,59 +4,39 @@
 android:orientation="vertical"
 android:layout_width="fill_parent" 
 android:layout_height="fill_parent" android:gravity="center">
-  
-  
-  <RelativeLayout
-   android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginBottom="5px">
-  <ImageView android:id="@+id/store" 
-	    	 android:layout_width="wrap_content" 
-		  	 android:src="@drawable/mylibrary_store" 
-		  	 android:layout_height="wrap_content"
-		     android:layout_alignParentRight="true" android:layout_margin="10px"/>
-  <ImageView android:id="@+id/exit" 
-    		 android:layout_height="wrap_content" 
-    		 android:src="@drawable/mylibrary_x" 
-    		 android:layout_width="wrap_content" 
-    		 android:layout_alignParentLeft="true" android:layout_centerHorizontal="true"/>
-  
-  </RelativeLayout>
-  
-  
-  <LinearLayout
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content">
-      <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center">
-          <Gallery android:layout_marginTop="20px" android:animationDuration="1000" android:gravity="center" android:background="#FFDEAD" android:spacing="10px" android:layout_marginBottom="20px" android:id="@+id/gallery" android:layout_height="match_parent" android:layout_width="match_parent"></Gallery>
-      </LinearLayout>
- </LinearLayout> 
-
-
-<RelativeLayout
- android:layout_width="fill_parent"
-  android:layout_height="wrap_content" android:layout_marginTop="15px">
- <ImageView
- android:id="@+id/list_book_detail"
-  android:layout_width="wrap_content" 
-  android:src="@drawable/list_book" 
-  android:layout_height="wrap_content" 
-  android:layout_alignParentLeft="true"
-  android:padding="10px"/>
-<TextView 
-android:layout_toRightOf="@id/list_book_detail"
- android:id="@+id/list_book_detail_text"
- android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:text="簡単な説明のところ"
-   android:padding="15px"/>
-
-</RelativeLayout>
-<LinearLayout android:id="@+id/linearLayout3" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-    <LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center">
-        <Button android:id="@+id/list_book_read" android:layout_width="wrap_content" android:text="本を読む" android:layout_marginTop="20px" android:layout_gravity="center" android:layout_height="wrap_content"></Button>
-        <Button android:id="@+id/preview" android:layout_width="wrap_content" android:text="プレビュ" android:layout_marginTop="20px" android:layout_gravity="center" android:layout_height="wrap_content"></Button>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20px"  android:id="@+id/list_file_read" android:text="Fileを読む"></Button>
-    </LinearLayout>
-</LinearLayout>  
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/scrollView1" android:layout_marginTop="5px">
+        <LinearLayout android:id="@+id/linearLayout5" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10px">
+                <ImageView android:id="@+id/store" android:layout_margin="10px" android:layout_alignParentRight="true" android:src="@drawable/mylibrary_store" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
+                <ImageView android:id="@+id/exit" android:src="@drawable/mylibrary_x" android:layout_alignParentLeft="true" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
+            </RelativeLayout>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:gravity="center" android:orientation="vertical">
+                    <Gallery android:layout_marginBottom="20px" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FFDEAD" android:gravity="center" android:layout_marginTop="20px" android:spacing="10px" android:animationDuration="1000" android:id="@+id/gallery"></Gallery>
+                </LinearLayout>
+            </LinearLayout>
+            <RelativeLayout android:id="@+id/LinearLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15px">
+                <ImageView android:id="@+id/list_book_detail" android:layout_alignParentTop="true" android:padding="10px" android:src="@drawable/list_book" android:layout_alignParentLeft="true" android:layout_height="240px" android:layout_width="120px"></ImageView>
+                <TextView android:textColor="#FFFFFF" android:padding="15px" android:textSize="30px" android:text="タイトル" android:layout_toRightOf="@+id/list_book_detail" android:layout_alignBaseline="@+id/list_book_detail" android:layout_alignParentTop="true" android:layout_marginTop="26dp" android:layout_marginLeft="14dp" android:id="@+id/list_book_detail_text" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                <TextView android:layout_alignBottom="@+id/MyLibrary_Author" android:text="TextView" android:layout_alignLeft="@+id/MyLibrary_TitleName" android:layout_alignBaseline="@+id/MyLibrary_Author" android:id="@+id/MyLibrary_AuthorName" android:layout_height="wrap_content" android:layout_width="fill_parent"></TextView>
+                <TextView android:layout_alignBottom="@+id/list_book_detail_text" android:text="TextView" android:layout_toRightOf="@+id/list_book_detail_text" android:layout_alignBaseline="@+id/list_book_detail_text" android:layout_marginLeft="16dp" android:id="@+id/MyLibrary_TitleName" android:layout_height="wrap_content" android:layout_width="fill_parent"></TextView>
+                <TextView android:layout_below="@+id/list_book_detail_text" android:textColor="#FFFFFF" android:textSize="30px" android:text="著者" android:layout_alignLeft="@+id/list_book_detail_text" android:layout_width="wrap_content" android:layout_marginTop="22dp" android:layout_marginLeft="26dp" android:id="@+id/MyLibrary_Author" android:layout_height="wrap_content"></TextView>
+            </RelativeLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout4" android:gravity="center" android:orientation="vertical">
+                <TextView android:textColor="#FFFFFF" android:layout_width="wrap_content" android:textSize="30px" android:text="本の内容" android:layout_height="wrap_content" android:id="@+id/MyLibrary_Description"></TextView>
+                <LinearLayout android:background="#FFFFFF" android:layout_marginBottom="30px" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="5px" android:layout_marginTop="5px" android:id="@+id/Info_StroyLayout" android:layout_marginRight="10px" android:orientation="vertical" android:layout_marginLeft="10px">
+                    <TextView android:textColor="#000000" android:layout_width="match_parent" android:text="内容" android:layout_marginLeft="10px" android:layout_height="100px" android:id="@+id/MyLibrary_Story"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3" android:orientation="vertical">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:gravity="center">
+                    <Button android:layout_width="wrap_content" android:layout_marginTop="20px" android:text="本を読む" android:layout_gravity="center" android:id="@+id/list_book_read" android:layout_height="wrap_content"></Button>
+                    <Button android:layout_width="wrap_content" android:layout_marginTop="20px" android:text="プレビュ" android:layout_gravity="center" android:id="@+id/preview" android:layout_height="wrap_content"></Button>
+                    <Button android:layout_width="wrap_content" android:layout_marginTop="20px" android:text="Fileを読む" android:id="@+id/list_file_read" android:layout_height="wrap_content"></Button>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>  
  
   
 </LinearLayout>
