@@ -47,7 +47,7 @@ public class Preview extends Activity {
 	private int pageNum = 0;
 	private int widthSize = 0;
 	private int heightSize = 0;
-	int index = 0;
+	private int index = 0;
 	final int DIVID_SIZE = 2;
 	final int TEXT_SIZE = 28 / DIVID_SIZE ;
 
@@ -167,15 +167,10 @@ public class Preview extends Activity {
 			rect.bottom -= border;
 			drawable.setBounds(rect);
 			// [ 1 . 1 ] の座標
-			Log.e("pageNum",pageNum+"");
-			
 			int lTeb= 10, TEXT_SIZE= 28/DIVID_SIZE;
 			int hTeb = TEXT_SIZE;
 			switch(pageNum){
 			case 1:
-				if(index > 3){
-					index = index + 1;
-				}
 				if(book2.size() > index){
 					Log.e("index1",index+"");
 					page2 = book2.get(index++);//順番通りでる
@@ -225,6 +220,7 @@ public class Preview extends Activity {
 						}//end for 
 					}
 				}
+				
 				break;
 			case 2:
 				if(book2.size() > index){
@@ -651,7 +647,6 @@ public class Preview extends Activity {
 								hTeb += TEXT_SIZE + ( 40 / DIVID_SIZE );
 							}						
 						}//end for 
-						
 						//mCurlView.addCurrentIndex();
 					}
 				}
@@ -660,9 +655,7 @@ public class Preview extends Activity {
 				if(book2.size() > index){
 					page2 = book2.get(index++);
 					Log.e("index",index+"");
-			
 					if(page2 != null || page2.size() != 0 ){
-						
 						for (int j = 0; j < page2.size(); j++) {
 							String line = String.valueOf( page2.get(j) );
 							
@@ -709,13 +702,11 @@ public class Preview extends Activity {
 						}//end for 
 					}
 				}
-			
 				drawable.draw(canvas);
 				break;
 			}
 			return b;
 		}
-
 		@Override//page count
 		public int getBitmapCount() {
 			Log.e("pageNum",pageNum+"");
@@ -725,7 +716,6 @@ public class Preview extends Activity {
 			return e;
 		}
 	}
-
 	/**
 	 * CurlView size changed observer.
 	 */
@@ -747,9 +737,7 @@ public class Preview extends Activity {
 		menu.add(0,0,0,"環境設定");//.setIcon(R.drawable.menu1);
 		menu.add(0,1,0,"戻る");//.setIcon(R.drawable.menu2);
 		return super.onCreateOptionsMenu(menu);
-		}
-	//
-	
+	}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
