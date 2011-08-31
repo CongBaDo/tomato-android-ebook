@@ -182,6 +182,7 @@ public class CurlActivity extends Activity {
 			return book2.size();
 		}
 	}
+	
 	private class SizeChangedObserver implements CurlView.SizeChangedObserver {
 		@Override
 		public void onSizeChanged(int w, int h) {
