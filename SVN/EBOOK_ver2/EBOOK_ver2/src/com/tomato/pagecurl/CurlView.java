@@ -3,6 +3,7 @@ package com.tomato.pagecurl;
 
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -28,6 +29,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	// One page is the default.
 	private int mViewMode = SHOW_ONE_PAGE;
 
+	//縦と横の場合を区別するためのConfigRe
+	private Configuration configRe = null;
 	private boolean mRenderLeftPage = true;
 	private boolean mAllowLastPageCurl = true;
 
@@ -42,7 +45,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	private static final int CURL_NONE = 0;
 	private static final int CURL_LEFT = 1;
 	private static final int CURL_RIGHT = 2;
-	private static final int CURL_TOP = 3;/*세화는 탑으로 넘기기위해 파이널로 탑을 선언하기에 이른다*/
 	private int mCurlState = CURL_NONE;
 
 	// Current page index. This is always showed on right page.
@@ -68,7 +70,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	// Constants for mAnimationTargetEvent.
 	private static final int SET_CURL_TO_LEFT = 1;
 	private static final int SET_CURL_TO_RIGHT = 2;
-	private static final int SET_CURL_TO_TOP = 3; /*탑을 여기서도 셋팅이 필요할거라 예상*/
+
 
 	private CurlRenderer mRenderer; /*mRenderer를 여기서 셋팅*/
 	private BitmapProvider mBitmapProvider;
@@ -133,9 +135,15 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mRenderer.removeCurlMesh(curl);
 				mPageCurl = curl;
 				mPageRight = right;
+				//ぺーじ数を決定
 				// If we were curling left page update current index.
 				if (mCurlState == CURL_LEFT) {
-					mCurrentIndex = mCurrentIndex --;/*아마도 왼쪽을 넘어가면 --가됨 즉 -1인건가*/
+					if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+						//最後のページが出る場合に問題があります。
+						mCurrentIndex--;
+					}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						mCurrentIndex = mCurrentIndex--;
+					}
 				}
 			} else if (mAnimationTargetEvent == SET_CURL_TO_LEFT) {
 				// Switch curled page to left.
@@ -152,23 +160,13 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mPageLeft = left;
 				// If we were curling right page update current index.
 				if (mCurlState == CURL_RIGHT) {
-					mCurrentIndex = mCurrentIndex ++; /*아마도 오른쪽을 넘어가면 ++가됨 즉 1인건가 왼쪽넘어갓다 오른쪽넘기면 0이겟네*/
+					if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+						//最後のページが出る場合に問題があります。
+						mCurrentIndex++;
+					}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						mCurrentIndex = mCurrentIndex++;
+					}
 				}
-			}else if (mAnimationTargetEvent == SET_CURL_TO_TOP) {
-				// Switch curled page to left.
-				CurlMesh top = mPageCurl;
-				CurlMesh curl = mPageTop;
-				top.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_TOP));
-				top.setFlipTexture(true);
-				top.reset();
-				mRenderer.removeCurlMesh(curl);
-				if (!mRenderLeftPage) {
-					mRenderer.removeCurlMesh(top);
-				}
-				mPageCurl = curl;
-				mPageTop = top;
-				// If we were curling right page update current index.
-				
 			}
 			mCurlState = CURL_NONE;
 			mAnimate = false;
@@ -189,11 +187,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		updateBitmaps();
 		requestRender();
 	}
-
-	
-	/*잘은 모르나 상위클래스  GLSurfaceView에서
-	 *  int w, int h, int ow, int oh 
-	 *  이러한 값을 받았다는 가정하로 계산하고 있는듯*/
 	@Override
 	public void onSizeChanged(int w, int h, int ow, int oh) {
 		/*상위클래스에*/
@@ -270,12 +263,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 //				mDragStartPos.y = rightRect.bottom;/*바닥*/
 			    mDragStartPos.y = rightRect.right;
 			}
-
-			// Then we have to make decisions for the user whether curl is going
-			// to happen from left or right, and on which page.
-			/*그렇다면 우리는 울다 지쳐가는 여부를 사용자에 대한 결정을 내릴 수있다
-  			왼쪽이나 오른쪽에서 발생하고, 어떤 페이지에*/
-			/*오 이거슨 두번쨰페이지 머 이딴게 아니라 뷰를 가로로 보여줬을때 처리할 수 있게 셋팅*/
 			if (mViewMode == SHOW_TWO_PAGES) {
 				// If we have an open book and pointer is on the left from right
 				// page we'll mark drag position to left edge of left page.
@@ -284,6 +271,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				if (mDragStartPos.x < rightRect.left && mCurrentIndex > 0) {/*mCurrentIndex > 0 //0보다 인덱스가 크단건 오른쪽으로 넘어갓단얘기 */
 					mDragStartPos.x = leftRect.left;
 					startCurl(CURL_LEFT);
+					
 				}
 				// Otherwise check pointer is on right page's side.
 				
@@ -303,13 +291,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			/*SHOW_ONE_PAGE는 첫페이지인 경우라는 의미인듯 이걸 주석처리하니 아에 이벤트의 미동조차없었음*/
 			else if (mViewMode == SHOW_ONE_PAGE) {
 			float halfX = (rightRect.right + rightRect.left) / 2;
-				/*그래 진짜왠지 이거인것같애*/
-//				float halfX = (rightRect.bottom + rightRect.top) / 2;
-//			float halfX = (rightRect.top + rightRect.bottom) / 2;
-			/*top bottom을 쿠미아와세해서 halfX를 만들었는데 아무런 변화가 없었음 아무래도
-			 * 이벤트 움직이는 것과 관련은 없어보임*/
-
-			
 				if (mDragStartPos.x < halfX && mCurrentIndex > 0) {/*이게 왼쪽으로 일어나기 위한 좌표값이구나*/
 					mDragStartPos.x = rightRect.left;
 					startCurl(CURL_LEFT);/*이게 없으면 왼쪽으로 넘어가는 이벤트가 일어나지를 않음*/
@@ -317,8 +298,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 						&& mCurrentIndex < mBitmapProvider.getBitmapCount()) {
 					mDragStartPos.x = rightRect.right;
 					if (!mAllowLastPageCurl
-							&& mCurrentIndex >= mBitmapProvider
-									.getBitmapCount() - 1) {
+							&& mCurrentIndex >= mBitmapProvider.getBitmapCount() - 1) {
 						return false;
 					}
 					startCurl(CURL_RIGHT);/*이게 없으면 당연히 오른쪽으로 넘어가는 이벤트가 일어나지를 않음*/
@@ -327,9 +307,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			// If we have are in curl state, let this case clause flow through
 			// to next one. We have pointer position and drag position defined
 			// and this will create first render request given these points.
-			/*우리가 곱슬 곱슬 상태에있는 경우,을 통해이 사건 조항의 흐름을 보자
-  다음 수 있습니다. 우리는 포인터의 위치와 정의 끌어 위치를
-  그리고 이것은 이러한 점을 주어진 첫번째 렌더링 요청을 생성합니다.*/
 			if (mCurlState == CURL_NONE) {
 				return false;
 			}
@@ -350,7 +327,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				// bit more readable and easier to maintain.
 				mAnimationSource.set(mPointerPos.mPos);
 				mAnimationStartTime = System.currentTimeMillis();
-
 				// Given the explanation, here we decide whether to simulate
 				// drag to left or right end.
 				if ((mViewMode == SHOW_ONE_PAGE && mPointerPos.mPos.x > (rightRect.left + rightRect.right) / 2)
@@ -365,9 +341,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 					//KES
 					if (mViewMode == SHOW_TWO_PAGES
 							&& mPointerPos.mPos.x > rightRect.left && mCurlState == CURL_LEFT){
-						
-						mCurrentIndex = mCurrentIndex - 2;
-						
+						//横と縦の場合を区別するためのもの
+						if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+							//最後のページが出る場合に問題があります。
+							mCurrentIndex = mCurrentIndex - 1;
+						}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							mCurrentIndex = mCurrentIndex - 2;
+						}
+						Log.e("mCurrentIndex!!!!!!!!!",mCurrentIndex+"");
 						Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 								mPageBitmapHeight, mCurrentIndex+1);
 						mPageCurl.setBitmap(bitmapLeft);
@@ -380,16 +361,19 @@ CurlRenderer.Observer,View.OnLongClickListener {
 					// On left side target depends on visible pages.
 					
 					if(mCurlState == CURL_RIGHT && mCurrentIndex < mBitmapProvider.getBitmapCount() ) { 
-						mCurrentIndex = mCurrentIndex + 2;
-					
+						if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+							//最後のページが出る場合に問題があります。
+							
+						}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							mCurrentIndex = mCurrentIndex + 2;
+						}
 						Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 								mPageBitmapHeight, mCurrentIndex);
 						mPageCurl.setBitmap(bitmapLeft);
 						mPageCurl.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 						mPageCurl.setFlipTexture(false);
 						mPageCurl.reset();
-					}
-					
+					}					
 					mAnimationTarget.set(mDragStartPos);
 					if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES){
 						mAnimationTarget.x = leftRect.left;
@@ -406,7 +390,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 //				//左から右フリックした後、右ページを設定	
 //				}else if (mCurlState == CURL_LEFT){
 //					mCurrentIndex = mCurrentIndex - 2;
-//					
 //					Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 //							mPageBitmapHeight, mCurrentIndex+1);
 //					mPageCurl.setBitmap(bitmapLeft);
@@ -414,10 +397,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 //							.getPageRect(CurlRenderer.PAGE_RIGHT));
 //					mPageCurl.setFlipTexture(false);
 //					mPageCurl.reset();
-//					
 //				}
-				
-				
 				mAnimate = true;
 				requestRender();
 			}
@@ -427,15 +407,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 
 		Log.e("time", me.getEventTime()+toString());
 		return true;
-	}/*온터치 메소드 끝*/
-
-	/**
+	}/**
 	 * Allow the last page to curl.
-	 */
+	*/
 	public void setAllowLastPageCurl(boolean allowLastPageCurl) {
 		mAllowLastPageCurl = allowLastPageCurl;
 	}
-	 /*  배경색 컬뷰셋팅인데 얘는 여기서 또 오버라이드를 받았음 mRenderer인듯  */
 	@Override
 	public void setBackgroundColor(int color) {
 		mRenderer.setBackgroundColor(color);
@@ -457,7 +434,9 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	 * Set page index.
 	 */
 /* setCurrentIndex 페이지값구하는 컬뷰 */
-	public void setCurrentIndex(int index) {
+	public void setCurrentIndex(int index,Configuration config) {
+		configRe = config;
+		Log.e("Configuration!!!!!!!!!", config.orientation+"");
 		if (mBitmapProvider == null || index <= 0) {
 			mCurrentIndex = 0;
 		} else {
@@ -615,28 +594,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			}
 		}
 /*김세화는 탑으로 메소드를 흉내내기에 이른다*/
-		else if (mCurlState == CURL_TOP) {/*mCurlState는 0이었는데 탑은 3으로 셋팅*/
-			RectF pageRect = mRenderer.getPageRect(CurlRenderer.PAGE_TOP);/*렌더에도 탑질을 시작하기에 이른다*/
-			if (curlPos.x <= pageRect.left) {
-				mPageCurl.reset();
-				requestRender();
-				return;
-			}
-			if (curlPos.x > pageRect.right) {
-				curlPos.x = pageRect.right;
-			}
-			if (curlDir.y != 0) {
-				float diffX = curlPos.x - pageRect.right;
-				float rightY = curlPos.y + (diffX * curlDir.x / curlDir.y);
-				if (curlDir.y < 0 && rightY < pageRect.top) {
-					curlDir.x = pageRect.top - curlPos.y;
-					curlDir.y = curlPos.x - pageRect.right;
-				} else if (curlDir.y > 0 && rightY > pageRect.bottom) {
-					curlDir.x = curlPos.y - pageRect.bottom;
-					curlDir.y = pageRect.right - curlPos.x;
-				}
-			}
-		}
+		
 		// Finally normalize direction vector and do rendering.
 		double dist = Math.sqrt(curlDir.x * curlDir.x + curlDir.y * curlDir.y);
 		if (dist != 0) {
@@ -688,31 +646,37 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			}
 
 			Log.e("BitmapProvider.getBitmapCount() : !!", String.valueOf(mBitmapProvider.getBitmapCount()));
-			Log.e("mCurrentIndex() : !!", String.valueOf(mCurrentIndex));
 			// If there is new/next available, set it to right page.
-			if (mCurrentIndex < mBitmapProvider.getBitmapCount() - 3) {
-				
-				Bitmap bitmapRight = mBitmapProvider.getBitmap(mPageBitmapWidth,
-						mPageBitmapHeight, mCurrentIndex + 3);
+			int pageLast = 0;
+			if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+				//最後のページが出る場合に問題があります。
+				pageLast = 1;
+			}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+				pageLast = 3;
+			}
+			if (mCurrentIndex < mBitmapProvider.getBitmapCount() - pageLast) {
+				int plusPage = 0;
+				if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+					//最後のページが出る場合に問題があります。
+					plusPage = 1;
+				}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+					plusPage = 3;
+				}
+				Bitmap bitmapRight = mBitmapProvider.getBitmap(mPageBitmapWidth,mPageBitmapHeight,
+									 mCurrentIndex + plusPage);//rightの場合に右の場面を決定するときに必要
 				mPageRight.setBitmap(bitmapRight);
-				mPageRight.setRect(mRenderer
-						.getPageRect(CurlRenderer.PAGE_RIGHT));
+				mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 				mPageRight.setFlipTexture(false);
 				mPageRight.reset();
 				mRenderer.addCurlMesh(mPageRight);
 				
 				Log.e("mCurrentIndex : ", String.valueOf(mCurrentIndex));
 			}
-
 			// Add curled page to renderer.
 			mPageCurl.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 			mPageCurl.setFlipTexture(false);
 			mPageCurl.reset();
-		
 			mRenderer.addCurlMesh(mPageCurl);
-			
-//			mCurrentIndex = mCurrentIndex + 2;
-			
 			mCurlState = CURL_RIGHT;
 			break;
 		}
@@ -733,8 +697,15 @@ CurlRenderer.Observer,View.OnLongClickListener {
 
 			// If there is new/previous bitmap available load it to left page.
 			if (mCurrentIndex > 1) {
+				int plusPage = 0;
+				if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+					//最後のページが出る場合に問題があります。
+					plusPage = 2;
+				}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+					plusPage = 2;
+				}
 				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
-						mPageBitmapHeight, mCurrentIndex - 2);
+						mPageBitmapHeight, mCurrentIndex - plusPage);//Leftのめぐった後のLeftページ
 				mPageLeft.setBitmap(bitmap);
 				mPageLeft
 						.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
@@ -749,11 +720,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mPageRight.setRect(mRenderer
 						.getPageRect(CurlRenderer.PAGE_LEFT));
 				mPageRight.reset();
+				
 				mRenderer.addCurlMesh(mPageRight);
 			}
 
 			// If there is something to show on right page add it to renderer.
-			if (mCurrentIndex < mBitmapProvider.getBitmapCount()) {
+			// 最後のページから以前のページに戻ろうとするとき右のページに無用なページが出ないように式を加える
+			// mCurrentIndex != mBitmapProvider.getBitmapCount()-1
+			if (mCurrentIndex < mBitmapProvider.getBitmapCount() && (mCurrentIndex != mBitmapProvider.getBitmapCount()-1)) {
 				mPageRight.setRect(mRenderer
 						.getPageRect(CurlRenderer.PAGE_RIGHT));
 				mPageRight.reset();
@@ -807,8 +781,15 @@ CurlRenderer.Observer,View.OnLongClickListener {
 //			rightIdx++;
 //		}
 		if (mCurrentIndex >= 0 && mCurrentIndex < mBitmapProvider.getBitmapCount()) {
+			int plusPage = 0;
+			if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+				//最後のページが出る場合に問題があります。
+				plusPage = 0;
+			}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
+				plusPage = 1;
+			}
 			Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
-					mPageBitmapHeight, mCurrentIndex+1);
+					mPageBitmapHeight, mCurrentIndex+plusPage);
 			mPageRight.setBitmap(bitmap);
 			mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 			mPageRight.reset();

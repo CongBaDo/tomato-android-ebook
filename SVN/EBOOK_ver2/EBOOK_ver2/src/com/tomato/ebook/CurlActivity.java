@@ -91,7 +91,7 @@ public class CurlActivity extends Activity {
 		mCurlView.setVisibility(View.VISIBLE);
 		mCurlView.setBitmapProvider(new BitmapProvider());
 		mCurlView.setSizeChangedObserver(new SizeChangedObserver());
-		mCurlView.setCurrentIndex(index);
+		mCurlView.setCurrentIndex(index,config);
 		mCurlView.setBackgroundColor(0xFF202830);
 	}
 	@Override
