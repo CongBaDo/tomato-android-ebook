@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.tomato.pagecurl.CurlView;
+import com.tomato.pagecurl.CurlViewPort;
 import com.tomato.sdcard.SDcard;
 
 
@@ -41,7 +42,8 @@ public class CurlActivity extends Activity {
 
 	Configuration config;													//横と縦の時を区別する
 	
-	private CurlView mCurlView;												
+	private CurlView mCurlView;
+	private CurlViewPort mCurlViewport;
 	private ArrayList<ArrayList<String>> book2=new ArrayList<ArrayList<String>>();	//実際の本のデータ
 	private ArrayList<String> page2=new ArrayList<String>();						//実際の本でページをつかみ出す
 	private String color=null;														
@@ -65,8 +67,6 @@ public class CurlActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		
 		int index = 0;
 		if (getLastNonConfigurationInstance() != null) {
 			index = (Integer) getLastNonConfigurationInstance();
