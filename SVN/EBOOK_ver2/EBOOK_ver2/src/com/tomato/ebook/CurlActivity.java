@@ -25,31 +25,28 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.tomato.pagecurl.CurlView;
-import com.tomato.pagecurl.CurlViewPort;
 import com.tomato.sdcard.SDcard;
-
-
 
 /**
  * Simple Activity for curl testing.
  * 
  * @author harism
  */
+
 public class CurlActivity extends Activity {
 
 
 	Configuration config;													//横と縦の時を区別する
 	
 	private CurlView mCurlView;
-	private CurlViewPort mCurlViewport;
 	private ArrayList<ArrayList<String>> book2=new ArrayList<ArrayList<String>>();	//実際の本のデータ
 	private ArrayList<String> page2=new ArrayList<String>();						//実際の本でページをつかみ出す
 	private String color=null;														
 	private String bgcolor=null;
 	private String bookKey=null;
 	private String books="";
+	private Bitmap b= null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -61,14 +58,14 @@ public class CurlActivity extends Activity {
 		color=intent.getStringExtra("color");
 		bgcolor=intent.getStringExtra("bgcolor");
 		//ページ再配置のためにメソッドで整理
-		try {
+		try{
 			book2 = booksgo(bookKey);
-		} catch (IOException e) {
+		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int index = 0;
-		if (getLastNonConfigurationInstance() != null) {
+		if(getLastNonConfigurationInstance() != null){
 			index = (Integer) getLastNonConfigurationInstance();
 		}
 		config = getResources().getConfiguration();
@@ -94,6 +91,7 @@ public class CurlActivity extends Activity {
 		mCurlView.setCurrentIndex(index,config);
 		mCurlView.setBackgroundColor(0xFF202830);
 	}
+	
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -112,7 +110,9 @@ public class CurlActivity extends Activity {
 		Configuration config = getResources().getConfiguration();
 		@Override
 		public Bitmap getBitmap(int width, int height, int index) {
-			Bitmap b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
+			b= null;
+			b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
+			//b.recycle();
 			b.eraseColor(0xFFFFFFFF);
 			Canvas c = new Canvas(b);
 			Drawable d = getResources().getDrawable(R.drawable.aaa);
@@ -175,7 +175,9 @@ public class CurlActivity extends Activity {
 			} 
 			d.draw(c);
 			return b;
+			
 		}
+		
 		//本のページ数を返す
 		@Override//page count
 		public int getBitmapCount() {
@@ -222,7 +224,11 @@ public class CurlActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	///////////////////////////////////////////////////
+	//
 	//ページの再配置のために
+	//
+	///////////////////////////////////////////////////
 	private ArrayList<ArrayList<String>> booksgo(String bookKey) throws IOException{
 		ArrayList<ArrayList<String>> book=new ArrayList<ArrayList<String>>();
 		ArrayList<String> page=new ArrayList<String>();
@@ -298,6 +304,7 @@ public class CurlActivity extends Activity {
 		//lineNumberはline, stringGetは文字の数
 		int lineNumber=0, w=0,stringGet=14;
 		String linere2= "";
+		String lineLast = "";
 		//本文の整列
 		for(int k =0; k< linere.length(); k++){
 			linere2 = linere2 + String.valueOf(linere.charAt(k));
@@ -309,11 +316,15 @@ public class CurlActivity extends Activity {
 				Log.e("page2", linere2+""+stringGet);
 				//lineを空く
 				linere2 = "";
+				lineLast = "";
 				//lineが何lineか
 				lineNumber += 1;
 			}
+			else{
+				lineLast = linere2;
+			}
 			//15列になったら
-			else if(lineNumber==15){
+			if(lineNumber==15){
 				//本にページを追加
 				book.add(page);
 				//ページを空にする
@@ -323,8 +334,10 @@ public class CurlActivity extends Activity {
 			}
 		}
 		//forの中で追加できなかった最後のページを追加
+		page.add(lineLast);
 		book.add(page);
-		page=new ArrayList<String>();
+		page = new ArrayList<String>();
+	
 		return book;
 	}
 }

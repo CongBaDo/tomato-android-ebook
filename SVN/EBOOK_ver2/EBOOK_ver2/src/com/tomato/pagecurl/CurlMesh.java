@@ -762,6 +762,7 @@ public class CurlMesh {
 	 * Sets new texture for this mesh.
 	 */
 	public synchronized void setBitmap(Bitmap bitmap) {
+		
 		if (DRAW_TEXTURE) {
 			// Bitmap original size.
 /*이렇게 두개 셋팅을 바꾸면 실제이미지만 작아져서 넘겨짐*/
@@ -784,7 +785,7 @@ public class CurlMesh {
 			mBitmap = Bitmap.createBitmap(newW, newH, bitmap.getConfig());//previewエーらの原因
 			Canvas c = new Canvas(mBitmap);
 			c.drawBitmap(bitmap, 0, 0, null);
-
+			
 			// Calculate final texture coordinates.
 			float texX = (float) w / newW;
 			float texY = (float) h / newH;

@@ -115,13 +115,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		if (mAnimate == false) {
 			return;
 		}
-		
-		
-		//image.setVisibility(View.VISIBLE);
-		//Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
-		//image.setAlpha(80);
-		
-		
 		long currentTime = System.currentTimeMillis();/*밀리세컨드로 현재시간을 돌려줌*/
 		// If animation is done.
 		if (currentTime >= mAnimationStartTime + mAnimationDurationTime) {
@@ -168,9 +161,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 					}
 				}
 			}
-			mCurlState = CURL_NONE;
-			mAnimate = false;
-			requestRender();
+		//ぺーじをめぐった後の状態
+		mCurlState = CURL_NONE;
+		mAnimate = false;
+		requestRender();
 		} else {
 			mPointerPos.mPos.set(mAnimationSource);
 			float t = (float) Math.sqrt((double) (currentTime - mAnimationStartTime)/ mAnimationDurationTime);
@@ -181,7 +175,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	}
 
 	@Override
-	public void onPageSizeChanged(int width, int height) {
+	public void onPageSizeChanged(int width, int height){
 		mPageBitmapWidth = width;
 		mPageBitmapHeight = height;
 		updateBitmaps();
@@ -219,8 +213,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		// We need page rects quite extensively so get them for later use.
 		RectF rightRect = mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT);
 		RectF leftRect = mRenderer.getPageRect(CurlRenderer.PAGE_LEFT);
-		RectF topRect = mRenderer.getPageRect(CurlRenderer.PAGE_TOP);/*탑을 또임의로 지정하기에이름*/
-
 		// Store pointer position.
 		
 		mPointerPos.mPos.set(me.getX(), me.getY());
@@ -230,7 +222,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		} else {
 			mPointerPos.mPressure = 0f;
 		}
-
 		switch (me.getAction()) {
 		case MotionEvent.ACTION_DOWN: {/*이게없으면 아에 마우스 눌러도 효과가 없었당,,*/
 				// Once we receive pointer down event its position is mapped to
@@ -342,12 +333,13 @@ CurlRenderer.Observer,View.OnLongClickListener {
 					if (mViewMode == SHOW_TWO_PAGES
 							&& mPointerPos.mPos.x > rightRect.left && mCurlState == CURL_LEFT){
 						//横と縦の場合を区別するためのもの
-						if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
+						/*if(configRe.orientation == Configuration.ORIENTATION_PORTRAIT){
 							//最後のページが出る場合に問題があります。
 							mCurrentIndex = mCurrentIndex - 1;
 						}else if(configRe.orientation == Configuration.ORIENTATION_LANDSCAPE){
 							mCurrentIndex = mCurrentIndex - 2;
-						}
+						}*/
+						mCurrentIndex = mCurrentIndex - 2;
 						Log.e("mCurrentIndex!!!!!!!!!",mCurrentIndex+"");
 						Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 								mPageBitmapHeight, mCurrentIndex+1);
@@ -414,11 +406,10 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		mAllowLastPageCurl = allowLastPageCurl;
 	}
 	@Override
-	public void setBackgroundColor(int color) {
+	public void setBackgroundColor(int color){
 		mRenderer.setBackgroundColor(color);
 		requestRender();
 	}
-
 	/**
 	 * Update/set bitmap provider.
 	 */
@@ -429,14 +420,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		updateBitmaps();
 		requestRender();
 	}
-
 	/**
 	 * Set page index.
 	 */
 /* setCurrentIndex 페이지값구하는 컬뷰 */
 	public void setCurrentIndex(int index,Configuration config) {
 		configRe = config;
-		Log.e("Configuration!!!!!!!!!", config.orientation+"");
 		if (mBitmapProvider == null || index <= 0) {
 			mCurrentIndex = 0;
 		} else {
@@ -447,7 +436,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		updateBitmaps();
 		requestRender();
 	}
-
 	/**
 	 * If set to true, touch event pressure information is used to adjust curl
 	 * radius. The more you press, the flatter the curl becomes. This is
@@ -458,7 +446,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void setEnableTouchPressure(boolean enableTouchPressure) {
 		mEnableTouchPressure = enableTouchPressure;
 	}
-
 	/**
 	 * Set margins (or padding). Note: margins are proportional. Meaning a value
 	 * of .1f will produce a 10% margin.
@@ -466,7 +453,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void setMargins(float left, float top, float right, float bottom) {
 		mRenderer.setMargins(left, top, right, bottom);
 	}
-
 	/**
 	 * Setter for whether left side page is rendered. This is useful mostly for
 	 * situations where right (main) page is aligned to left side of screen and
@@ -475,7 +461,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void setRenderLeftPage(boolean renderLeftPage) {
 		mRenderLeftPage = renderLeftPage;
 	}
-
 	/**
 	 * Sets SizeChangedObserver for this View. Call back method is called from
 	 * this View's onSizeChanged method.
@@ -483,14 +468,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 	public void setSizeChangedObserver(SizeChangedObserver observer) {
 		mSizeChangedObserver = observer;
 	}
-
 	/**
 	 * Sets view mode. Value can be either SHOW_ONE_PAGE or SHOW_TWO_PAGES. In
 	 * former case right page is made size of display, and in latter case two
 	 * pages are laid on visible area.
 	 */
 	public void setViewMode(int viewMode) {
-		//image.setVisibility(View.VISIBLE);//효과를 주려할때마다 오류다, 절망이다, 도우시떼
 		switch (viewMode) {
 		case SHOW_ONE_PAGE:
 			mViewMode = viewMode;
@@ -521,9 +504,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		mPageCurl = new CurlMesh(10);/*숫자 조정했을떄 그림이 미세히 즈레테루 칸지가 시마스*/
 		mPageLeft.setFlipTexture(true);
 		mPageRight.setFlipTexture(false);
-		mPageTop.setFlipTexture(false);/*잘모르겠지만 흉내를 내보자*/
 	}
-
 	/**
 	 * Sets mPageCurl curl position.
 	 */
@@ -556,7 +537,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			}
 			if (curlDir.y != 0) {/*좀처럼 오겠는데?*/
 				float diffX = curlPos.x - pageRect.left;
-				Log.e("sibal jahyo diffX:",curlPos.x+"-"+pageRect.right+"="+diffX);
+				Log.e("jahyo diffX:",curlPos.x+"-"+pageRect.right+"="+diffX);
 				float leftY = curlPos.y + (diffX * curlDir.x / curlDir.y);
 				if (curlDir.y < 0 && leftY < pageRect.top) {
 					curlDir.x = curlPos.y - pageRect.top;
@@ -569,7 +550,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		} else if (mCurlState == CURL_LEFT) {/*헐 나의테스트에 의하면 얘는 불려지지 않는다..ㅋ*/
 			Log.e("left desu","zz");
 			RectF pageRect = mRenderer.getPageRect(CurlRenderer.PAGE_LEFT);
-//			if (curlPos.x <= pageRect.left) {
 			if (curlPos.x <= pageRect.left) {
 				mPageCurl.reset();
 				requestRender();
@@ -579,10 +559,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				curlPos.x = pageRect.right;
 			}
 			if (curlDir.y != 0) {
-			
-				
 				float diffX = curlPos.x - pageRect.right;
-				Log.e("sibal jahyo diffX:",curlPos.x+"-"+pageRect.right+"="+diffX);/*좀처럼 오질 않는데?*/
+				Log.e("jahyo diffX:",curlPos.x+"-"+pageRect.right+"="+diffX);/*좀처럼 오질 않는데?*/
 				float rightY = curlPos.y + (diffX * curlDir.x / curlDir.y);
 				if (curlDir.y < 0 && rightY < pageRect.top) {
 					curlDir.x = pageRect.top - curlPos.y;
@@ -593,8 +571,6 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				}
 			}
 		}
-/*김세화는 탑으로 메소드를 흉내내기에 이른다*/
-		
 		// Finally normalize direction vector and do rendering.
 		double dist = Math.sqrt(curlDir.x * curlDir.x + curlDir.y * curlDir.y);
 		if (dist != 0) {
@@ -604,33 +580,28 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		} else {
 			mPageCurl.reset();
 		}
-
 		requestRender();
 	}
-
 	/**
 	 * Switches meshes and loads new bitmaps if available.
 	 */
 	private void startCurl(int page) {/*이게 실제 핵심일 가능성이농후*/
 		switch (page) {
-
 		// Once right side page is curled, first right page is assigned into
 		// curled page. And if there are more bitmaps available new bitmap is
 		// loaded into right side mesh.
 		/*일단 오른쪽 페이지가 모습을 드러냅니다는 먼저 오른쪽 페이지에 할당됩니다
-페이지를 드러냅니다. 더 많은 비트맵이있다면 가능한 새 비트맵입니다
-  오른쪽 메쉬에 로드된.*/
+		페이지를 드러냅니다. 더 많은 비트맵이있다면 가능한 새 비트맵입니다
+  		오른쪽 메쉬에 로드된.*/
 		case CURL_RIGHT: {/*오른쪽이면*/
 			// Remove meshes from renderer.
 			mRenderer.removeCurlMesh(mPageLeft);
 			mRenderer.removeCurlMesh(mPageRight);
 			mRenderer.removeCurlMesh(mPageCurl);
-
 			// We are curling right page.
 			CurlMesh curl = mPageRight;
 			mPageRight = mPageCurl;
 			mPageCurl = curl;
-
 			// If there is something to show on left page, simply add it to
 			// renderer.
 			if (mCurrentIndex >= 0) {
@@ -638,13 +609,9 @@ CurlRenderer.Observer,View.OnLongClickListener {
 						.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 				mPageLeft.reset();
 				if (mRenderLeftPage) {
-					
-					
-					
 					mRenderer.addCurlMesh(mPageLeft);
 				}
 			}
-
 			Log.e("BitmapProvider.getBitmapCount() : !!", String.valueOf(mBitmapProvider.getBitmapCount()));
 			// If there is new/next available, set it to right page.
 			int pageLast = 0;
@@ -888,17 +855,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			mCurlDir.y = mCurlPos.y - mDragStartPos.y;
 
 			setCurlPos(mCurlPos, mCurlDir, radius);
+		
 		}
 	}
-	
-	
-
 	/**
 	 * Provider for feeding 'book' with bitmaps which are used for rendering
 	 * pages.
 	 */
-
-	public interface BitmapProvider {
+	public interface BitmapProvider{
 		/**
 		 * Called once new bitmap is needed. Width and height are in pixels
 		 * telling the size it will be drawn on screen and following them
@@ -908,26 +872,21 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		 * Index is a number between 0 and getBitmapCount() - 1.
 		 */
 		public Bitmap getBitmap(int width, int height, int index);
-
 		/**
 		 * Return number of pages/bitmaps available.
 		 */
 		public int getBitmapCount();
 		//public void drawtextgogo(String t);/*일단 김세화는 인터페이스안에 이메소드를 정의해놓았다*/
 	}
-
 	/**
-	 * Observer interface for handling CurlView size changes.
-	 */
-
+	* Observer interface for handling CurlView size changes.
+	*/
 	public interface SizeChangedObserver {
-
 		/**
 		 * Called once CurlView size changes.
 		 */
 		public void onSizeChanged(int width, int height);
 	}
-
 	/**
 	 * Simple holder for pointer position.
 	 */
@@ -935,18 +894,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 		PointF mPos = new PointF();
 		float mPressure;
 	}
-	
 	public void onLongClick(OnLongClickListener onLongClickListener) {
 		// TODO Auto-generated method stub
 		Log.e("dddddddddddddddd","asdaa");
 	}
-
 	@Override
-	public boolean onLongClick(View view) {
+	public boolean onLongClick(View view){
 		// TODO Auto-generated method stub
 		Log.e("zzzzzzzzzzzzzzzzz","asdaa");
 		return false;
 	}
-
 }
-
