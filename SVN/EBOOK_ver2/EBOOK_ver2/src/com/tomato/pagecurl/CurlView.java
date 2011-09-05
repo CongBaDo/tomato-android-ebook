@@ -344,9 +344,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 						Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 								mPageBitmapHeight, mCurrentIndex+1);
 						mPageCurl.setBitmap(bitmapLeft);
+						bitmapLeft.recycle();
+						bitmapLeft = null;
 						mPageCurl.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 						mPageCurl.setFlipTexture(false);
 						mPageCurl.reset();
+						
 					}
 				//ページが右から左にめくった時?	
 				} else {
@@ -362,9 +365,12 @@ CurlRenderer.Observer,View.OnLongClickListener {
 						Bitmap bitmapLeft = mBitmapProvider.getBitmap(mPageBitmapWidth,
 								mPageBitmapHeight, mCurrentIndex);
 						mPageCurl.setBitmap(bitmapLeft);
+						bitmapLeft.recycle();
+						bitmapLeft = null;
 						mPageCurl.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 						mPageCurl.setFlipTexture(false);
 						mPageCurl.reset();
+						
 					}					
 					mAnimationTarget.set(mDragStartPos);
 					if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES){
@@ -632,10 +638,14 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				Bitmap bitmapRight = mBitmapProvider.getBitmap(mPageBitmapWidth,mPageBitmapHeight,
 									 mCurrentIndex + plusPage);//rightの場合に右の場面を決定するときに必要
 				mPageRight.setBitmap(bitmapRight);
+				bitmapRight.recycle();
+				bitmapRight = null;
 				mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 				mPageRight.setFlipTexture(false);
 				mPageRight.reset();
+				
 				mRenderer.addCurlMesh(mPageRight);
+				
 				
 				Log.e("mCurrentIndex : ", String.valueOf(mCurrentIndex));
 			}
@@ -674,8 +684,9 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
 						mPageBitmapHeight, mCurrentIndex - plusPage);//Leftのめぐった後のLeftページ
 				mPageLeft.setBitmap(bitmap);
-				mPageLeft
-						.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
+				bitmap.recycle();
+				bitmap = null;
+				mPageLeft.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 				mPageLeft.setFlipTexture(true);
 				mPageLeft.reset();
 				if (mRenderLeftPage) {
@@ -758,6 +769,8 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
 					mPageBitmapHeight, mCurrentIndex+plusPage);
 			mPageRight.setBitmap(bitmap);
+			bitmap.recycle();
+			bitmap = null;
 			mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
 			mPageRight.reset();
 			mRenderer.addCurlMesh(mPageRight);
@@ -766,16 +779,21 @@ CurlRenderer.Observer,View.OnLongClickListener {
 			Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
 					mPageBitmapHeight, mCurrentIndex);
 			mPageLeft.setBitmap(bitmap);
+			bitmap.recycle();
+			bitmap = null;
 			mPageLeft.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 			mPageLeft.reset();
 			if (mRenderLeftPage) {
 				mRenderer.addCurlMesh(mPageLeft);
 			}
+			
 		}
 		if (mCurrentIndex >= 0 && mCurrentIndex < mBitmapProvider.getBitmapCount()) {
 			Bitmap bitmap = mBitmapProvider.getBitmap(mPageBitmapWidth,
 					mPageBitmapHeight, mCurrentIndex);
 			mPageCurl.setBitmap(bitmap);
+			bitmap.recycle();
+			bitmap = null;
 			if (mCurlState == CURL_RIGHT
 					|| (mCurlState == CURL_LEFT && mViewMode == SHOW_TWO_PAGES)) {
 				mPageCurl.setRect(mRenderer
@@ -784,6 +802,7 @@ CurlRenderer.Observer,View.OnLongClickListener {
 				mPageCurl
 						.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
 			}
+			
 			mPageCurl.reset();
 			mRenderer.addCurlMesh(mPageCurl);
 		}

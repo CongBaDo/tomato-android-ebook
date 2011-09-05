@@ -91,8 +91,8 @@ public class CurlMesh {
 
 	// One and only texture id.
 	/*유일한 텍스처 ID입니다.*/
-	private int[] mTextureIds;
-	private Bitmap mBitmap;
+	private int[] mTextureIds = null;
+	private Bitmap mBitmap = null;
 	private RectF mTextureRect = new RectF();
 
 	// Let's avoid using 'new' as much as possible. Meaning we introduce arrays
@@ -615,6 +615,7 @@ public class CurlMesh {
 		if (DRAW_TEXTURE && mBitmap != null) {
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureIds[0]);/*역시나 없으면 딱딱함*/
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0);/*또한번 흥미로운 결과가!!이거없으면 페인트에 붙인 그림들 하나도 안보이고 흰종이만 남음*/
+			mBitmap.recycle();
 			mBitmap = null;
 		}
 
@@ -733,6 +734,7 @@ public class CurlMesh {
 		if (DRAW_TEXTURE) {
 			mTexCoords.position(0);
 		}
+		
 		for (int i = 0; i < 4; ++i) {
 			addVertex(mRectangle[i]);
 		}
@@ -762,10 +764,11 @@ public class CurlMesh {
 	 * Sets new texture for this mesh.
 	 */
 	public synchronized void setBitmap(Bitmap bitmap) {
-		
+		mBitmap = null;
 		if (DRAW_TEXTURE) {
 			// Bitmap original size.
 /*이렇게 두개 셋팅을 바꾸면 실제이미지만 작아져서 넘겨짐*/
+			
 			int w = bitmap.getWidth();
 			int h = bitmap.getHeight();
 //			int w = bitmap.getHeight();
@@ -796,6 +799,8 @@ public class CurlMesh {
 				setTexCoords(0f, 0f, texX, texY);
 			}
 		}
+		bitmap.recycle();
+		bitmap = null;
 	}
 
 	/**

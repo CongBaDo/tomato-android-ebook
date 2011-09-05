@@ -17,9 +17,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Xfermode;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
@@ -45,8 +49,9 @@ public class CurlActivity extends Activity {
 	private String color=null;														
 	private String bgcolor=null;
 	private String bookKey=null;
-	private String books="";
 	private Bitmap b= null;
+	private Bitmap resize = null;
+	private Paint p = new Paint();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -58,6 +63,7 @@ public class CurlActivity extends Activity {
 		color=intent.getStringExtra("color");
 		bgcolor=intent.getStringExtra("bgcolor");
 		//ページ再配置のためにメソッドで整理
+		
 		try{
 			book2 = booksgo(bookKey);
 		}catch (IOException e) {
@@ -74,17 +80,22 @@ public class CurlActivity extends Activity {
 		if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
-			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
+			resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
+			orgImage.recycle();
+			orgImage = null;
 		}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain);  
-			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 340, 540, true);
+			resize = Bitmap.createScaledBitmap(orgImage, 340, 540, true);
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
+			orgImage.recycle();
+			orgImage = null;
 		}
-		mCurlView = (CurlView) findViewById(R.id.curl);
+		
+		mCurlView =(CurlView)findViewById(R.id.curl);
 		mCurlView.setVisibility(View.VISIBLE);
 		mCurlView.setBitmapProvider(new BitmapProvider());
 		mCurlView.setSizeChangedObserver(new SizeChangedObserver());
@@ -96,6 +107,8 @@ public class CurlActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		mCurlView.onPause();
+		resize.recycle();
+		resize = null;
 	}
 	@Override
 	public void onResume() {
@@ -110,11 +123,14 @@ public class CurlActivity extends Activity {
 		Configuration config = getResources().getConfiguration();
 		@Override
 		public Bitmap getBitmap(int width, int height, int index) {
+			
+			Log.e("DEBUG", "Heap Size : "+Long.toString(Debug.getNativeHeapAllocatedSize()));
 			b= null;
 			b = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
-			//b.recycle();
 			b.eraseColor(0xFFFFFFFF);
 			Canvas c = new Canvas(b);
+			
+			//b.recycle();
 			Drawable d = getResources().getDrawable(R.drawable.aaa);
 			int margin = 7;
 			int border = 3;
@@ -131,7 +147,6 @@ public class CurlActivity extends Activity {
 			r.right = r.left + imageWidth + border + border;
 			r.top += ((r.height() - imageHeight) / 2)- border;
 			r.bottom = r.top + imageHeight + border + border;
-			Paint p = new Paint();
 			p.setColor(Color.BLACK);
 			p.setTextAlign(Paint.Align.LEFT);
 			p.setTextSize(30);
@@ -143,6 +158,7 @@ public class CurlActivity extends Activity {
 				c.drawRect(r, p);
 				c.drawColor(Color.parseColor("#FFFFFF"));
 			}
+			
 			r.left += border;
 			r.right -= border;
 			r.top += border;
@@ -174,10 +190,15 @@ public class CurlActivity extends Activity {
 				}
 			} 
 			d.draw(c);
+			d = null;
+			
+			p.reset();
 			return b;
+			
 			
 		}
 		
+
 		//本のページ数を返す
 		@Override//page count
 		public int getBitmapCount() {

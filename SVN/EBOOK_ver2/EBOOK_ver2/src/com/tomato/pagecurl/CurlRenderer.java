@@ -225,11 +225,7 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 			mPageRectRight.right -= mViewRect.width() * mMargins.right;
 			mPageRectRight.top += mViewRect.height() * mMargins.top;
 			mPageRectRight.bottom -= mViewRect.height() * mMargins.bottom;
-			/* 곱하기mMargins을 주석처리하니까 아에 실행이안되네 뭔가 밀접한 관련이 있을지도*/
-//			mPageRectRight.left += mViewRect.width();
-//			mPageRectRight.right -= mViewRect.width();
-//			mPageRectRight.top += mViewRect.height() ;
-//			mPageRectRight.bottom -= mViewRect.height();
+
 
 			mPageRectLeft.set(mPageRectRight);
 			mPageRectLeft.offset(-mPageRectRight.width(), 0);
