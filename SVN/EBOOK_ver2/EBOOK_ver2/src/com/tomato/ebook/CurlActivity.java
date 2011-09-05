@@ -196,8 +196,6 @@ public class CurlActivity extends Activity {
 			
 			p.reset();
 			return b;
-			
-			
 		}
 		
 

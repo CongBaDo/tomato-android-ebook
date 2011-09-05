@@ -48,6 +48,7 @@ public class Preview extends Activity {
 	private int widthSize = 0;
 	private int heightSize = 0;
 	private int index = 0;
+	private Bitmap resize = null;
 	final int DIVID_SIZE = 2;
 	final int TEXT_SIZE = 28 / DIVID_SIZE ;
 
@@ -81,15 +82,19 @@ public class Preview extends Activity {
 		if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain3);  
-			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
+			resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
+			orgImage.recycle();
+			orgImage = null;
 		}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain);  
-			Bitmap resize = Bitmap.createScaledBitmap(orgImage, 340, 540, true);
+			resize = Bitmap.createScaledBitmap(orgImage, 340, 540, true);
 			image.setAlpha(80);
 			image.setImageBitmap(resize);
+			orgImage.recycle();
+			orgImage = null;
 		}
 		mCurlView2 = (CurlPreview) findViewById(R.id.curlpre);
 		mCurlView2.setVisibility(View.VISIBLE);
@@ -106,6 +111,8 @@ public class Preview extends Activity {
 	public void onPause() {
 		super.onPause();
 		mCurlView2.onPause();
+		resize.recycle();
+		resize = null;
 	}
 
 	@Override
