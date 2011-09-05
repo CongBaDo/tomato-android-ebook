@@ -49,6 +49,7 @@ public class Preview extends Activity {
 	private int heightSize = 0;
 	private int index = 0;
 	private Bitmap resize = null;
+	private Paint paint = new Paint();
 	final int DIVID_SIZE = 2;
 	final int TEXT_SIZE = 28 / DIVID_SIZE ;
 
@@ -148,7 +149,6 @@ public class Preview extends Activity {
 			rect.right  = rect.left + imageWidth + border + border;
 			rect.top   += ((rect.height() - imageHeight) / 2)- border;
 			rect.bottom = rect.top + imageHeight + border + border;
-			Paint paint = new Paint();
 			paint.setColor(Color.BLACK);
 			paint.setTextAlign(Paint.Align.LEFT);
 			paint.setTextSize(TEXT_SIZE);
@@ -701,6 +701,7 @@ public class Preview extends Activity {
 					}
 				}
 				drawable.draw(canvas);
+				paint.reset();
 				break;
 			}
 			return b;
