@@ -789,6 +789,7 @@ public class CurlMesh {
 			Canvas c = new Canvas(mBitmap);
 			c.drawBitmap(bitmap, 0, 0, null);
 			
+			
 			// Calculate final texture coordinates.
 			float texX = (float) w / newW;
 			float texY = (float) h / newH;
@@ -802,7 +803,6 @@ public class CurlMesh {
 		bitmap.recycle();
 		bitmap = null;
 	}
-
 	/**
 	 * If true, flips texture sideways.
 	 */

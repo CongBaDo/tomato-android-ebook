@@ -167,28 +167,30 @@ public class CurlActivity extends Activity {
 			int y=65;
 			int x=90;
 			//本のページを計算
-			page2 = book2.get(index);
-			
-			Log.e("page2",page2+"");
-			Log.e("index",index+"");
-			for (int j = 0; j < page2.size(); j++) {
-				//該当ページの内容を書く
-				String line=String.valueOf( page2.get(j));
-				if (line.equals("@")) {
-					line="";
+			if(book2.size() > index){
+				page2 = book2.get(index);
+				
+				Log.e("page2",page2+"");
+				Log.e("index",index+"");
+				for (int j = 0; j < page2.size(); j++) {
+					//該当ページの内容を書く
+					String line=String.valueOf( page2.get(j));
+					if (line.equals("@")) {
+						line="";
+					}
+					if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+						//文字のサイズを23に修正
+						p.setTextSize(23);
+						c.drawText(line, x , y, p);
+						//横の場合文字の行の距離を35に修正
+						y+=35;
+					}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+						c.drawText(line, x , y, p);
+						//縦の場合文字の行の距離を65に修正
+						y+=65;
+					}
 				}
-				if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-					//文字のサイズを23に修正
-					p.setTextSize(23);
-					c.drawText(line, x , y, p);
-					//横の場合文字の行の距離を35に修正
-					y+=35;
-				}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-					c.drawText(line, x , y, p);
-					//縦の場合文字の行の距離を65に修正
-					y+=65;
-				}
-			} 
+			}
 			d.draw(c);
 			d = null;
 			
