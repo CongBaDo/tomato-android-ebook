@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.tomato.communication.fileLoadUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +33,9 @@ public class FileListView extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long id) {
 				// TODO Auto-generated method stub
 				un.unCompress(FileListView.this,un.getPath(),fileList.get(position));
+				Intent intent = new Intent(FileListView.this,CurlActivity_File.class);
+				intent.putExtra("FileName",fileList.get(position));
+				startActivity(intent);
 			}
 		});
 	  }
