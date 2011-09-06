@@ -99,18 +99,7 @@ public class fileLoadUtil {
 	         }
 	         zis.close();
 	         //ダイアルログを使う
-	         new AlertDialog.Builder(complete)
-	         	
-	         	.setTitle("Notification")
-				.setMessage("ファイル読み込みが完了しました。")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-					}
-				})
-				.show();
+	         
 	        System.out.println("Checksum: "+checksum.getChecksum().getValue());
 	      } catch(Exception e) {
 	        e.printStackTrace();

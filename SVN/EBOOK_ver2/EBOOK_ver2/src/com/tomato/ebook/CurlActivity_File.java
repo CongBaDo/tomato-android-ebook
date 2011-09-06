@@ -44,6 +44,8 @@ public class CurlActivity_File extends Activity {
 	private Bitmap resize = null;
 	private Paint p = new Paint();
 	private int count = 0;
+	private String[] name = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -52,13 +54,12 @@ public class CurlActivity_File extends Activity {
 		setContentView(R.layout.curlactivity);
 		Intent intent=getIntent();
 		filename=intent.getStringExtra("FileName");
-		//ページ再配置のためにメソッドで整理
 		
-		
+		name = filename.split(".pdfImg");
 		count = countPage();
 		Log.e("filename",filename);
-		String[] name = filename.split(".");
-		Log.e("name",name[0]);
+		
+		//ページ再配置のためにメソッドで整理
 		int index = 0;
 		if(getLastNonConfigurationInstance() != null){
 			index = (Integer) getLastNonConfigurationInstance();
@@ -119,7 +120,7 @@ public class CurlActivity_File extends Activity {
 			b.eraseColor(0xFFFFFFFF);
 			Canvas c = new Canvas(b);
 			
-			Drawable d = Drawable.createFromPath("/sdcard/Tomato/pdfimg/39962b/39962b_"+(index+1)+".png");
+			Drawable d = Drawable.createFromPath("/sdcard/Tomato/pdfimg/"+name[0]+"/"+name[0]+"_"+(index+1)+".png");
 			int margin = 7;
 			int border = 3;
 			Rect r = new Rect(margin, margin, width - margin, height - margin);
@@ -227,7 +228,7 @@ public class CurlActivity_File extends Activity {
 	private int countPage(){
 		int i = 1;
 		while(true){
-			File file = new File("/sdcard/Tomato/pdfimg/39962b/39962b_"+i+".png");
+			File file = new File("/sdcard/Tomato/pdfimg/"+name[0]+"/"+name[0]+"_"+i+".png");
 			if((file.exists())){
 				i++;
 			}

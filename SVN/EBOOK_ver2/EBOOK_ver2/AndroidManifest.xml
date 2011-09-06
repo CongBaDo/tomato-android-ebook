@@ -28,6 +28,7 @@
    <activity android:name="ReadVerticalSetup"></activity>
          <activity android:name="Preview"></activity>
          <activity android:name="CurlActivity"></activity>
+          <activity android:name="CurlActivity_File"></activity>
          <activity android:name="CurlActivityVertical"></activity>
              <activity android:name="Login" android:theme="@style/Dialog"></activity>
         <activity android:name="Join" android:theme="@style/Dialog"></activity>
