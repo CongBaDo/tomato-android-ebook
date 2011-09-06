@@ -1,12 +1,8 @@
 package com.tomato.ebook;
 
-import java.io.BufferedReader;import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.File;
+
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,20 +12,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Xfermode;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Debug;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import com.tomato.pagecurl.CurlView;
-import com.tomato.sdcard.SDcard;
+
 
 /**
  * Simple Activity for curl testing.
@@ -37,7 +29,7 @@ import com.tomato.sdcard.SDcard;
  * @author harism
  */
 
-public class CurlActivity extends Activity {
+public class CurlActivity_File extends Activity {
 
 
 	Configuration config;													//横と縦の時を区別する
@@ -45,13 +37,13 @@ public class CurlActivity extends Activity {
 	private CurlView mCurlView;
 	private ArrayList<ArrayList<String>> book2=new ArrayList<ArrayList<String>>();	//実際の本のデータ
 	private ArrayList<String> page2=new ArrayList<String>();						//実際の本でページをつかみ出す
-	private String color=null;														
+	private String filename=null;														
 	private String bgcolor=null;
 	private String bookKey=null;
 	private Bitmap b= null;
 	private Bitmap resize = null;
 	private Paint p = new Paint();
-
+	private int count = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -59,17 +51,14 @@ public class CurlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.curlactivity);
 		Intent intent=getIntent();
-		bookKey=intent.getStringExtra("bookKey");
-		color=intent.getStringExtra("color");
-		bgcolor=intent.getStringExtra("bgcolor");
+		filename=intent.getStringExtra("FileName");
 		//ページ再配置のためにメソッドで整理
 		
-		try{
-			book2 = booksgo(bookKey);
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		count = countPage();
+		Log.e("filename",filename);
+		String[] name = filename.split(".");
+		Log.e("name",name[0]);
 		int index = 0;
 		if(getLastNonConfigurationInstance() != null){
 			index = (Integer) getLastNonConfigurationInstance();
@@ -130,8 +119,7 @@ public class CurlActivity extends Activity {
 			b.eraseColor(0xFFFFFFFF);
 			Canvas c = new Canvas(b);
 			
-			//b.recycle();
-			Drawable d = getResources().getDrawable(R.drawable.aaa);
+			Drawable d = Drawable.createFromPath("/sdcard/Tomato/pdfimg/39962b/39962b_"+(index+1)+".png");
 			int margin = 7;
 			int border = 3;
 			Rect r = new Rect(margin, margin, width - margin, height - margin);
@@ -151,14 +139,7 @@ public class CurlActivity extends Activity {
 			p.setTextAlign(Paint.Align.LEFT);
 			p.setTextSize(30);
 			p.setAntiAlias(true); 
-			if (color!=null & bgcolor!=null) {
-				c.drawColor(Color.parseColor(bgcolor));
-				p.setColor(Color.parseColor(color));
-			}else{
-				c.drawRect(r, p);
-				c.drawColor(Color.parseColor("#FFFFFF"));
-			}
-			
+					
 			r.left += border;
 			r.right -= border;
 			r.top += border;
@@ -193,16 +174,14 @@ public class CurlActivity extends Activity {
 			}
 			d.draw(c);
 			d = null;
-			
 			p.reset();
 			return b;
 		}
 		
-
 		//本のページ数を返す
 		@Override//page count
 		public int getBitmapCount() {
-			return book2.size();
+			return count;
 		}
 	}
 	
@@ -227,9 +206,8 @@ public class CurlActivity extends Activity {
 		switch (item.getItemId()) {
 			case 0:
 			{
-				Intent intent = new Intent(CurlActivity.this,ReadSetup.class);
+				Intent intent = new Intent(CurlActivity_File.this,ReadSetup.class);
 				intent.putExtra("bookKey", bookKey);
-				intent.putExtra("color", color);
 				intent.putExtra("bgcolor", bgcolor);
 				startActivity(intent);
 				break;
@@ -245,120 +223,39 @@ public class CurlActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	///////////////////////////////////////////////////
-	//
-	//ページの再配置のために
-	//
-	///////////////////////////////////////////////////
-	private ArrayList<ArrayList<String>> booksgo(String bookKey) throws IOException{
-		ArrayList<ArrayList<String>> book=new ArrayList<ArrayList<String>>();
-		ArrayList<String> page=new ArrayList<String>();
-		String book1="";
-		String bookAdd="";
-		//bookKeyに該当する本を呼ぶ
-		FileReader fr = new FileReader("/sdcard/ebook_"+bookKey+".ebf");
-		BufferedReader br=new BufferedReader(fr);
-		int y=0;
-		while((bookAdd=br.readLine())!=null){
-			book1= book1+ bookAdd;
-			if(y <=1){
-				//タイトルと著書を区別するため
-				book1= book1+"@";
-			}
-			y= y+1;
-		}
-		//タイトルと本文を区別するために＠をタイトルに残す
-		StringBuffer sk = new StringBuffer(); 
-		for(int k = 0; k < book1.length(); k++){
-			if(book1.charAt(k)=='@'){
-				if(k > 50){
-					//50番目の列から＠をすべて削除
-					sk.append("");
-				}else{
-					sk.append(book1.charAt(k));
-				}
-			}else{
-				sk.append(book1.charAt(k));
-			}
-		}
-		book1 = sk.toString();
-		//本文のページの区別に入る
-		String linere= "";
-		//まずタイトルと本文の内容で区別する
-		//タイトルだけ最初のページに追加して置く
-		for(int k =0; k < book1.length(); k++){
-			if(book1.charAt(k)=='@'){
-				//booksgo メソッドで追加しておいた＠ぺーじを最初のページに追加
-				page.add(linere);
-				linere = "";
-			}else{
-				linere = linere + String.valueOf(book1.charAt(k));
-			}
-		}
-		//タイトルページを本に追加
-		book.add(page);
-		//ぺーじをリセットする
-		page = new ArrayList<String>();
-		StringBuffer strBuf = new StringBuffer();
-        char c = 0;
-        int nSrcLength = linere.length();
-        //まずは文字をすべて全角で変換
-        for (int i = 0; i < nSrcLength; i++)
-        {
-            c = linere.charAt(i);
-            //英語化特注文字の場合
-            if (c >= 0x21 && c <= 0x7e)
-            {
-                c += 0xfee0;
-            }
-            //空白の場合
-            else if (c == 0x20)
-            {
-                c = 0x3000;
-            }
-            //文字列　バッファーに変換した文字を入れる
-            strBuf.append(c);
-        }
-
-        linere = strBuf.toString();
-		Log.e("linere", linere.length()+"");
-		//lineNumberはline, stringGetは文字の数
-		int lineNumber=0, w=0,stringGet=14;
-		String linere2= "";
-		String lineLast = "";
-		//本文の整列
-		for(int k =0; k< linere.length(); k++){
-			linere2 = linere2 + String.valueOf(linere.charAt(k));
-			if(k == stringGet){
-				//15文字ずつ
-				stringGet += 15;
-				//lineの計算
-				page.add(linere2);
-				Log.e("page2", linere2+""+stringGet);
-				//lineを空く
-				linere2 = "";
-				lineLast = "";
-				//lineが何lineか
-				lineNumber += 1;
+	
+	private int countPage(){
+		int i = 1;
+		while(true){
+			File file = new File("/sdcard/Tomato/pdfimg/39962b/39962b_"+i+".png");
+			if((file.exists())){
+				i++;
 			}
 			else{
-				lineLast = linere2;
-			}
-			//15列になったら
-			if(lineNumber==15){
-				//本にページを追加
-				book.add(page);
-				//ページを空にする
-				page=new ArrayList<String>();
-				//列の計算初期化
-				lineNumber=0;
+				break;
 			}
 		}
-		//forの中で追加できなかった最後のページを追加
-		page.add(lineLast);
-		book.add(page);
-		page = new ArrayList<String>();
-	
-		return book;
+		Log.e("CountNumber",i+"");
+		return i-1;
 	}
 }
+//携帯料金請求システムはこの加入している顧客の携帯に請求情報を送るシステムです。
+//私が勤めた部分は顧客の情報を管理する場面と料金を会計する部分と以前請求が完了したすべての請求
+//情報を管理する場面を負かされました。
+
+//書籍在庫管理システムは本の情報登録、削除、貸与、期限延長などを管理するシステムです。
+//このシステムでわたしが勤めた部分は本の登録場面、検索場面、貸与期限が過ぎたら延長量料が会計する場面を
+//勤めました。
+//ショッピングガイド商品の価格を確認して買い物リストを生成して、検索するアプリです。
+//ここで私が勤めた部分はすべての買い物リストをListViewに見せる場面及び機能を
+//勤めました
+//Onrain Meseengerはjavaで作ったプログラムでタイトル通りに一般的にしているMESEENGERと同じです。
+//友達の追加、１：１、1；Nの、チャットができます。
+//私が勤めた部分は友達を追加すればデータベースに登録される部分とLogin部分と接続するときにMESEENGERに
+//接続した人の友達リストを見せる部分を勤めました
+//Ebookはアンドロイドで作りましたがサーバはGOOGLEAPPENGINEを使いました。
+//簡単にはさせばサーバに登録している本をダウンロードしてアンドロイドフォンで読めるシステムです。
+//私が勤めた部分はサーバの政策、本の情報をサーバに登録、削除、修正　などの機能の追加
+//android端末で勤めた部分は本物の本を読むようにOPENGLを使って本をめくる効果を与えました。
+
+
