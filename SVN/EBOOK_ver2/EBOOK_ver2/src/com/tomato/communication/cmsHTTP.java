@@ -72,7 +72,6 @@ public class cmsHTTP {
 		HttpGet httpGet = new HttpGet(url);
 
 		HttpClient httpClient = new DefaultHttpClient();
-		//httpClient = ((owllab) act.getApplication()).httpClient;
 		HttpParams tmpparms = httpClient.getParams();
 		HttpConnectionParams.setConnectionTimeout(tmpparms,REGISTRATION_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(tmpparms, REGISTRATION_TIMEOUT);
@@ -84,9 +83,12 @@ public class cmsHTTP {
 				if (Log.isLoggable(TAG, Log.VERBOSE))
 					Log.v(TAG, "Successful authentication");
 				HttpEntity respEntity = resp.getEntity();
+				Log.e("resp", resp.getEntity()+"");
 				if (respEntity != null) {
 					InputStream instream = respEntity.getContent();
+					Log.e("instream", instream+"");
 					result = convertStreamToString(instream);
+					Log.e("instream", result+"");
 					instream.close();
 				}
 			} else {

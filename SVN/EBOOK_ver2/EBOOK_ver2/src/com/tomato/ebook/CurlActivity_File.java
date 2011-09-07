@@ -44,6 +44,7 @@ public class CurlActivity_File extends Activity {
 	private Bitmap resize = null;
 	private Paint p = new Paint();
 	private int count = 0;
+	private String position = null;
 	private String[] name = null;
 	
 	@Override
@@ -54,7 +55,7 @@ public class CurlActivity_File extends Activity {
 		setContentView(R.layout.curlactivity);
 		Intent intent=getIntent();
 		filename=intent.getStringExtra("FileName");
-		
+		position = intent.getStringExtra("Position");
 		name = filename.split(".pdfImg");
 		count = countPage();
 		Log.e("filename",filename);

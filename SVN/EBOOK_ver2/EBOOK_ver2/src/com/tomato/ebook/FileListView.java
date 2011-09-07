@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,7 +19,7 @@ public class FileListView extends Activity{
 	fileLoadUtil un = new fileLoadUtil();
 	ArrayList<String> fileList = new ArrayList<String>();
 	String[] tmtFiles = new String[un.getLength()];
-	int savePosition;
+	int savePosition= 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -37,6 +38,7 @@ public class FileListView extends Activity{
 				// TODO Auto-generated method stub
 				
 				un.unCompress(FileListView.this,un.getPath(),fileList.get(position));
+				Log.e("position",position+"");
 				savePosition = position;
 				new AlertDialog.Builder(FileListView.this)
 
@@ -49,7 +51,7 @@ public class FileListView extends Activity{
 						// TODO Auto-generated method stub
 						Intent intent = new Intent(FileListView.this,CurlActivity_File.class);
 						intent.putExtra("FileName",fileList.get(savePosition));
-
+						intent.putExtra("Position",savePosition);
 						startActivity(intent);
 						finish();
 					}

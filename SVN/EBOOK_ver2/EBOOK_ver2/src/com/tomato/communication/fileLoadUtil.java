@@ -14,10 +14,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
+import android.util.Log;
 
 public class fileLoadUtil {
 	Context complete;
 	String[] tmtFiles=new String[100];
+	private String files[] = null;
 	int fileLength = 0;
 	String tmtPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tomato/pdfimg/";
 	public fileLoadUtil()
@@ -30,7 +32,11 @@ public class fileLoadUtil {
 			f.mkdirs();
 		}
 		//でもfile配列を作る
-        String files[] = f.list();
+        
+		files = f.list();
+        for(int k = 0; k< files.length; k++){
+        	Log.e("filelist", files[k]);
+        }
         
         for(int i=0;i<files.length;i++)
         {
@@ -83,6 +89,7 @@ public class fileLoadUtil {
 	            	//フォルダがなかったら作る
 	            	dataFolder.mkdir();
 	            }
+	            //とりあえずDirectoryの問題がありますが重要なことではありませんので次の作業に移った。
 	            //敬老を探しpdfimgファイルを検索して作る
 	            FileOutputStream fos = new FileOutputStream(path+(name.replace(".pdfImg", "/")+"/")+entry.getName());
 	            //バッファを使ってファイルを整理する
