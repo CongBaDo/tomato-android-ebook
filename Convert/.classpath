@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/Java/jdk1.6.0_25/lib/componentpack.jar"/>
-	<classpathentry kind="lib" path="D:/Java/jdk1.6.0_25/lib/license.jar"/>
-	<classpathentry kind="lib" path="D:/Java/jdk1.6.0_25/lib/jPDFImages.jar"/>
-	<classpathentry kind="lib" path="D:/Java/jdk1.6.0_25/lib/itextpdf-5.1.1.jar"/>
-	<classpathentry kind="lib" path="D:/Java/jdk1.6.0_25/lib/PDFRenderer-0.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0/lib/componentpack.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0/lib/license.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0/lib/jPDFImages.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0/lib/itextpdf-5.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0/lib/PDFRenderer-0.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
