@@ -211,10 +211,10 @@ public class CurlActivity extends Activity {
 		public void onSizeChanged(int w, int h) {
 			if (w > h) {
 				mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
-				mCurlView.setMargins(.07f, .05f, .07f, .05f);//left,top,right,bo
+				mCurlView.setMargins(.07f, .0528f, .066f, .05f);//left,top,right,bo
 			} else {
 				mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
-				mCurlView.setMargins(.03f, .0228f, .053f, .028f);
+				mCurlView.setMargins(.03f, .0228f, .052f, .028f);
 			}
 		} 
 	}
