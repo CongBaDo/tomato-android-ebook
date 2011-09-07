@@ -284,13 +284,19 @@ public class cmsHTTP {
 	public void startLoading(Context ctx) {
 		loadingDialog = ProgressDialog.show(ctx, "Loading...", "Please wait...",
 				false, true);
+		Log.e("mondainai", "mondainai");
 		Log.v("owllab", "startLoading" + ctx.toString());
+		Log.e("mondainai", "mondainai");
 	}
 	public void endLoading() {
 		Log.v("owllab", "endLoading");
+		Log.e("mondainai", "mondainai");
 		endLoader endLoader = new endLoader();
+		Log.e("mondainai", "mondainai");
 		Timer timer = new Timer(false);
+		Log.e("mondainai", "mondainai");
 		timer.schedule(endLoader, 1000);
+		Log.e("mondainai", "mondainai");
 	}
 	class endLoader extends TimerTask {
 		endLoader() {}

@@ -313,7 +313,7 @@ public class Login extends Activity {
 			cmsHttp.act = Login.this;
 			Log.e("sending","sendpost");
 			String tmpData = cmsHttp.sendPost(theUrl, httpParams);//サーバーへデータを要請
-
+			Log.e("tmpData", tmpData);
 			//サーバーから戻り値がない場合
 			if (tmpData == null)
 			{
