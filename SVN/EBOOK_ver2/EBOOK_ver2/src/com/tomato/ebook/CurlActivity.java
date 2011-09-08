@@ -24,7 +24,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +53,11 @@ public class CurlActivity extends Activity {
 	private Bitmap b= null;
 	private Bitmap resize = null;
 	private Paint p = new Paint();
-
+	private int kHeight = 0;
+	private int kWidth = 0;
+	private int sizeY = 0;
+	private int sizeX = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -63,7 +69,10 @@ public class CurlActivity extends Activity {
 		color=intent.getStringExtra("color");
 		bgcolor=intent.getStringExtra("bgcolor");
 		//ページ再配置のためにメソッドで整理
-		
+		 
+		kHeight = getWindowManager().getDefaultDisplay().getHeight();
+		kWidth = getWindowManager().getDefaultDisplay().getWidth();
+		Log.e("height, width",kHeight+":"+kWidth);
 		try{
 			book2 = booksgo(bookKey);
 		}catch (IOException e) {
@@ -164,8 +173,16 @@ public class CurlActivity extends Activity {
 			r.top += border;
 			r.bottom -= border;
 			d.setBounds(r);
-			int y=65;
-			int x=90;
+			if((kWidth == 480 && kHeight == 800)||(kWidth == 800 && kHeight == 480)){
+				sizeY = 45;
+				sizeX = 45;
+			}else if((kWidth == 1280 && kHeight == 768)||(kWidth == 768 && kHeight == 1280)){
+				sizeY = 65;
+				sizeX = 90;
+			}else if((kWidth == 854 && kHeight == 480)||(kWidth == 480 && kHeight == 854)){
+				sizeY = 45;
+				sizeX = 20;
+			}
 			//本のページを計算
 			if(book2.size() > index){
 				page2 = book2.get(index);
@@ -178,22 +195,51 @@ public class CurlActivity extends Activity {
 					if (line.equals("@")) {
 						line="";
 					}
-					if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-						//文字のサイズを23に修正
-						p.setTextSize(23);
-						c.drawText(line, x , y, p);
-						//横の場合文字の行の距離を35に修正
-						y+=35;
-					}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-						c.drawText(line, x , y, p);
-						//縦の場合文字の行の距離を65に修正
-						y+=65;
+					if((kWidth == 480 && kHeight == 800)||(kWidth == 800 && kHeight == 480)){
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							//文字のサイズを23に修正
+							p.setTextSize(17);
+							c.drawText(line, sizeX , sizeY, p);
+							//横の場合文字の行の距離を35に修正
+							sizeY+=20;
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							p.setTextSize(23);
+							c.drawText(line, sizeX , sizeY, p);
+							//縦の場合文字の行の距離を65に修正
+							sizeY+=40;
+						}
+					}else if((kWidth == 1280 && kHeight == 768)||(kWidth == 768 && kHeight == 1280)){
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							//文字のサイズを23に修正
+							p.setTextSize(23);
+							c.drawText(line, sizeX , sizeY, p);
+							//横の場合文字の行の距離を35に修正
+							sizeY+=35;
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							p.setTextSize(30);
+							c.drawText(line, sizeX , sizeY, p);
+							//縦の場合文字の行の距離を65に修正
+							sizeY+=65;
+						}
+					}else if((kWidth == 854 && kHeight == 480)||(kWidth == 480 && kHeight == 854)){
+						if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+							//文字のサイズを23に修正
+							p.setTextSize(17);
+							c.drawText(line, sizeX , sizeY, p);
+							//横の場合文字の行の距離を35に修正
+							sizeY+=20;
+						}else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
+							p.setTextSize(23);
+							c.drawText(line, sizeX , sizeY, p);
+							//縦の場合文字の行の距離を65に修正
+							sizeY+=40;
+						}
 					}
+					
 				}
 			}
 			d.draw(c);
 			d = null;
-			
 			p.reset();
 			return b;
 		}
@@ -210,11 +256,28 @@ public class CurlActivity extends Activity {
 		@Override
 		public void onSizeChanged(int w, int h) {
 			if (w > h) {
-				mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
-				mCurlView.setMargins(.07f, .0528f, .066f, .05f);//left,top,right,bo
-			} else {
-				mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
-				mCurlView.setMargins(.03f, .0228f, .052f, .028f);
+				if((kWidth == 1280 && kHeight == 768)){
+					mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
+					mCurlView.setMargins(.07f, .0528f, .066f, .05f);//left,top,right,bo
+				}else if((kWidth == 800 && kHeight == 480)){
+					mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
+					mCurlView.setMargins(.105f, .0528f, .095f, .05f);//left,top,right,bo
+				}else {
+					mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
+					mCurlView.setMargins(.15f, .0528f, .15f, .05f);
+				}
+			}else{
+				if((kWidth == 768 && kHeight == 1280)){
+					mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
+					mCurlView.setMargins(.03f, .0228f, .052f, .028f);
+				}else if((kWidth == 480 && kHeight == 800)){
+					mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
+					mCurlView.setMargins(.05f, .0228f, .065f, .028f);
+				}
+				else{
+					mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
+					mCurlView.setMargins(.03f, .0228f, .052f, .028f);
+				}
 			}
 		} 
 	}

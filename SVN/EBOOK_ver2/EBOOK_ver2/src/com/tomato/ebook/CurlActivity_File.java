@@ -46,6 +46,8 @@ public class CurlActivity_File extends Activity {
 	private int count = 0;
 	private String position = null;
 	private String[] name = null;
+	private int kHeight = 0;
+	private int kWidth = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class CurlActivity_File extends Activity {
 		count = countPage();
 		Log.e("filename",filename);
 		
+		kHeight = getWindowManager().getDefaultDisplay().getHeight();
+		kWidth = getWindowManager().getDefaultDisplay().getWidth();
 		//ページ再配置のためにメソッドで整理
 		int index = 0;
 		if(getLastNonConfigurationInstance() != null){
@@ -72,7 +76,7 @@ public class CurlActivity_File extends Activity {
 			image.setVisibility(View.VISIBLE);
 			Bitmap orgImage = BitmapFactory.decodeResource(getResources(), R.drawable.ebookmain2);  
 			resize = Bitmap.createScaledBitmap(orgImage, 1350, 750, true);
-			image.setAlpha(80);
+			image.setAlpha(80); 
 			image.setImageBitmap(resize);
 			orgImage.recycle();
 			orgImage = null;
@@ -191,11 +195,21 @@ public class CurlActivity_File extends Activity {
 		@Override
 		public void onSizeChanged(int w, int h) {
 			if (w > h) {
-				mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
-				mCurlView.setMargins(.07f, .05f, .07f, .05f);//left,top,right,bo
-			} else {
-				mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
-				mCurlView.setMargins(.03f, .0228f, .053f, .028f);
+				if((kWidth == 1280 && kHeight == 768)){
+					mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
+					mCurlView.setMargins(.07f, .0528f, .066f, .05f);//left,top,right,bo
+				}else {
+					mCurlView.setViewMode(CurlView.SHOW_TWO_PAGES);
+					mCurlView.setMargins(.15f, .0528f, .15f, .05f);
+				}
+			}else{
+				if((kWidth == 768 && kHeight == 1280)){
+					mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
+					mCurlView.setMargins(.03f, .0228f, .052f, .028f);
+				}else{
+					mCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
+					mCurlView.setMargins(.03f, .0228f, .052f, .028f);
+				}
 			}
 		} 
 	}
