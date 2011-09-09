@@ -30,10 +30,7 @@ public class EbookMain extends Activity {
 		super.onCreate(savedInstanceState);
 		JptomatoLogoActivity.actList.add(this);
 		setContentView(R.layout.main);
-
 	}
-
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    

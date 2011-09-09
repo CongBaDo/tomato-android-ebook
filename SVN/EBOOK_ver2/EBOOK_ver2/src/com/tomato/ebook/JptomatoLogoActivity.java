@@ -14,7 +14,8 @@ import android.widget.ImageView;
 
 public class JptomatoLogoActivity extends Activity {
 	public static ArrayList<Activity> actList = new ArrayList<Activity>();
-	private final Class<?> nextActivity = EbookMain.class;
+	//private final Class<?> nextActivity = EbookMain.class;
+	private final Class<?> nextActivity = Login_re.class;
 	private boolean isSkip;
 	private boolean isCancled;
 	

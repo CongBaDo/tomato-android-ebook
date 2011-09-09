@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="E_TomaBooks"
+		android:gravity="center" android:textSize="50px" />
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="IDとPasswordを入力してください。" />
+	<EditText android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/etId"
+		android:hint="E-mail address" />
+	<EditText android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/etPw"
+		android:hint="Password" android:password="true" />
+	<CheckBox android:layout_marginLeft="10px" android:text="サーバーへ接続しない"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:id="@+id/Login_checkBox"></CheckBox>
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:gravity="center_horizontal">
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/btServer"
+			android:text="サーバへ接続" />
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/btSyosai"
+			android:text="書斎へ" />
+	</LinearLayout>
+
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="※Notice" />
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="Loginしないとこのサービスはご利用できません。" />
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="アカウント加入はこちらへ" />
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/btTouroku"
+		android:text="登録" />
+</LinearLayout>
