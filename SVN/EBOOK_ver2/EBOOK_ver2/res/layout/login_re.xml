@@ -20,10 +20,10 @@
 		android:layout_height="wrap_content" android:gravity="center_horizontal">
 		<Button android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:id="@+id/btServer"
-			android:text="サーバへ接続" />
+			android:background="@drawable/log1" />
 		<Button android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:id="@+id/btSyosai"
-			android:text="書斎へ" />
+			android:background="@drawable/log2" android:text="書斎へ" />
 	</LinearLayout>
 
 	<TextView android:layout_width="fill_parent"
@@ -34,5 +34,5 @@
 		android:layout_height="wrap_content" android:text="アカウント登録はこちらへ" />
 	<Button android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/btTouroku"
-		android:text="登録" />
+		android:background="@drawable/log3" />
 </LinearLayout>

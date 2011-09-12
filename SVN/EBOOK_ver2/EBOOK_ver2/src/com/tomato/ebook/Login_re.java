@@ -151,11 +151,12 @@ public class Login_re extends Activity {
 		btnServer.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				/*
 				Intent muyonggak = new Intent(Login_re.this,CustomDialog.class);
 				startActivity(muyonggak);
-/*	i will be back キムセファデザイン訂正のためこっちを消す	
- * 		// TODO Auto-generated method stub
+				*/
+//	i will be back キムセファデザイン訂正のためこっちを消す	
+	// TODO Auto-generated method stub
 				new AlertDialog.Builder(Login_re.this)
 						.setTitle("Notification")
 						.setMessage("サーバーへ接続します。\n少々お待ち下さい。")
@@ -169,7 +170,7 @@ public class Login_re extends Activity {
 										tryToLogin(); // サーバーと通信します。
 									}
 								}).show();
-								*/
+								
 			}
 		});// LogBtn.setOnClickListener end
 
