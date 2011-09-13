@@ -38,8 +38,10 @@ public class Join extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.join);
+		
+		/*
 		JptomatoLogoActivity.actList.add(this);//"プログラムの終了"のため、Activityを追加
-	
+	*/
 		EditID = (EditText)findViewById(R.id.Join_EditID);//「Email」エディトボックス
 		EditPass = (EditText)findViewById(R.id.Join_EditPass);//「P/W」エディトボックス
 		EditCheckPass = (EditText)findViewById(R.id.Join_EditCheckPass);//「一度P/Wを確認しｌます。」エディトボックス

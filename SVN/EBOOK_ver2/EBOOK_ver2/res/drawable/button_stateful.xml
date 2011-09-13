@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>  
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">  
+ <item>  
+  <shape>  
+   <solid android:color="@android:color/transparent" />  
+  </shape>  
+ </item>  
+ <item android:top="5dip" android:bottom="8dip" android:left="5dip"  
+  android:right="5dip">  
+  <selector>  
+   <item android:state_pressed="true">  
+    <shape>  
+     <gradient android:startColor="@color/basic_orange1"  
+      android:endColor="@color/basic_white1" android:angle="90" />  
+     <corners android:radius="10dip" />  
+     <stroke android:width="2dip" android:color="@color/basic_blue1" />  
+     <padding android:left="15dip" android:top="15dip"  
+      android:right="15dip" android:bottom="15dip" />  
+    </shape>  
+   </item>  
+   <item android:state_focused="true">  
+    <shape>  
+     <gradient android:startColor="@color/basic_orange2"  
+      android:endColor="@color/basic_white1" android:angle="90" />  
+     <corners android:radius="10dip" />  
+     <stroke android:width="2dip" android:color="@color/basic_blue1" />  
+     <padding android:left="15dip" android:top="15dip"  
+      android:right="15dip" android:bottom="15dip" />  
+    </shape>  
+   </item>  
+   <item>  
+    <shape>  
+     <gradient android:startColor="@color/basic_white2"  
+      android:endColor="@color/basic_white1" android:angle="90" />  
+     <corners android:radius="10dip" />  
+     <stroke android:width="2dip" android:color="@color/basic_blue1" />  
+     <padding android:left="15dip" android:top="15dip"  
+      android:right="15dip" android:bottom="15dip" />  
+    </shape>  
+   </item>  
+  </selector>  
+ </item>  
+</layer-list> 

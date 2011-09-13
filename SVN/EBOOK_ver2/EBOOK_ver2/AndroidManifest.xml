@@ -10,10 +10,12 @@
 	<uses-permission android:name="android.permission.RESTART_PACKAGES"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name="CustomDialog"
-                  android:label="@string/app_name"
-                  android:theme="@style/Theme.CustomDialog">
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/MyTheme">
+		<activity android:name="AlertDialog"
+            android:theme="@style/MyTheme">
+                  </activity>
+                  <activity android:name="CustomButton"
+            android:theme="@style/MyTheme">
                   </activity>
 		
 		<activity android:name=".JptomatoLogoActivity" android:label="@string/app_name">
@@ -38,7 +40,7 @@
 		<activity android:name="CurlActivityVertical"></activity>
 		<activity android:name=".Login_original" android:theme="@style/Dialog"
 			android:screenOrientation="portrait"></activity>
-		<activity android:name="Join" android:theme="@style/Dialog"></activity>
+		<activity android:name="Join" android:theme="@style/Dialog" ></activity>
 		<activity android:name="Down" android:theme="@style/Dialog"></activity>
 		<activity android:name=".Books_TabActivity"></activity>
 		<activity android:name="Info" android:theme="@style/Dialog"></activity>

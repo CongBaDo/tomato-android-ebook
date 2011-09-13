@@ -61,7 +61,7 @@ public class Login_re extends Activity {
 
 	static final int MAX = 100;
 	static int bookCounter = 1;
-
+	
 	private String[] id = new String[MAX], pwd = new String[MAX],
 			title = new String[MAX], author = new String[MAX],
 			description = new String[MAX], image = new String[MAX],
@@ -83,15 +83,15 @@ public class Login_re extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_re);
 
-		etId = (EditText) findViewById(R.id.etId);
-		etPw = (EditText) findViewById(R.id.etPw);
+		etId = (EditText) findViewById(R.id.Login_EditID);
+		etPw = (EditText) findViewById(R.id.Login_EditPass);
 
-		btnServer = (Button) findViewById(R.id.btServer);
-		btnSyosai = (Button) findViewById(R.id.btSyosai);
-		btnTouroku = (Button) findViewById(R.id.btTouroku);
+		btnServer = (Button) findViewById(R.id.Login_LogBtn);
+		btnSyosai = (Button) findViewById(R.id.Login_syo);
+		btnTouroku = (Button) findViewById(R.id.Login_TorokuBtn);
 
-		etId = (EditText) findViewById(R.id.etId);
-		etPw = (EditText) findViewById(R.id.etPw);
+//		etId = (EditText) findViewById(R.id.etId);
+//		etPw = (EditText) findViewById(R.id.etPw);
 
 		Loginck = (CheckBox) findViewById(R.id.Login_checkBox);// 　「サーバーへ接続しない」チェックボックス
 
@@ -147,8 +147,9 @@ public class Login_re extends Activity {
 //	i will be back キムセファデザイン訂正のためこっちを消す	
 	// TODO Auto-generated method stub
 				new AlertDialog.Builder(Login_re.this)
-						.setTitle("Notification")
+						.setTitle("お知らせ")
 						.setMessage("サーバーへ接続します。\n少々お待ち下さい。")
+						
 						.setPositiveButton("OK",
 								new DialogInterface.OnClickListener() {
 
@@ -180,7 +181,7 @@ public class Login_re extends Activity {
 				if (!userCheck.exists() || userCheck.length() == 0
 						|| !userCheck.canRead()) {
 					new AlertDialog.Builder(Login_re.this)
-							.setTitle("Notification")
+							.setTitle("お知らせ")
 							.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
 							.setPositiveButton("OK",
 									new DialogInterface.OnClickListener() {
@@ -211,7 +212,7 @@ public class Login_re extends Activity {
 						e.printStackTrace();
 					}
 					new AlertDialog.Builder(Login_re.this)
-							.setTitle("Notification")
+							.setTitle("お知らせ")
 							.setMessage(
 									"ユーザーのデータが確認しました。\n書斎へ移動します。\n只、 ストアを利用しようとすれば、ログインがひつようです。")
 							.setPositiveButton("OK",
@@ -245,11 +246,17 @@ public class Login_re extends Activity {
 			public void onClick(View v) {
 
 				Intent Intent = new Intent(Login_re.this, Join.class);
+			
 				startActivity(Intent);
 
 			}
 		});
 	}// TorokuBtn.setOnClickListener end
+
+	protected CharSequence setIcon(int icon) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// ////////////////////////////////////////////////
 	//

@@ -1,10 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme" parent="android:Theme">
-    </style>
-    <!-- 커스텀 다이얼로그 부분.  -->
-    <style name="Theme.CustomDialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/filled_box</item>
-    </style>
-</resources>
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>  
+    <style name="MyTheme" parent="@android:style/Theme.Dialog">  
+        <item name="android:alertDialogStyle">@style/AlertDialog</item>  
+     <item name="android:buttonStyle">@style/CustomButton</item>  
+    </style>  
 
+   <style name="CustomButton" parent="@android:style/Widget.Button">  
+    <item name="android:background">@drawable/button_stateful</item>  
+   </style>  
+    <style name="AlertDialog">  
+        <item name="android:fullBright">@android:color/transparent</item>  
+        <item name="android:fullDark">@android:color/transparent</item>  
+        <item name="android:topBright">@color/basic_blue1</item>  
+        <item name="android:topDark">@color/basic_blue1</item>  
+        <item name="android:centerBright">@color/basic_blue2</item>  
+        <item name="android:centerDark">@color/basic_blue2</item>  
+        <item name="android:centerMedium">@color/basic_blue2</item>  
+        <item name="android:bottomBright">@color/basic_blue3</item>  
+        <item name="android:bottomDark">@color/basic_blue3</item>  
+        <item name="android:bottomMedium">@color/basic_blue3</item>  
+    </style>  
+    
+   
+    
+</resources>  
