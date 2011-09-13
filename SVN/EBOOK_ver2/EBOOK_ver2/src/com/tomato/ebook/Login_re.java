@@ -93,18 +93,7 @@ public class Login_re extends Activity {
 		etId = (EditText) findViewById(R.id.etId);
 		etPw = (EditText) findViewById(R.id.etPw);
 
-		Loginck = (CheckBox) findViewById( R.id.Login_checkBox );//　「サーバーへ接続しない」チェックボックス
-
-		
-		btnServer.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(Login_re.this, Main_re.class);
-				startActivity(intent);
-			}
-		});
+		Loginck = (CheckBox) findViewById(R.id.Login_checkBox);// 　「サーバーへ接続しない」チェックボックス
 
 		cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -233,10 +222,11 @@ public class Login_re extends Activity {
 												DialogInterface dialog,
 												int which) {
 											// TODO Auto-generated method stub
-											Intent Intent = new Intent(
-													Login_re.this, Main_re.class);
-											Intent.putExtra("State", "not");
-											startActivity(Intent);
+											Intent intent = new Intent(
+													Login_re.this,
+													Main_re.class);
+											// Intent.putExtra("State", "not");
+											startActivity(intent);
 
 										}
 									}).show();

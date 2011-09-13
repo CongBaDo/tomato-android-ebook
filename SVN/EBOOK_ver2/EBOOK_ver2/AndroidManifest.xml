@@ -25,6 +25,7 @@
 		<activity android:name="MyLibrary" android:screenOrientation="portrait"></activity>
 		<activity android:name="Read"></activity>
 		<activity android:name="ReadMenu" android:theme="@style/Dialog"></activity>
+		
 		<!-- SSong's 0909 -->
 		<activity android:name=".Login_re"></activity>
 		<activity android:name=".Main_re"></activity>
@@ -35,7 +36,7 @@
 		<activity android:name="CurlActivity"></activity>
 		<activity android:name="CurlActivity_File"></activity>
 		<activity android:name="CurlActivityVertical"></activity>
-		<activity android:name="Login" android:theme="@style/Dialog"
+		<activity android:name=".Login_original" android:theme="@style/Dialog"
 			android:screenOrientation="portrait"></activity>
 		<activity android:name="Join" android:theme="@style/Dialog"></activity>
 		<activity android:name="Down" android:theme="@style/Dialog"></activity>

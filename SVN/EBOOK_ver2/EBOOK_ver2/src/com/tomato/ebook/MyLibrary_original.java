@@ -6,32 +6,27 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.bool;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.LinearGradient;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.Shader.TileMode;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -40,11 +35,12 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
 
-public class MyLibrary extends Activity {
+public class MyLibrary_original extends Activity {
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
 	TextView titleName, authorName, description;
 	Button readBtn, fileBtn, prevBtn;
@@ -99,9 +95,7 @@ public class MyLibrary extends Activity {
 		// exit=(ImageView)findViewById(R.id.exit);
 		// store=(ImageView)findViewById(R.id.store);
 		list_book_detail = (ImageView) findViewById(R.id.list_book_detail);
-		Bitmap bitmap = BitReflection();
-		list_book_detail.setImageBitmap(bitmap);
-		
+
 		cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -115,11 +109,9 @@ public class MyLibrary extends Activity {
 		Log.e("g", "1");
 		mylibrarylist.setAdapter(new MyLibraryAdapter(this));
 		Log.e("g", "2");
-		
 		mylibrarylist.setOnItemClickListener(list_listener);
 		Log.e("g", "3");
-		
-		
+
 		prevBtn.setOnClickListener(read_listener);
 		readBtn.setOnClickListener(read_listener);
 		fileBtn.setOnClickListener(read_listener);
@@ -135,20 +127,48 @@ public class MyLibrary extends Activity {
 			// store.setVisibility(View.GONE);
 		}
 	}
+
 	String[] redata = null;
 
 	public String[] datafor(String data) {
 		redata = data.split(",");
 		return redata;
 	}
-	
-	//0912 SSong's
+
 	/*
-	private boolean onTouchEvent(MotionEvent event) {
-		
-		return false;
-	}
-	*/
+	 * private OnClickListener button_listener = new OnClickListener() {
+	 * 
+	 * @Override public void onClick(View v) {
+	 * 
+	 * switch (v.getId()) {
+	 * 
+	 * case R.id.store: if (!mobile.isConnected() && !wifi.isConnected()) { new
+	 * AlertDialog.Builder(MyLibrary.this) .setTitle("Notification")
+	 * .setMessage("今、ネットの問題が有って、利用ができません。\n後で利用して下さい。")
+	 * .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	 * 
+	 * @Override public void onClick( DialogInterface dialog, int which) { //
+	 * TODO Auto-generated method stub
+	 * 
+	 * } }).show(); } else { Intent intent = new Intent(MyLibrary.this,
+	 * Genre_TabActivity.class); startActivity(intent); } break;
+	 * 
+	 * case R.id.exit: new AlertDialog.Builder(MyLibrary.this)
+	 * .setTitle("Notification") .setMessage("最初画面に戻ります。")
+	 * .setNeutralButton("戻る", new DialogInterface.OnClickListener() {
+	 * 
+	 * @Override public void onClick(DialogInterface dialog, int which) { //
+	 * TODO Auto-generated method stub } }) .setPositiveButton("OK", new
+	 * DialogInterface.OnClickListener() {
+	 * 
+	 * @Override public void onClick(DialogInterface dialog, int which) { //
+	 * TODO Auto-generated method stub for (int i = 0; i <
+	 * JptomatoLogoActivity.actList .size(); i++) {
+	 * JptomatoLogoActivity.actList.get(i) .finish(); } close(); System.exit(1);
+	 * } }).show();
+	 * 
+	 * break; } } };
+	 */
 	private OnClickListener read_listener = new OnClickListener() {// read
 																	// button
 
@@ -157,7 +177,7 @@ public class MyLibrary extends Activity {
 			switch (v.getId()) {
 
 			case R.id.list_book_read: {
-				Intent intent = new Intent(MyLibrary.this, CurlActivity.class);
+				Intent intent = new Intent(MyLibrary_original.this, CurlActivity.class);
 				// intent.putExtra("bookKey", bookey[book_key]);
 				intent.putExtra("bookKey", book_key + "");
 				intent.putExtra("color", "#000000");
@@ -168,7 +188,7 @@ public class MyLibrary extends Activity {
 				break;
 			}
 			case R.id.list_file_read: {
-				Intent intent = new Intent(MyLibrary.this, FileListView.class);
+				Intent intent = new Intent(MyLibrary_original.this, FileListView.class);
 				startActivity(intent);
 				break;
 			}
@@ -206,25 +226,19 @@ public class MyLibrary extends Activity {
 					bookimg[k] = "/sdcard/ebook_" + (k + 1) + ".jpg";
 				}
 				String viewImage = bookimg[position];
+				Bitmap bit = BitmapFactory.decodeFile(viewImage);
 
-				Bitmap bitmapWithReflection = StrReflection(viewImage);
-				
-				list_book_detail.setImageBitmap(bitmapWithReflection);
-				
+				list_book_detail.setImageBitmap(bit);
 				titleName.setText(booktitle[position]);
 				authorName.setText(bookwriter[position]);
 				description.setText(bookdes[position]);
 				book_key = position + 1;
 			} else if (Integer.valueOf(datadata.get(0)) == 6) {
-				
-				Bitmap bitmapWithReflection = BitReflection();
-
-				list_book_detail.setImageBitmap(bitmapWithReflection);
+				list_book_detail.setImageResource(R.drawable.default_book);
 				titleName.setText("未だダウンロードした本が有りません。");
 
 			}
 		}
-
 	};
 
 	public void close() {
@@ -246,8 +260,10 @@ public class MyLibrary extends Activity {
 
 						List<RunningAppProcessInfo> list = actMng
 								.getRunningAppProcesses();
-						for (RunningAppProcessInfo rap : list) {
-							if (rap.processName.equals(strProcessName)) {
+						for (RunningAppProcessInfo rap : list)
+						{
+							if (rap.processName.equals(strProcessName))
+							{
 								if (rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)
 									actMng.restartPackage(getPackageName());
 								Thread.yield();
@@ -282,7 +298,7 @@ public class MyLibrary extends Activity {
 
 		switch (item.getItemId()) {
 		case 1:
-			Intent intent = new Intent(MyLibrary.this, Preview.class);
+			Intent intent = new Intent(MyLibrary_original.this, Preview.class);
 			intent.putExtra("bookKey", book_key + "");
 			intent.putExtra("color", "#000000");
 			intent.putExtra("bgcolor", "#FFFFFF");
@@ -290,7 +306,7 @@ public class MyLibrary extends Activity {
 			startActivity(intent);
 			break;
 		case 2:
-			Intent intent2 = new Intent(MyLibrary.this, Preview.class);
+			Intent intent2 = new Intent(MyLibrary_original.this, Preview.class);
 			intent2.putExtra("bookKey", book_key + "");
 			intent2.putExtra("color", "#000000");
 			intent2.putExtra("bgcolor", "#FFFFFF");
@@ -298,7 +314,7 @@ public class MyLibrary extends Activity {
 			startActivity(intent2);
 			break;
 		case 3:
-			Intent intent3 = new Intent(MyLibrary.this, Preview.class);
+			Intent intent3 = new Intent(MyLibrary_original.this, Preview.class);
 			intent3.putExtra("bookKey", book_key + "");
 			intent3.putExtra("color", "#000000");
 			intent3.putExtra("bgcolor", "#FFFFFF");
@@ -306,7 +322,7 @@ public class MyLibrary extends Activity {
 			startActivity(intent3);
 			break;
 		case 4:
-			Intent intent4 = new Intent(MyLibrary.this, Preview.class);
+			Intent intent4 = new Intent(MyLibrary_original.this, Preview.class);
 			intent4.putExtra("bookKey", book_key + "");
 			intent4.putExtra("color", "#000000");
 			intent4.putExtra("bgcolor", "#FFFFFF");
@@ -316,116 +332,4 @@ public class MyLibrary extends Activity {
 		}
 		return false;
 	}
-	
-	private Bitmap StrReflection(String bitmap)  {
-		// The gap we want between the reflection and the original image
-		final int reflectionGap = 1;
-
-		// Get you bit map from drawable folder
-		Bitmap originalImage = BitmapFactory.decodeFile(bitmap);
-
-		int width = originalImage.getWidth();
-		int height = originalImage.getHeight();
-
-		// This will not scale but will flip on the Y axis
-		Matrix matrix = new Matrix();
-		matrix.preScale(1, -1);
-
-		// Create a Bitmap with the flip matix applied to it.
-		// We only want the bottom half of the image
-		Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0,
-				height / 2, width, height / 2, matrix, false);
-
-		// Create a new bitmap with same width but taller to fit
-		// reflection
-		Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
-				(height + height / 2), Config.ARGB_8888);
-
-		// Create a new Canvas with the bitmap that's big enough for
-		// the image plus gap plus reflection
-		Canvas canvas = new Canvas(bitmapWithReflection);
-		// Draw in the original image
-		canvas.drawBitmap(originalImage, 0, 0, null);
-		// Draw in the gap
-		Paint deafaultPaint = new Paint();
-		canvas.drawRect(0, height, width, height + reflectionGap,
-				deafaultPaint);
-		// Draw in the reflection
-		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap,
-				null);
-
-		// Create a shader that is a linear gradient that covers the
-		// reflection
-		Paint paint = new Paint();
-		LinearGradient shader = new LinearGradient(0,
-				originalImage.getHeight(), 0,
-				bitmapWithReflection.getHeight() + reflectionGap,
-				0x70ffffff, 0x00ffffff, TileMode.CLAMP);
-		// Set the paint to use this shader (linear gradient)
-		paint.setShader(shader);
-		// Set the Transfer mode to be porter duff and destination in
-		paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
-		// Draw a rectangle using the paint with our linear gradient
-		canvas.drawRect(0, height, width,
-				bitmapWithReflection.getHeight() + reflectionGap, paint);
-
-		return bitmapWithReflection;
-	}
-	
-	private Bitmap BitReflection()  {
-		// The gap we want between the reflection and the original image
-		final int reflectionGap = 1;
-
-		// Get you bit map from drawable folder
-		Bitmap originalImage = BitmapFactory.decodeResource(getResources(),
-				R.drawable.list_book);
-
-		int width = originalImage.getWidth();
-		int height = originalImage.getHeight();
-
-		// This will not scale but will flip on the Y axis
-		Matrix matrix = new Matrix();
-		matrix.preScale(1, -1);
-
-		// Create a Bitmap with the flip matix applied to it.
-		// We only want the bottom half of the image
-		Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0,
-				height / 2, width, height / 2, matrix, false);
-
-		// Create a new bitmap with same width but taller to fit
-		// reflection
-		Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
-				(height + height / 2), Config.ARGB_8888);
-
-		// Create a new Canvas with the bitmap that's big enough for
-		// the image plus gap plus reflection
-		Canvas canvas = new Canvas(bitmapWithReflection);
-		// Draw in the original image
-		canvas.drawBitmap(originalImage, 0, 0, null);
-		// Draw in the gap
-		Paint deafaultPaint = new Paint();
-		canvas.drawRect(0, height, width, height + reflectionGap,
-				deafaultPaint);
-		// Draw in the reflection
-		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap,
-				null);
-
-		// Create a shader that is a linear gradient that covers the
-		// reflection
-		Paint paint = new Paint();
-		LinearGradient shader = new LinearGradient(0,
-				originalImage.getHeight(), 0,
-				bitmapWithReflection.getHeight() + reflectionGap,
-				0x70ffffff, 0x00ffffff, TileMode.CLAMP);
-		// Set the paint to use this shader (linear gradient)
-		paint.setShader(shader);
-		// Set the Transfer mode to be porter duff and destination in
-		paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
-		// Draw a rectangle using the paint with our linear gradient
-		canvas.drawRect(0, height, width,
-				bitmapWithReflection.getHeight() + reflectionGap, paint);
-
-		return bitmapWithReflection;
-	}
-	
 }

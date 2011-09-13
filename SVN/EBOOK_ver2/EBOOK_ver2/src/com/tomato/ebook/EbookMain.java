@@ -100,7 +100,7 @@ public class EbookMain extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 
-					Intent dirIntent = new Intent(EbookMain.this,Login.class);
+					Intent dirIntent = new Intent(EbookMain.this,Login_original.class);
 					startActivity(dirIntent);
 				}
 			})
@@ -108,7 +108,7 @@ public class EbookMain extends Activity {
 		}
 		else
 		{
-						Intent dirIntent = new Intent(EbookMain.this,Login.class);
+						Intent dirIntent = new Intent(EbookMain.this,Login_original.class);
 						startActivity(dirIntent);
 		}
 //		}

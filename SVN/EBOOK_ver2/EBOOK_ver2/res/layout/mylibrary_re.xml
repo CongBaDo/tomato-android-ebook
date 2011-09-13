@@ -8,23 +8,21 @@
 		<LinearLayout android:id="@+id/linearLayout5"
 			android:layout_width="match_parent" android:layout_height="match_parent"
 			android:orientation="vertical">
-			<!-- <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" 
-				android:layout_marginBottom="10px"> <ImageView android:id="@+id/store" android:layout_margin="10px" 
-				android:layout_alignParentRight="true" android:src="@drawable/mylibrary_store" 
-				android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView> 
-				<ImageView android:id="@+id/exit" android:src="@drawable/mylibrary_x" android:layout_alignParentLeft="true" 
-				android:layout_centerHorizontal="true" android:layout_height="wrap_content" 
-				android:layout_width="wrap_content"></ImageView> </RelativeLayout> -->
+			<RelativeLayout android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:layout_marginBottom="10px">
+			</RelativeLayout>
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
 				<LinearLayout android:layout_width="match_parent"
 					android:layout_height="wrap_content" android:id="@+id/linearLayout1"
 					android:gravity="center" android:orientation="vertical">
 					<Gallery android:layout_marginBottom="20px"
-						android:layout_width="match_parent" android:layout_height="match_parent"
-						android:background="#FFDEAD" android:gravity="center"
-						android:layout_marginTop="20px" android:spacing="10px"
-						android:animationDuration="1000" android:id="@+id/gallery"></Gallery>
+						android:layout_width="match_parent" android:layout_height="match_parent" 
+						android:gravity="center" android:layout_marginTop="20px"
+						android:spacing="10px" android:animationDuration="1000"
+						android:id="@+id/gallery">	
+						<!-- android:background="#FFDEAD" -->				
+					</Gallery>
 				</LinearLayout>
 			</LinearLayout>
 			<RelativeLayout android:id="@+id/LinearLayout1"

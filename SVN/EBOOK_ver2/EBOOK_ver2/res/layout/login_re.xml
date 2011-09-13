@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
+	<LinearLayout android:orientation="vertical" android:layout_width="400px"
+	android:layout_height="600px" android:background="#b0e0e6" android:layout_gravity="center">
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="E_TomaBooks"
 		android:gravity="center" android:textSize="50px" />
@@ -36,3 +38,4 @@
 		android:layout_height="wrap_content" android:id="@+id/btTouroku"
 		android:background="@drawable/log3" />
 </LinearLayout>
+</FrameLayout>

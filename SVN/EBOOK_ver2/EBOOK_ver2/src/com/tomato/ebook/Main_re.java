@@ -20,16 +20,19 @@ public class Main_re extends TabActivity {
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		inflater.inflate(R.layout.main_re, tab.getTabContentView(), true);
-
+		
+		Intent myLib = new Intent(this,MyLibrary.class);
+		myLib.putExtra("State", "not");
+		
 		tab.addTab(tab.newTabSpec("Library").setIndicator("My Library")
-				.setContent(R.id.lib));
+				.setContent(myLib));
 		tab.addTab(tab.newTabSpec("Store").setIndicator("Book Store")
 				.setContent(new Intent(this,Genre.class)));
 		tab.addTab(tab.newTabSpec("Logout").setIndicator("Logout")
 				.setContent(new Intent(this, Login_re.class)));
 
 		tab.setCurrentTab(0);
-
+						
 		Log.e("Book_TabActivity", "after");
 		tab.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 			@Override
@@ -51,7 +54,6 @@ public class Main_re extends TabActivity {
 						break;
 					}
 				}
-
 			}
 		});
 	}

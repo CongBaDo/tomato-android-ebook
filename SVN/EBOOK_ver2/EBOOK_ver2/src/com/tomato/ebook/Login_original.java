@@ -44,7 +44,7 @@ import com.tomato.communication.Util;
 import com.tomato.communication.cmsHTTP;
 
 
-public class Login extends Activity {
+public class Login_original extends Activity {
 	CheckBox Loginck;
 	CheckUtil logTest;
 	//サーバーからもらった"xml"データを保存する資料型
@@ -159,7 +159,7 @@ public class Login extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new AlertDialog.Builder(Login.this)
+				new AlertDialog.Builder(Login_original.this)
 				.setTitle("Notification")
 				.setMessage("サーバーへ接続します。\n少々お待ち下さい。")
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -189,7 +189,7 @@ public class Login extends Activity {
 				//ユーザーのデータが存在しない場合
 				if(!userCheck.exists()||userCheck.length()==0||!userCheck.canRead())
 				{
-					new AlertDialog.Builder(Login.this)
+					new AlertDialog.Builder(Login_original.this)
 					.setTitle("Notification")
 					.setMessage("ユーザーのデータが存在しないです。\n ログインして下さい。")
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -220,7 +220,7 @@ public class Login extends Activity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new AlertDialog.Builder(Login.this)
+					new AlertDialog.Builder(Login_original.this)
 					.setTitle("Notification")
 					.setMessage("ユーザーのデータが確認しました。\n書斎へ移動します。\n只、 ストアを利用しようとすれば、ログインがひつようです。")
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -228,7 +228,7 @@ public class Login extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub			
-							Intent Intent = new Intent(Login.this,MyLibrary.class);
+							Intent Intent = new Intent(Login_original.this,Main_re.class);
 							Intent.putExtra("State", "not");
 							startActivity(Intent);
 
@@ -249,7 +249,7 @@ public class Login extends Activity {
 			// TODO Auto-generated method stub
 			public void onClick(View v) {
 
-				Intent Intent = new Intent(Login.this,Join.class);
+				Intent Intent = new Intent(Login_original.this,Join.class);
 				startActivity(Intent);
 
 			}	
@@ -266,7 +266,7 @@ public class Login extends Activity {
 		email = EditID.getText().toString();
 		pass = EditPass.getText().toString();
 
-		logTest = new CheckUtil(Login.this,email,pass);
+		logTest = new CheckUtil(Login_original.this,email,pass);
 		//Emailと秘密番号が全部入力した場合
 		if (logTest.checkStart())
 		{
@@ -310,7 +310,7 @@ public class Login extends Activity {
 			httpParams.add(new BasicNameValuePair("date",bookDate));
 
 			cmsHTTP cmsHttp = new cmsHTTP();//接続準備
-			cmsHttp.act = Login.this;
+			cmsHttp.act = Login_original.this;
 			Log.e("sending","sendpost");
 			String tmpData = cmsHttp.sendPost(theUrl, httpParams);//サーバーへデータを要請
 			Log.e("theUrl",theUrl+httpParams);
