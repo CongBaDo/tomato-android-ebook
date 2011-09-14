@@ -4,39 +4,27 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.List;
 
-import android.R.bool;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,14 +32,14 @@ import android.widget.TextView;
 import com.tomato.adapter.MyLibraryAdapter;
 import com.tomato.sdcard.SDcard;
 
-public class MyLibrary extends Activity {
+public class MyLibrary extends Activity{
 	public static ArrayList<Activity> bkList = new ArrayList<Activity>();
+
 	TextView titleName, authorName, description;
-	Button readBtn, fileBtn, prevBtn;
-	// ImageView store,exit;
+	//Button readBtn, fileBtn, prevBtn;
+
 	ImageView list_book_detail;
 	final static int MAX = 100;
-	// HashMap<String, String> hm;
 
 	ArrayList<String> data_list = new ArrayList<String>();
 	ArrayList<String> datadata = new ArrayList<String>();
@@ -59,19 +47,12 @@ public class MyLibrary extends Activity {
 	SDcard sd = null;
 
 	String userid = null, userId = null, book = null, title = null,
-			writer = null, des = null, image_url = null, date = null,
-			state = null;
+			writer = null, des = null, image_url = null, date = null;
 
 	int book_key = 1;
-	ConnectivityManager cManager;
-	NetworkInfo mobile;
-	NetworkInfo wifi;
 	File userData, userText;
 	FileWriter[] save = new FileWriter[MAX];
 	FileReader idCheck;
-
-	// String allSiori=null;
-	// String siori=null;
 
 	String ext = Environment.getExternalStorageState();
 	String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -79,33 +60,27 @@ public class MyLibrary extends Activity {
 			.getAbsolutePath() + "/tmt" + "/";
 	File bookText;
 
+	// SSong's 0913
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.mylibrary);
 		setContentView(R.layout.mylibrary_re);
 		JptomatoLogoActivity.actList.add(this);
 
 		titleName = (TextView) findViewById(R.id.MyLibrary_TitleName);
 		authorName = (TextView) findViewById(R.id.MyLibrary_AuthorName);
 		description = (TextView) findViewById(R.id.MyLibrary_Story);
-
+/*
 		readBtn = (Button) findViewById(R.id.list_book_read);
 		fileBtn = (Button) findViewById(R.id.list_file_read);
 		prevBtn = (Button) findViewById(R.id.preview);
 		registerForContextMenu(prevBtn);
-
-		// exit=(ImageView)findViewById(R.id.exit);
-		// store=(ImageView)findViewById(R.id.store);
+*/
 		list_book_detail = (ImageView) findViewById(R.id.list_book_detail);
 		Bitmap bitmap = BitReflection();
 		list_book_detail.setImageBitmap(bitmap);
-		
-		cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		sd = new SDcard();
 		datadata = sd.tryToMyLibrary();// read login.txt
@@ -115,42 +90,24 @@ public class MyLibrary extends Activity {
 		Log.e("g", "1");
 		mylibrarylist.setAdapter(new MyLibraryAdapter(this));
 		Log.e("g", "2");
-		
 		mylibrarylist.setOnItemClickListener(list_listener);
 		Log.e("g", "3");
-		
-		
+		/*
 		prevBtn.setOnClickListener(read_listener);
 		readBtn.setOnClickListener(read_listener);
 		fileBtn.setOnClickListener(read_listener);
-		// store.setOnClickListener(button_listener);
-		// exit.setOnClickListener(button_listener);
-
+*/
 		Log.e("main", "main");
-
-		Intent getFromLogin = getIntent();
-		state = getFromLogin.getStringExtra("State");
-		if ((!mobile.isConnected() && !wifi.isConnected())
-				|| state.equals("not")) {
-			// store.setVisibility(View.GONE);
-		}
 	}
+
 	String[] redata = null;
 
 	public String[] datafor(String data) {
 		redata = data.split(",");
 		return redata;
 	}
-	
-	//0912 SSong's
-	/*
-	private boolean onTouchEvent(MotionEvent event) {
-		
-		return false;
-	}
-	*/
-	private OnClickListener read_listener = new OnClickListener() {// read
-																	// button
+
+	private OnClickListener read_listener = new OnClickListener() {// read button
 
 		@Override
 		public void onClick(View v) {
@@ -158,17 +115,22 @@ public class MyLibrary extends Activity {
 
 			case R.id.list_book_read: {
 				Intent intent = new Intent(MyLibrary.this, CurlActivity.class);
-				// intent.putExtra("bookKey", bookey[book_key]);
 				intent.putExtra("bookKey", book_key + "");
 				intent.putExtra("color", "#000000");
 				intent.putExtra("bgcolor", "#FFFFFF");
-				// intent.putExtra("siori", siori);
-
 				startActivity(intent);
 				break;
 			}
 			case R.id.list_file_read: {
 				Intent intent = new Intent(MyLibrary.this, FileListView.class);
+				startActivity(intent);
+				break;
+			}
+			case R.id.list_book_detail: {
+				Intent intent = new Intent(MyLibrary.this, CurlActivity.class);
+				intent.putExtra("bookKey", book_key + "");
+				intent.putExtra("color", "#000000");
+				intent.putExtra("bgcolor", "#FFFFFF");
 				startActivity(intent);
 				break;
 			}
@@ -207,16 +169,17 @@ public class MyLibrary extends Activity {
 				}
 				String viewImage = bookimg[position];
 
+				// 0912 SSong's
 				Bitmap bitmapWithReflection = StrReflection(viewImage);
-				
+
 				list_book_detail.setImageBitmap(bitmapWithReflection);
-				
+				list_book_detail.setOnClickListener(read_listener);
 				titleName.setText(booktitle[position]);
 				authorName.setText(bookwriter[position]);
 				description.setText(bookdes[position]);
 				book_key = position + 1;
 			} else if (Integer.valueOf(datadata.get(0)) == 6) {
-				
+
 				Bitmap bitmapWithReflection = BitReflection();
 
 				list_book_detail.setImageBitmap(bitmapWithReflection);
@@ -226,41 +189,7 @@ public class MyLibrary extends Activity {
 		}
 
 	};
-
-	public void close() {
-
-		finish();
-
-		int nSDKVersion = Integer.parseInt(Build.VERSION.SDK);
-
-		if (nSDKVersion < 8) // 2.1이하
-		{
-			ActivityManager actMng = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-			actMng.restartPackage(getPackageName());
-		} else {
-			new Thread(new Runnable() {
-				public void run() {
-					ActivityManager actMng = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-					String strProcessName = getApplicationInfo().processName;
-					while (true) {
-
-						List<RunningAppProcessInfo> list = actMng
-								.getRunningAppProcesses();
-						for (RunningAppProcessInfo rap : list) {
-							if (rap.processName.equals(strProcessName)) {
-								if (rap.importance >= RunningAppProcessInfo.IMPORTANCE_BACKGROUND)
-									actMng.restartPackage(getPackageName());
-								Thread.yield();
-								break;
-							}
-						}
-					}
-				}
-			}, "Process Killer").start();
-		}
-		System.exit(0);
-	}
-
+/*
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -275,7 +204,7 @@ public class MyLibrary extends Activity {
 			menu.add(0, 4, 0, "8");
 		}
 	}
-
+*/
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
@@ -316,8 +245,9 @@ public class MyLibrary extends Activity {
 		}
 		return false;
 	}
-	
-	private Bitmap StrReflection(String bitmap)  {
+
+	// 0913 SSong's
+	private Bitmap StrReflection(String bitmap) {
 		// The gap we want between the reflection and the original image
 		final int reflectionGap = 1;
 
@@ -348,31 +278,28 @@ public class MyLibrary extends Activity {
 		canvas.drawBitmap(originalImage, 0, 0, null);
 		// Draw in the gap
 		Paint deafaultPaint = new Paint();
-		canvas.drawRect(0, height, width, height + reflectionGap,
-				deafaultPaint);
+		canvas.drawRect(0, height, width, height + reflectionGap, deafaultPaint);
 		// Draw in the reflection
-		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap,
-				null);
+		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 
 		// Create a shader that is a linear gradient that covers the
 		// reflection
 		Paint paint = new Paint();
 		LinearGradient shader = new LinearGradient(0,
-				originalImage.getHeight(), 0,
-				bitmapWithReflection.getHeight() + reflectionGap,
-				0x70ffffff, 0x00ffffff, TileMode.CLAMP);
+				originalImage.getHeight(), 0, bitmapWithReflection.getHeight()
+						+ reflectionGap, 0x70ffffff, 0x00ffffff, TileMode.CLAMP);
 		// Set the paint to use this shader (linear gradient)
 		paint.setShader(shader);
 		// Set the Transfer mode to be porter duff and destination in
 		paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
 		// Draw a rectangle using the paint with our linear gradient
-		canvas.drawRect(0, height, width,
-				bitmapWithReflection.getHeight() + reflectionGap, paint);
+		canvas.drawRect(0, height, width, bitmapWithReflection.getHeight()
+				+ reflectionGap, paint);
 
 		return bitmapWithReflection;
 	}
-	
-	private Bitmap BitReflection()  {
+
+	private Bitmap BitReflection() {
 		// The gap we want between the reflection and the original image
 		final int reflectionGap = 1;
 
@@ -404,28 +331,24 @@ public class MyLibrary extends Activity {
 		canvas.drawBitmap(originalImage, 0, 0, null);
 		// Draw in the gap
 		Paint deafaultPaint = new Paint();
-		canvas.drawRect(0, height, width, height + reflectionGap,
-				deafaultPaint);
+		canvas.drawRect(0, height, width, height + reflectionGap, deafaultPaint);
 		// Draw in the reflection
-		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap,
-				null);
+		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 
 		// Create a shader that is a linear gradient that covers the
 		// reflection
 		Paint paint = new Paint();
 		LinearGradient shader = new LinearGradient(0,
-				originalImage.getHeight(), 0,
-				bitmapWithReflection.getHeight() + reflectionGap,
-				0x70ffffff, 0x00ffffff, TileMode.CLAMP);
+				originalImage.getHeight(), 0, bitmapWithReflection.getHeight()
+						+ reflectionGap, 0x70ffffff, 0x00ffffff, TileMode.CLAMP);
 		// Set the paint to use this shader (linear gradient)
 		paint.setShader(shader);
 		// Set the Transfer mode to be porter duff and destination in
 		paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
 		// Draw a rectangle using the paint with our linear gradient
-		canvas.drawRect(0, height, width,
-				bitmapWithReflection.getHeight() + reflectionGap, paint);
+		canvas.drawRect(0, height, width, bitmapWithReflection.getHeight()
+				+ reflectionGap, paint);
 
 		return bitmapWithReflection;
 	}
-	
 }

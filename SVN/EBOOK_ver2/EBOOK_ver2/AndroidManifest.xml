@@ -31,7 +31,7 @@
 		<!-- SSong's 0909 -->
 		<activity android:name=".Login_re"></activity>
 		<activity android:name=".Main_re"></activity>
-
+		
 		<activity android:name="ReadSetup"></activity>
 		<activity android:name="ReadVerticalSetup"></activity>
 		<activity android:name="Preview"></activity>

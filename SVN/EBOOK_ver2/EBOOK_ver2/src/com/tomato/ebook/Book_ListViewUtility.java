@@ -78,7 +78,7 @@ public class Book_ListViewUtility extends Activity
 			
 			
 			
-			TextView txt = (TextView)convertView.findViewById(R.id.textView1);
+			TextView txt = (TextView)convertView.findViewById(R.id.TextView01);
 			txt.setText(arSrc.get(position).Name);
 
 			return convertView;

@@ -30,7 +30,6 @@ public class Genre_TabActivity extends android.app.TabActivity {
 			public void onTabChanged(String tabId) {
 				// TODO Auto-generated method stub
 				switch (tabHost.getCurrentTab()) {
-			
 				case 2: {
 					tabHost.clearAllTabs();
 					Intent Intent = new Intent(Genre_TabActivity.this,

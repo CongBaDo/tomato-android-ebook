@@ -134,7 +134,6 @@ public class CheckUtil {
 					}
 				})
 				.show();
-
 		}
 
 		else if(rowid==2)
@@ -227,7 +226,7 @@ public class CheckUtil {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						Intent re_Intent = new Intent(re_context,MyLibrary.class);
+						Intent re_Intent = new Intent(re_context, MyLibrary.class);
 						re_Intent.putExtra("State", "OK");
 						re_context.startActivity(re_Intent);
 					}

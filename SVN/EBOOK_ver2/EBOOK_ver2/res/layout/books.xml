@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="match_parent" android:padding="5px" android:layout_height="wrap_content" android:layout_marginTop="5px" android:layout_marginBottom="5px">
-        <ImageView android:src="@drawable/icon" android:id="@+id/imageView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentLeft="true" android:padding="5px" android:layout_marginTop="10px" android:layout_marginLeft="20px" android:maxHeight="48px" android:maxWidth="48px"></ImageView>
-        <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="110px" android:gravity="left">
-            <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content">
-                <TextView android:textSize="20sp" android:id="@+id/TextView01" android:layout_marginLeft="20px" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginBottom="20px" android:layout_marginTop="30px" android:text="タイトル" android:textColor="#FFFFFF"></TextView>
-                <TextView android:layout_marginBottom="20px" android:text="TextView" android:id="@+id/textView1" android:layout_marginLeft="20px" android:layout_height="wrap_content" android:textColor="#00ff00" android:layout_width="wrap_content" android:layout_marginTop="30px" android:textSize="25sp"></TextView>
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:id="@+id/relativeLayout1"
+		android:layout_width="match_parent" android:padding="5px"
+		android:layout_height="wrap_content" android:layout_marginTop="5px"
+		android:layout_marginBottom="5px">
+		<ImageView android:src="@drawable/icon" android:id="@+id/imageView1"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_alignParentLeft="true" android:padding="5px"
+			android:layout_marginTop="10px" android:layout_marginLeft="20px"
+			android:maxHeight="48px" android:maxWidth="48px"></ImageView>
+		<LinearLayout android:id="@+id/linearLayout1"
+			android:orientation="vertical" android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:layout_marginLeft="110px"
+			android:gravity="left">
+			<LinearLayout android:id="@+id/linearLayout2"
+				android:layout_height="wrap_content" android:layout_width="wrap_content">
+				<TextView android:textSize="20sp" android:id="@+id/TextView01"
+					android:layout_marginLeft="20px" android:layout_height="wrap_content"
+					android:layout_width="wrap_content" android:layout_marginBottom="20px"
+					android:layout_marginTop="30px" android:text="タイトル"
+					android:textColor="#FFFFFF"></TextView>
+				<!-- <TextView android:layout_marginBottom="20px" android:text="TextView" 
+					android:id="@+id/textView1" android:layout_marginLeft="20px" android:layout_height="wrap_content" 
+					android:textColor="#00ff00" android:layout_width="wrap_content" android:layout_marginTop="30px" 
+					android:textSize="25sp"></TextView> -->
+			</LinearLayout>
+		</LinearLayout>
+	</RelativeLayout>
 </LinearLayout>

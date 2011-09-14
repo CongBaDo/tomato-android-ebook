@@ -8,13 +8,13 @@
 		<LinearLayout android:id="@+id/linearLayout5"
 			android:layout_width="match_parent" android:layout_height="match_parent"
 			android:orientation="vertical">
-			<!-- <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" 
+		<RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" 
 				android:layout_marginBottom="10px"> <ImageView android:id="@+id/store" android:layout_margin="10px" 
 				android:layout_alignParentRight="true" android:src="@drawable/mylibrary_store" 
 				android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView> 
 				<ImageView android:id="@+id/exit" android:src="@drawable/mylibrary_x" android:layout_alignParentLeft="true" 
 				android:layout_centerHorizontal="true" android:layout_height="wrap_content" 
-				android:layout_width="wrap_content"></ImageView> </RelativeLayout> -->
+				android:layout_width="wrap_content"></ImageView> </RelativeLayout>
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
 				<LinearLayout android:layout_width="match_parent"
