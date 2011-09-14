@@ -130,7 +130,7 @@ public class MyLibraryAdapter extends BaseAdapter{
 				
 //		imageview.setImageResource(list_image[position]);
 		imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-		imageview.setLayoutParams(new Gallery.LayoutParams(189, 268));	
+		imageview.setLayoutParams(new Gallery.LayoutParams(110, 180));	
 		
 		
 		
