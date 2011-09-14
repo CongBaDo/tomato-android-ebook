@@ -45,9 +45,9 @@ public class Genre extends Activity {
 		GarItem = new ArrayList<MyItem>();
 		MyItem mi;
 		//リスト画面に追加
-		mi = new MyItem("Best Seller", R.drawable.enter);
+		mi = new MyItem("Best Seller", R.drawable.click);
 		GarItem.add(mi);
-		mi = new MyItem("New Books", R.drawable.enter);
+		mi = new MyItem("New Books", R.drawable.click);
 		GarItem.add(mi);
 
 		MyListAdapter MyAdapter = new MyListAdapter(this, R.layout.genre,GarItem);

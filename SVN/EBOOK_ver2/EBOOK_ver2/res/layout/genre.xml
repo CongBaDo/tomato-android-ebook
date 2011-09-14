@@ -21,7 +21,7 @@
 			android:id="@+id/Genre_BtnLayout">
 			<ImageView android:layout_marginTop="10px"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:padding="5px" android:layout_marginLeft="20px" android:src="@drawable/enter"
+				android:padding="5px" android:layout_marginLeft="20px" android:src="@drawable/click"
 				android:id="@+id/Genre_GoToBookBtn"></ImageView>
 		</LinearLayout>
 	</RelativeLayout>
