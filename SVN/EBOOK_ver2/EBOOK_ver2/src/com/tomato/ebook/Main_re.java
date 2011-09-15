@@ -5,16 +5,15 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 
-public class Main_re extends TabActivity implements OnTabChangeListener {
+
+public class Main_re extends TabActivity {
 	/** Called when the activity is first created. */
 	TabHost tab;
 	String state = null;
@@ -31,8 +30,6 @@ public class Main_re extends TabActivity implements OnTabChangeListener {
 
 		// Tab
 		tab = getTabHost();
-		tab.setOnTabChangedListener(this);
-
 		cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -48,20 +45,20 @@ public class Main_re extends TabActivity implements OnTabChangeListener {
 
 		tab.addTab(tab
 				.newTabSpec("Library")
-				.setIndicator("My Library",
-						getResources().getDrawable(R.drawable.icon))
+				.setIndicator("",
+						getResources().getDrawable(R.drawable.mylib))
 				.setContent(myLib));
 
 		tab.addTab(tab
 				.newTabSpec("Store")
-				.setIndicator("Book Store",
-						getResources().getDrawable(R.drawable.icon))
+				.setIndicator("",
+						getResources().getDrawable(R.drawable.bookstore))
 				.setContent(R.id.store));
 
 		tab.addTab(tab
-				.newTabSpec("Logout")
-				.setIndicator("Exit",
-						getResources().getDrawable(R.drawable.icon))
+				.newTabSpec("Exit")
+				.setIndicator("",
+						getResources().getDrawable(R.drawable.exit))
 				.setContent(new Intent(this, Login_re.class)));
 
 		tab.setCurrentTab(0);
@@ -112,17 +109,5 @@ public class Main_re extends TabActivity implements OnTabChangeListener {
 				}
 			}
 		});
-	}
-
-	// SSong's Tabの色変更
-	@Override
-	public void onTabChanged(String tabId) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < tab.getTabWidget().getChildCount(); i++) {
-			tab.getTabWidget().getChildAt(i)
-					.setBackgroundColor(Color.parseColor("#ffff00"));
-		}
-		tab.getTabWidget().getChildAt(tab.getCurrentTab())
-				.setBackgroundColor(Color.parseColor("#ffff00"));
 	}
 }
