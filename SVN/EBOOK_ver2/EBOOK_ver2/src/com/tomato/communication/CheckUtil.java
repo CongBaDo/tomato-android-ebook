@@ -209,7 +209,7 @@ public class CheckUtil {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(re_context, MyLibrary.class);
+					Intent intent = new Intent(re_context, Main_re.class);
 					intent.putExtra("State", "OK");
 					re_context.startActivity(intent);
 				}
@@ -226,7 +226,7 @@ public class CheckUtil {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						Intent re_Intent = new Intent(re_context, MyLibrary.class);
+						Intent re_Intent = new Intent(re_context, Main_re.class);
 						re_Intent.putExtra("State", "OK");
 						re_context.startActivity(re_Intent);
 					}
