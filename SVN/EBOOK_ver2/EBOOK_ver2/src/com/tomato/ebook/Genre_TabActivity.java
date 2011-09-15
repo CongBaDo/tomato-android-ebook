@@ -15,11 +15,11 @@ public class Genre_TabActivity extends android.app.TabActivity {
 		Intent myLib = new Intent(this,MyLibrary.class);
 		myLib.putExtra("State", "not");
 		
-		tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("My Library")
+		tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("My Library", getResources().getDrawable(R.drawable.icon))
 				.setContent(myLib));				
-		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Book Store")
+		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Book Store", getResources().getDrawable(R.drawable.icon))
 				.setContent(new Intent(this, Genre.class)));
-		tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Logout")
+		tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Exit", getResources().getDrawable(R.drawable.icon))
 				.setContent(new Intent(this, Login_re.class)));
 		
 		tabHost.setCurrentTab(1);

@@ -25,31 +25,30 @@ public class Main_re extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		JptomatoLogoActivity.actList.add(this);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tabs);
+		//setContentView(R.layout.tabs);
 
-		tab = (TabHost)findViewById(R.id.tabHost);
-		tab.setup();
+		tab = getTabHost();
 
 		cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
+		
 		LayoutInflater inflater = LayoutInflater.from(this);
 		inflater.inflate(R.layout.main_re, tab.getTabContentView(), true);
-
+		
 		Intent getFromLogin = getIntent();
 		state = getFromLogin.getStringExtra("State");
 
 		Intent myLib = new Intent(this, MyLibrary.class);
 
-		tab.addTab(tab.newTabSpec("Library").setIndicator("My Library")
+		tab.addTab(tab.newTabSpec("Library").setIndicator("My Library", getResources().getDrawable(R.drawable.icon))
 				.setContent(myLib));
 
-		tab.addTab(tab.newTabSpec("Store").setIndicator("Book Store")
+		tab.addTab(tab.newTabSpec("Store").setIndicator("Book Store", getResources().getDrawable(R.drawable.icon))
 				.setContent(R.id.store));
 
-		tab.addTab(tab.newTabSpec("Logout").setIndicator("Logout")
+		tab.addTab(tab.newTabSpec("Logout").setIndicator("Exit", getResources().getDrawable(R.drawable.icon))
 				.setContent(new Intent(this, Login_re.class)));
 
 		tab.setCurrentTab(0);
@@ -62,12 +61,12 @@ public class Main_re extends TabActivity {
 				switch (tab.getCurrentTab()) {
 				case 1: {
 					tab.clearAllTabs();
-					if ((!mobile.isConnected() && !wifi.isConnected())
-							|| state.equals("OK")) {
+					if (//(!mobile.isConnected() && !wifi.isConnected())
+							state.equals("OK")) {
 						Intent Intent = new Intent(Main_re.this,
 								Genre_TabActivity.class);
 						Intent.putExtra("State", "OK");
-
+						startActivity(Intent);
 						break;
 					} else {
 						new AlertDialog.Builder(Main_re.this)
