@@ -107,7 +107,7 @@ public class MyLibrary extends Activity {
 			new AlertDialog.Builder(MyLibrary.this)
 					.setTitle("お知らせ")
 					.setMessage("ボタンを選んでください。")					
-					.setPositiveButton("本を読む。", new DialogInterface.OnClickListener() {
+					.setPositiveButton("本を読む", new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -128,7 +128,7 @@ public class MyLibrary extends Activity {
 							startActivity(intent);
 						}
 					})		
-					.setNegativeButton("プレビュー", new DialogInterface.OnClickListener() {
+					.setNegativeButton("preview", new DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
