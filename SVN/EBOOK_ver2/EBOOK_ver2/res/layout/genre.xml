@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/LinearLayout1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent" android:layout_height="match_parent"
+	android:orientation="vertical">
+	<RelativeLayout android:layout_marginBottom="5px"
+		android:layout_marginTop="5px" android:layout_height="wrap_content"
+		android:id="@+id/relativeLayout1" android:layout_width="match_parent"
+		android:padding="5px">
+		<LinearLayout android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:id="@+id/Genre_TitleLayout">
+			<TextView android:layout_marginTop="30px"
+				android:layout_height="wrap_content" android:textSize="20sp"
+				android:textColor="#FFFF00" android:layout_marginBottom="20px"
+				android:layout_marginLeft="20px" android:layout_width="wrap_content"
+				android:text="本の各ジャンル分類" android:id="@+id/Genre_Tiltle"></TextView>
+		</LinearLayout>
+		<LinearLayout android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:layout_marginLeft="110px" android:gravity="right"
+			android:id="@+id/Genre_BtnLayout">
+			<ImageView android:layout_marginTop="10px"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:padding="5px" android:layout_marginLeft="20px" android:src="@drawable/click"
+				android:id="@+id/Genre_GoToBookBtn"></ImageView>
+		</LinearLayout>
+	</RelativeLayout>
+
+</LinearLayout>

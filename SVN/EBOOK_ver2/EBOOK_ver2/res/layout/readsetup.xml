@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  
+   xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="fill_parent"  
+    android:layout_height="fill_parent"  
+    android:scrollbars="none"  
+    android:background="#000000"  
+    android:fadingEdgeLength="25dip">  
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:orientation="vertical" android:gravity="center_vertical" android:layout_height="fill_parent">
+    <LinearLayout android:id="@+id/linearLayout3" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center_vertical">
+        <LinearLayout android:layout_height="fill_parent" android:orientation="horizontal" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:weightSum="1">
+            <LinearLayout android:layout_marginLeft="30px" android:layout_height="fill_parent" android:orientation="vertical" android:gravity="center" android:layout_marginRight="30px" android:id="@+id/linearLayout1" android:layout_width="wrap_content">
+                <TextView android:text="てすとがめんです" android:gravity="center" android:id="@+id/preview" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="10px" android:textSize="25px"></TextView>
+                <TextView android:text="ページー移し方" android:textSize="20px" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="50px"></TextView>
+                <Spinner android:id="@+id/spinner1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginTop="5px"></Spinner>
+                <TextView android:layout_marginTop="10px" android:text="文字の色" android:textSize="20px" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                <Spinner android:id="@+id/spinner2" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginTop="5px"></Spinner>
+                <TextView android:layout_marginTop="10px" android:text="背景色" android:textSize="20px" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                <Spinner android:id="@+id/spinner3" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginTop="5px" android:layout_marginBottom="10px"></Spinner>
+                <Button android:layout_marginTop="10px" android:layout_gravity="center" android:text="設定" android:id="@+id/setup" android:layout_height="wrap_content" android:layout_width="73dp"></Button>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+ 
+  
+</LinearLayout>
+</ScrollView>  
