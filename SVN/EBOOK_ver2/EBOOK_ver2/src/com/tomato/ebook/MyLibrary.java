@@ -72,7 +72,7 @@ public class MyLibrary extends Activity {
 		setContentView(R.layout.mylibrary_re);
 		JptomatoLogoActivity.actList.add(this);
 
-		titleName = (TextView) findViewById(R.id.MyLibrary_Story);
+		titleName = (TextView) findViewById(R.id.MyLibrary_TitleName);
 		authorName = (TextView) findViewById(R.id.MyLibrary_AuthorName);
 		description = (TextView) findViewById(R.id.MyLibrary_Story);
 
@@ -180,7 +180,7 @@ public class MyLibrary extends Activity {
 				description.setText(bookdes[position]);
 				book_key = position + 1;
 			} else if (Integer.valueOf(datadata.get(0)) == 6) {
-				titleName.setText("未だダウンロードした本が有りません。");
+				description.setText("未だダウンロードした本が有りません。");
 			}
 		}
 	};
