@@ -187,9 +187,11 @@ public class Down extends Activity {
 	//
 	//////////////////////////////////////////////////
 	public void addResult(HashMap<String, String> hm) {
+		
 		int count = Integer.valueOf(hm.get("count"));
 		int rowid = cmsutil.str2int(hm.get("rowid[0]"));
-
+		
+		Log.e("rowidTRUE", ""+count);
 		String[] bookId=new String[MAX],
 				title=new String[MAX],
 				author=new String[MAX],
@@ -216,6 +218,7 @@ public class Down extends Activity {
 			resStock[0] =hm.get("stock[0]");
 			resEbook=hm.get("ebook[0]");
 			try {
+				Log.e("gogo?", rowid+":"+toInfoUserId+":"+resBookId[0]+":"+resTitle[0]+":"+resAuthor[0]+":"+resDescription[0]+":"+resImage[0]+":"+resStock[0]);
 				saveFile(rowid,toInfoUserId,resBookId,resTitle,resAuthor,resDescription,resImage,resStock);
 				saveBook(resEbook,count+1);
 				SaveImg(resImage[0],count+1);
@@ -304,7 +307,7 @@ public class Down extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
 						finish();
-						Intent intent = new Intent (Down.this,MyLibrary.class);
+						Intent intent = new Intent (Down.this,Main_re.class);
 						intent.putExtra("State", "OK");
 						startActivity(intent);//書斎画面へ戻ります。
 					}
@@ -332,16 +335,18 @@ public class Down extends Activity {
 		{
 
 			save[0] = new FileWriter(userData);
+			
 			save[0].write(String.valueOf(rowid));
 			save[0].write("\n");
 			save[0].write(userId);
 			save[0].write("\n");
-
+			Log.e("come?????????????????????????????????????????????????????????",String.valueOf(rowid));
 			//ユーザーがダウンロードした本が一巻の場合		
 			if(count==0)
 			{
-
+				Log.e("come???????????????????????????????????????????????????1",bookId[0]);	
 				save[0].write(bookId[0]);
+				Log.e("come???????????????????????????????????????????????????2",bookTitle[0]);
 				save[0].write("\n");
 				save[0].write(bookTitle[0]);
 				save[0].write("\n");

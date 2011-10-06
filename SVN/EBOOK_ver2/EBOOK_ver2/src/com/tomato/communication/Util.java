@@ -1,7 +1,6 @@
 package com.tomato.communication;
 
-import com.tomato.communication.cmsHTTP;
-import java.io.ByteArrayInputStream;
+import com.tomato.communication.cmsHTTP;import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,14 +172,32 @@ public class Util {
 
 	String[] tagList = {"rowid","email","pwd","ebook","date","description","title","id","author","image","level","msg"};
 	public HashMap<String, String> xml2HashMap(String tmpData, String encoding) {
+		Log.e("util",tmpData);
+		Log.e("encoding",encoding);
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("count", "0");
+		//hm.put("count", "0");
 		try {
+			Log.e("11","11");
 			DocumentBuilderFactory docBF = DocumentBuilderFactory.newInstance();
+			Log.e("22","22");
 			DocumentBuilder docB = docBF.newDocumentBuilder();
+			Log.e("33","33");
+			
 			InputStream is = new ByteArrayInputStream(tmpData.getBytes("UTF-8"));
+			
+			Log.e("44","44");
+			
+			//どうして2.1では問題がなかったものが3.1では問題が生じるのか
+			//問題が解決したすべてはXML文書が間違えれば生じる問題だ
+			////////////////////////////////////////////////////////////////////////////////
 			Document doc = docB.parse(is);
+			is = null;
+			Log.e("Document",doc+"");
+			Log.e("66","66");
+			
 			Element lists = doc.getDocumentElement();
+			////////////////////////////////////////////////////////////////////////////////
+			Log.e("77","77");
 			NodeList dataList = lists.getElementsByTagName("data");
 			int c = 0;
 			for (int i = 0; i < dataList.getLength(); i++) 
@@ -203,8 +220,8 @@ public class Util {
 				}// for j
 				c++;
 			}// for i
-			Log.e("hm_data0",hm.get("title[0]"));
-			Log.e("hm_data1",hm.get("title[1]"));
+			Log.e("hm_data0","1k2k"+hm.get("title[0]"));
+			Log.e("hm_data1","2k2k"+hm.get("title[1]"));
 			hm.put("count", Integer.toString(c));
 			Log.e("count",Integer.toString(c));
 		} catch (Exception e) {
